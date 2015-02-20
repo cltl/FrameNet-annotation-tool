@@ -1,0 +1,694 @@
+<Document doc_name="12315-Apple_launches_3G_dutch.txt">
+<token t_id="1" sentence="0" number="0">Apple</token>
+<token t_id="2" sentence="0" number="1">introduceert</token>
+<token t_id="3" sentence="0" number="2">3G</token>
+<token t_id="4" sentence="0" number="3">iPhone</token>
+<token t_id="5" sentence="1" number="0">09</token>
+<token t_id="6" sentence="1" number="1">-</token>
+<token t_id="7" sentence="1" number="2">Jun</token>
+<token t_id="8" sentence="1" number="3">-</token>
+<token t_id="9" sentence="1" number="4">08</token>
+<token t_id="10" sentence="2" number="0">Apple</token>
+<token t_id="11" sentence="2" number="1">Computer</token>
+<token t_id="12" sentence="2" number="2">introduceerde</token>
+<token t_id="13" sentence="2" number="3">vandaag</token>
+<token t_id="14" sentence="2" number="4">een</token>
+<token t_id="15" sentence="2" number="5">3G</token>
+<token t_id="16" sentence="2" number="6">-</token>
+<token t_id="17" sentence="2" number="7">versie</token>
+<token t_id="18" sentence="2" number="8">van</token>
+<token t_id="19" sentence="2" number="9">de</token>
+<token t_id="20" sentence="2" number="10">iPhone</token>
+<token t_id="21" sentence="2" number="11">.</token>
+<token t_id="22" sentence="3" number="0">Steve</token>
+<token t_id="23" sentence="3" number="1">Jobs</token>
+<token t_id="24" sentence="3" number="2">,</token>
+<token t_id="25" sentence="3" number="3">Chief</token>
+<token t_id="26" sentence="3" number="4">Executive</token>
+<token t_id="27" sentence="3" number="5">Officer</token>
+<token t_id="28" sentence="3" number="6">bij</token>
+<token t_id="29" sentence="3" number="7">Apple</token>
+<token t_id="30" sentence="3" number="8">,</token>
+<token t_id="31" sentence="3" number="9">kondigde</token>
+<token t_id="32" sentence="3" number="10">de</token>
+<token t_id="33" sentence="3" number="11">introductie</token>
+<token t_id="34" sentence="3" number="12">aan</token>
+<token t_id="35" sentence="3" number="13">tijdens</token>
+<token t_id="36" sentence="3" number="14">een</token>
+<token t_id="37" sentence="3" number="15">ontwikkelaarsconferentie</token>
+<token t_id="38" sentence="3" number="16">,</token>
+<token t_id="39" sentence="3" number="17">waar</token>
+<token t_id="40" sentence="3" number="18">hij</token>
+<token t_id="41" sentence="3" number="19">de</token>
+<token t_id="42" sentence="3" number="20">iPhone</token>
+<token t_id="43" sentence="3" number="21">promootte</token>
+<token t_id="44" sentence="3" number="22">door</token>
+<token t_id="45" sentence="3" number="23">te</token>
+<token t_id="46" sentence="3" number="24">zeggen</token>
+<token t_id="47" sentence="3" number="25">dat</token>
+<token t_id="48" sentence="3" number="26">�</token>
+<token t_id="49" sentence="3" number="27">we</token>
+<token t_id="50" sentence="3" number="28">slechts</token>
+<token t_id="51" sentence="3" number="29">een</token>
+<token t_id="52" sentence="3" number="30">jaar</token>
+<token t_id="53" sentence="3" number="31">na</token>
+<token t_id="54" sentence="3" number="32">de</token>
+<token t_id="55" sentence="3" number="33">iPhone</token>
+<token t_id="56" sentence="3" number="34">al</token>
+<token t_id="57" sentence="3" number="35">de</token>
+<token t_id="58" sentence="3" number="36">nieuwe</token>
+<token t_id="59" sentence="3" number="37">iPhone</token>
+<token t_id="60" sentence="3" number="38">3G</token>
+<token t_id="61" sentence="3" number="39">,</token>
+<token t_id="62" sentence="3" number="40">uitbrengen</token>
+<token t_id="63" sentence="3" number="41">,</token>
+<token t_id="64" sentence="3" number="42">die</token>
+<token t_id="65" sentence="3" number="43">twee</token>
+<token t_id="66" sentence="3" number="44">keer</token>
+<token t_id="67" sentence="3" number="45">zo</token>
+<token t_id="68" sentence="3" number="46">snel</token>
+<token t_id="69" sentence="3" number="47">is</token>
+<token t_id="70" sentence="3" number="48">en</token>
+<token t_id="71" sentence="3" number="49">maar</token>
+<token t_id="72" sentence="3" number="50">half</token>
+<token t_id="73" sentence="3" number="51">zo</token>
+<token t_id="74" sentence="3" number="52">duur</token>
+<token t_id="75" sentence="3" number="53">.</token>
+<token t_id="76" sentence="3" number="54">�</token>
+<token t_id="77" sentence="4" number="0">Apple</token>
+<token t_id="78" sentence="4" number="1">claimt</token>
+<token t_id="79" sentence="4" number="2">dat</token>
+<token t_id="80" sentence="4" number="3">internettoegang</token>
+<token t_id="81" sentence="4" number="4">op</token>
+<token t_id="82" sentence="4" number="5">de</token>
+<token t_id="83" sentence="4" number="6">iPhone</token>
+<token t_id="84" sentence="4" number="7">3G</token>
+<token t_id="85" sentence="4" number="8">tweemaal</token>
+<token t_id="86" sentence="4" number="9">zo</token>
+<token t_id="87" sentence="4" number="10">snel</token>
+<token t_id="88" sentence="4" number="11">is</token>
+<token t_id="89" sentence="4" number="12">als</token>
+<token t_id="90" sentence="4" number="13">op</token>
+<token t_id="91" sentence="4" number="14">eerdere</token>
+<token t_id="92" sentence="4" number="15">versies</token>
+<token t_id="93" sentence="4" number="16">.</token>
+<token t_id="94" sentence="5" number="0">De</token>
+<token t_id="95" sentence="5" number="1">prijs</token>
+<token t_id="96" sentence="5" number="2">van</token>
+<token t_id="97" sentence="5" number="3">de</token>
+<token t_id="98" sentence="5" number="4">iPhone</token>
+<token t_id="99" sentence="5" number="5">is</token>
+<token t_id="100" sentence="5" number="6">bovendien</token>
+<token t_id="101" sentence="5" number="7">verlaagd</token>
+<token t_id="102" sentence="5" number="8">tot</token>
+<token t_id="103" sentence="5" number="9">$</token>
+<token t_id="104" sentence="5" number="10">199</token>
+<token t_id="105" sentence="5" number="11">,</token>
+<token t_id="106" sentence="5" number="12">-</token>
+<token t_id="107" sentence="5" number="13">in</token>
+<token t_id="108" sentence="5" number="14">de</token>
+<token t_id="109" sentence="5" number="15">V</token>
+<token t_id="110" sentence="5" number="16">.</token>
+<token t_id="111" sentence="5" number="17">S</token>
+<token t_id="112" sentence="5" number="18">.</token>
+<token t_id="113" sentence="5" number="19">,</token>
+<token t_id="114" sentence="5" number="20">en</token>
+<token t_id="115" sentence="5" number="21">de</token>
+<token t_id="116" sentence="5" number="22">prijzen</token>
+<token t_id="117" sentence="5" number="23">in</token>
+<token t_id="118" sentence="5" number="24">andere</token>
+<token t_id="119" sentence="5" number="25">landen</token>
+<token t_id="120" sentence="5" number="26">zijn</token>
+<token t_id="121" sentence="5" number="27">gelijk</token>
+<token t_id="122" sentence="5" number="28">aan</token>
+<token t_id="123" sentence="5" number="29">of</token>
+<token t_id="124" sentence="5" number="30">lager</token>
+<token t_id="125" sentence="5" number="31">dan</token>
+<token t_id="126" sentence="5" number="32">de</token>
+<token t_id="127" sentence="5" number="33">prijs</token>
+<token t_id="128" sentence="5" number="34">in</token>
+<token t_id="129" sentence="5" number="35">de</token>
+<token t_id="130" sentence="5" number="36">V</token>
+<token t_id="131" sentence="5" number="37">.</token>
+<token t_id="132" sentence="5" number="38">S</token>
+<token t_id="133" sentence="5" number="39">.</token>
+<token t_id="134" sentence="5" number="40">.</token>
+<token t_id="135" sentence="6" number="0">Fans</token>
+<token t_id="136" sentence="6" number="1">van</token>
+<token t_id="137" sentence="6" number="2">Apple</token>
+<token t_id="138" sentence="6" number="3">speculeren</token>
+<token t_id="139" sentence="6" number="4">al</token>
+<token t_id="140" sentence="6" number="5">enkele</token>
+<token t_id="141" sentence="6" number="6">maanden</token>
+<token t_id="142" sentence="6" number="7">over</token>
+<token t_id="143" sentence="6" number="8">de</token>
+<token t_id="144" sentence="6" number="9">introductie</token>
+<token t_id="145" sentence="6" number="10">van</token>
+<token t_id="146" sentence="6" number="11">een</token>
+<token t_id="147" sentence="6" number="12">iPhone</token>
+<token t_id="148" sentence="6" number="13">3G</token>
+<token t_id="149" sentence="6" number="14">.</token>
+
+
+<Markables>
+<ENTITY_MENTION m_id="44" head="" syntactic_type="" comment=""  >
+<token_anchor t_id="80"/>
+</ENTITY_MENTION>
+<ENTITY_MENTION m_id="45" head="" syntactic_type="" comment=""  >
+<token_anchor t_id="91"/>
+<token_anchor t_id="92"/>
+</ENTITY_MENTION>
+<ENTITY_MENTION m_id="16" syntactic_type="NAM" head="" comment=""  >
+<token_anchor t_id="1"/>
+</ENTITY_MENTION>
+<ENTITY_MENTION m_id="17" syntactic_type="NAM" head="" comment=""  >
+<token_anchor t_id="4"/>
+</ENTITY_MENTION>
+<ENTITY_MENTION m_id="18" head="" syntactic_type="" comment=""  >
+<token_anchor t_id="3"/>
+<token_anchor t_id="4"/>
+</ENTITY_MENTION>
+<ENTITY_MENTION m_id="19" head="" syntactic_type="" comment=""  >
+<token_anchor t_id="10"/>
+</ENTITY_MENTION>
+<ENTITY_MENTION m_id="20" syntactic_type="NAM" head="" comment=""  >
+<token_anchor t_id="10"/>
+<token_anchor t_id="11"/>
+</ENTITY_MENTION>
+<ENTITY_MENTION m_id="21" syntactic_type="NAM" head="" comment=""  >
+<token_anchor t_id="20"/>
+</ENTITY_MENTION>
+<ENTITY_MENTION m_id="58" head="" syntactic_type="" comment=""  >
+<token_anchor t_id="40"/>
+</ENTITY_MENTION>
+<ENTITY_MENTION m_id="22" syntactic_type="NAM" head="" comment=""  >
+<token_anchor t_id="22"/>
+<token_anchor t_id="23"/>
+</ENTITY_MENTION>
+<ENTITY_MENTION m_id="63" syntactic_type="NAM" head="" comment=""  >
+<token_anchor t_id="129"/>
+<token_anchor t_id="130"/>
+<token_anchor t_id="131"/>
+<token_anchor t_id="132"/>
+</ENTITY_MENTION>
+<ENTITY_MENTION m_id="23" syntactic_type="NAM" head="" comment=""  >
+<token_anchor t_id="29"/>
+</ENTITY_MENTION>
+<ENTITY_MENTION m_id="64" head="" syntactic_type="" comment=""  >
+<token_anchor t_id="135"/>
+<token_anchor t_id="136"/>
+<token_anchor t_id="137"/>
+</ENTITY_MENTION>
+<ENTITY_MENTION m_id="24" head="" syntactic_type="" comment=""  >
+<token_anchor t_id="22"/>
+<token_anchor t_id="23"/>
+<token_anchor t_id="24"/>
+<token_anchor t_id="25"/>
+<token_anchor t_id="26"/>
+<token_anchor t_id="27"/>
+<token_anchor t_id="28"/>
+<token_anchor t_id="29"/>
+</ENTITY_MENTION>
+<ENTITY_MENTION m_id="25" head="" syntactic_type="" comment=""  >
+<token_anchor t_id="14"/>
+<token_anchor t_id="15"/>
+<token_anchor t_id="16"/>
+<token_anchor t_id="17"/>
+<token_anchor t_id="18"/>
+<token_anchor t_id="19"/>
+<token_anchor t_id="20"/>
+</ENTITY_MENTION>
+<ENTITY_MENTION m_id="26" head="" syntactic_type="" comment=""  >
+<token_anchor t_id="59"/>
+</ENTITY_MENTION>
+<ENTITY_MENTION m_id="27" syntactic_type="NAM" head="" comment=""  >
+<token_anchor t_id="59"/>
+<token_anchor t_id="60"/>
+</ENTITY_MENTION>
+<ENTITY_MENTION m_id="28" head="" syntactic_type="" comment=""  >
+<token_anchor t_id="57"/>
+<token_anchor t_id="58"/>
+<token_anchor t_id="59"/>
+<token_anchor t_id="60"/>
+</ENTITY_MENTION>
+<ENTITY_MENTION m_id="29" syntactic_type="NAM" head="" comment=""  >
+<token_anchor t_id="77"/>
+</ENTITY_MENTION>
+<ENTITY_MENTION m_id="30" syntactic_type="NAM" head="" comment=""  >
+<token_anchor t_id="82"/>
+<token_anchor t_id="83"/>
+<token_anchor t_id="84"/>
+</ENTITY_MENTION>
+<ENTITY_MENTION m_id="31" syntactic_type="NAM" head="" comment=""  >
+<token_anchor t_id="97"/>
+<token_anchor t_id="98"/>
+</ENTITY_MENTION>
+<ENTITY_MENTION m_id="74" syntactic_type="" head="" comment=""  >
+<token_anchor t_id="64"/>
+</ENTITY_MENTION>
+<ENTITY_MENTION m_id="32" syntactic_type="NAM" head="" comment=""  >
+<token_anchor t_id="146"/>
+<token_anchor t_id="147"/>
+<token_anchor t_id="148"/>
+</ENTITY_MENTION>
+<ENTITY_MENTION m_id="75" head="" syntactic_type="" comment=""  >
+<token_anchor t_id="126"/>
+<token_anchor t_id="127"/>
+<token_anchor t_id="128"/>
+<token_anchor t_id="129"/>
+<token_anchor t_id="130"/>
+<token_anchor t_id="131"/>
+<token_anchor t_id="132"/>
+</ENTITY_MENTION>
+<ENTITY_MENTION m_id="33" syntactic_type="NAM" head="" comment=""  >
+<token_anchor t_id="137"/>
+</ENTITY_MENTION>
+<ENTITY_MENTION m_id="34" syntactic_type="NAM" head="" comment=""  >
+<token_anchor t_id="41"/>
+<token_anchor t_id="42"/>
+</ENTITY_MENTION>
+<ENTITY_MENTION m_id="35" syntactic_type="NAM" head="" comment=""  >
+<token_anchor t_id="54"/>
+<token_anchor t_id="55"/>
+</ENTITY_MENTION>
+<ENTITY_MENTION m_id="36" head="" syntactic_type="" comment=""  >
+<token_anchor t_id="130"/>
+<token_anchor t_id="131"/>
+<token_anchor t_id="132"/>
+</ENTITY_MENTION>
+<ENTITY_MENTION m_id="37" syntactic_type="NAM" head="" comment=""  >
+<token_anchor t_id="108"/>
+<token_anchor t_id="109"/>
+<token_anchor t_id="110"/>
+<token_anchor t_id="111"/>
+</ENTITY_MENTION>
+<ENTITY_MENTION m_id="38" head="" syntactic_type="" comment=""  >
+<token_anchor t_id="115"/>
+<token_anchor t_id="116"/>
+</ENTITY_MENTION>
+<ENTITY_MENTION m_id="39" head="" syntactic_type="" comment=""  >
+<token_anchor t_id="118"/>
+<token_anchor t_id="119"/>
+</ENTITY_MENTION>
+<ENTITY_MENTION m_id="40" head="" syntactic_type="" comment=""  >
+<token_anchor t_id="126"/>
+<token_anchor t_id="127"/>
+</ENTITY_MENTION>
+<ENTITY_MENTION m_id="41" head="" syntactic_type="" comment=""  >
+<token_anchor t_id="115"/>
+<token_anchor t_id="116"/>
+<token_anchor t_id="117"/>
+<token_anchor t_id="118"/>
+<token_anchor t_id="119"/>
+</ENTITY_MENTION>
+<ENTITY_MENTION m_id="42" head="" syntactic_type="" comment=""  >
+<token_anchor t_id="135"/>
+</ENTITY_MENTION>
+<ENTITY_MENTION m_id="43" head="" syntactic_type="" comment=""  >
+<token_anchor t_id="49"/>
+</ENTITY_MENTION>
+<EVENT_MENTION m_id="6" time="NON_FUTURE" aspect="NONE" special_cases="NONE" certainty="CERTAIN" polarity="POS" tense="INFINITIVE" modality="" comment="" pred="zeggen" pos="VERB"  >
+<token_anchor t_id="46"/>
+</EVENT_MENTION>
+<EVENT_MENTION m_id="7" time="NON_FUTURE" aspect="NONE" special_cases="NONE" certainty="CERTAIN" polarity="POS" tense="PRESENT" modality="" comment="" pred="uitbrengen" pos="VERB"  >
+<token_anchor t_id="62"/>
+</EVENT_MENTION>
+<EVENT_MENTION m_id="8" time="NON_FUTURE" aspect="NONE" special_cases="NONE" certainty="CERTAIN" polarity="POS" tense="PRESENT" modality="" comment="" pred="claimen" pos="VERB"  >
+<token_anchor t_id="78"/>
+</EVENT_MENTION>
+<EVENT_MENTION m_id="46" time="NON_FUTURE" aspect="" special_cases="NONE" certainty="CERTAIN" polarity="POS" tense="PAST" modality="" comment="" pred="aankondigen" pos="VERB"  >
+<token_anchor t_id="31"/>
+<token_anchor t_id="34"/>
+</EVENT_MENTION>
+<EVENT_MENTION m_id="9" time="NON_FUTURE" aspect="NONE" special_cases="NONE" certainty="CERTAIN" polarity="POS" tense="PRESENT" modality="" comment="" pred="verlagen" pos="VERB"  >
+<token_anchor t_id="101"/>
+</EVENT_MENTION>
+<EVENT_MENTION m_id="47" time="NON_FUTURE" aspect="NONE" special_cases="NONE" certainty="CERTAIN" polarity="POS" tense="NONE" modality="" comment="" pred="snel" pos="OTHER"  >
+<token_anchor t_id="68"/>
+</EVENT_MENTION>
+<EVENT_MENTION m_id="48" time="NON_FUTURE" aspect="NONE" special_cases="NONE" certainty="CERTAIN" polarity="POS" tense="NONE" modality="" comment="" pred="duur" pos="OTHER"  >
+<token_anchor t_id="74"/>
+</EVENT_MENTION>
+<EVENT_MENTION m_id="49" time="NON_FUTURE" aspect="NONE" special_cases="NONE" certainty="CERTAIN" polarity="POS" tense="NONE" modality="" comment="" pred="snel" pos="OTHER"  >
+<token_anchor t_id="87"/>
+</EVENT_MENTION>
+<EVENT_MENTION m_id="50" time="NON_FUTURE" aspect="NONE" special_cases="NONE" certainty="CERTAIN" polarity="POS" tense="NONE" modality="" comment="" pred="gelijk" pos="OTHER"  >
+<token_anchor t_id="121"/>
+</EVENT_MENTION>
+<EVENT_MENTION m_id="51" time="NON_FUTURE" aspect="NONE" special_cases="NONE" certainty="CERTAIN" polarity="POS" tense="NONE" modality="" comment="" pred="laag" pos="OTHER"  >
+<token_anchor t_id="124"/>
+</EVENT_MENTION>
+<EVENT_MENTION m_id="52" time="NON_FUTURE" aspect="NONE" special_cases="NONE" certainty="CERTAIN" polarity="POS" tense="NONE" modality="" comment="" pred="introductie" pos="NOUN"  >
+<token_anchor t_id="33"/>
+</EVENT_MENTION>
+<EVENT_MENTION m_id="76" time="NON_FUTURE" aspect="NONE" special_cases="NONE" certainty="CERTAIN" polarity="POS" tense="PRESENT" modality="" comment="" pred="zijn" pos="VERB"  >
+<token_anchor t_id="88"/>
+</EVENT_MENTION>
+<EVENT_MENTION m_id="78" time="NON_FUTURE" aspect="NONE" special_cases="NONE" certainty="CERTAIN" polarity="POS" tense="PRESENT" modality="" comment="" pred="zijn" pos="VERB"  >
+<token_anchor t_id="69"/>
+</EVENT_MENTION>
+<EVENT_MENTION m_id="79" time="NON_FUTURE" aspect="NONE" special_cases="NONE" certainty="CERTAIN" polarity="POS" tense="PRESENT" modality="" comment="" pred="zijn" pos="VERB"  >
+<token_anchor t_id="120"/>
+</EVENT_MENTION>
+<EVENT_MENTION m_id="1" time="NON_FUTURE" aspect="NONE" special_cases="NONE" certainty="CERTAIN" polarity="POS" tense="PRESENT" modality="" comment="" pred="introduceren" pos="VERB"  >
+<token_anchor t_id="2"/>
+</EVENT_MENTION>
+<EVENT_MENTION m_id="2" time="NON_FUTURE" aspect="NONE" special_cases="NONE" certainty="CERTAIN" polarity="POS" tense="PAST" modality="" comment="" pred="introduceren" pos="VERB"  >
+<token_anchor t_id="12"/>
+</EVENT_MENTION>
+<EVENT_MENTION m_id="4" time="NON_FUTURE" aspect="NONE" special_cases="NONE" certainty="CERTAIN" polarity="POS" tense="NONE" modality="" comment="" pred="ontwikkelaarsconferentie" pos="NOUN"  >
+<token_anchor t_id="37"/>
+</EVENT_MENTION>
+<EVENT_MENTION m_id="5" time="NON_FUTURE" aspect="NONE" special_cases="NONE" certainty="CERTAIN" polarity="POS" tense="PAST" modality="" comment="" pred="promoten" pos="VERB"  >
+<token_anchor t_id="43"/>
+</EVENT_MENTION>
+<SIGNAL m_id="72" comment=""  >
+<token_anchor t_id="35"/>
+</SIGNAL>
+<SIGNAL m_id="73" comment=""  >
+<token_anchor t_id="53"/>
+</SIGNAL>
+<TIMEX3 m_id="67" functionInDocument="CREATION_TIME" endPoint="" anchorTimeID="67" beginPoint="" value="2008-06-09" type="DATE" comment=""  >
+<token_anchor t_id="5"/>
+<token_anchor t_id="6"/>
+<token_anchor t_id="7"/>
+<token_anchor t_id="8"/>
+<token_anchor t_id="9"/>
+</TIMEX3>
+<TIMEX3 m_id="68" functionInDocument="NONE" endPoint="" anchorTimeID="67" beginPoint="" value="2008-06-09" type="DATE" comment=""  >
+<token_anchor t_id="13"/>
+</TIMEX3>
+<TIMEX3 m_id="69" functionInDocument="NONE" endPoint="68" anchorTimeID="" beginPoint="" value="P1Y" type="DURATION" comment=""  >
+<token_anchor t_id="51"/>
+<token_anchor t_id="52"/>
+</TIMEX3>
+<VALUE m_id="70" comment="" type="MONEY"  >
+<token_anchor t_id="103"/>
+<token_anchor t_id="104"/>
+<token_anchor t_id="105"/>
+<token_anchor t_id="106"/>
+</VALUE>
+<VALUE m_id="71" comment="" type="QUANTITY"  >
+<token_anchor t_id="65"/>
+</VALUE>
+
+
+<EVENT m_id="3" RELATED_TO="" TAG_DESCRIPTOR="verlagen" class="OTHER" comment="" external_ref="" />
+<EVENT m_id="10" RELATED_TO="" TAG_DESCRIPTOR="introduceren" class="OTHER" comment="" external_ref="" />
+<EVENT m_id="11" RELATED_TO="" TAG_DESCRIPTOR="conferentie" class="OTHER" comment="" external_ref="" />
+<EVENT m_id="12" RELATED_TO="" TAG_DESCRIPTOR="promoten" class="OTHER" comment="" external_ref="" />
+<EVENT m_id="13" RELATED_TO="" TAG_DESCRIPTOR="zeggen" class="SPEECH_COGNITIVE" comment="" external_ref="" />
+<EVENT m_id="14" RELATED_TO="" TAG_DESCRIPTOR="claimen" class="SPEECH_COGNITIVE" comment="" external_ref="" />
+<EVENT m_id="15" RELATED_TO="" TAG_DESCRIPTOR="aankondigen" class="SPEECH_COGNITIVE" comment="" external_ref="" />
+<EVENT m_id="53" RELATED_TO="" TAG_DESCRIPTOR="duur zijn" class="OTHER" comment="" external_ref="" />
+<EVENT m_id="54" RELATED_TO="" TAG_DESCRIPTOR="snel zijn" class="OTHER" comment="" external_ref="" />
+<EVENT m_id="55" RELATED_TO="" TAG_DESCRIPTOR="gelijk zijn" class="OTHER" comment="" external_ref="" />
+<EVENT m_id="56" RELATED_TO="" TAG_DESCRIPTOR="lager zijn" class="OTHER" comment="" external_ref="" />
+<ENTITY m_id="57" RELATED_TO="" TAG_DESCRIPTOR="Apple" ent_type="ORG" ent_class="" comment="" external_ref="" />
+<ENTITY m_id="59" RELATED_TO="" TAG_DESCRIPTOR="de (oude) iphone" ent_type="PRO" ent_class="" comment="" external_ref="" />
+<ENTITY m_id="60" RELATED_TO="" TAG_DESCRIPTOR="steve jobs" ent_type="PER" ent_class="" comment="" external_ref="" />
+<ENTITY m_id="61" RELATED_TO="" TAG_DESCRIPTOR="de nieuwe 3g iphone" ent_type="PRO" ent_class="" comment="" external_ref="" />
+<ENTITY m_id="62" RELATED_TO="" TAG_DESCRIPTOR="de VS" ent_type="LOC" ent_class="" comment="" external_ref="" />
+<ENTITY m_id="65" RELATED_TO="" TAG_DESCRIPTOR="apple-fans" ent_type="" ent_class="" external_ref="" comment="" />
+<ENTITY m_id="66" RELATED_TO="" TAG_DESCRIPTOR="internettoegang" ent_type="" ent_class="" comment="" external_ref="" />
+<EVENT m_id="77" RELATED_TO="" TAG_DESCRIPTOR="is (2x zo snel)" class="GRAMMATICAL" comment="" external_ref="" />
+<EVENT m_id="80" RELATED_TO="" TAG_DESCRIPTOR="zijn (lager of gelijk)" class="GRAMMATICAL" comment="" external_ref="" />
+</Markables>
+
+<Relations>
+<REFERS_TO r_id="258905" >
+<source m_id="5" />
+<target m_id="12" />
+</REFERS_TO>
+<REFERS_TO r_id="258906" >
+<source m_id="4" />
+<target m_id="11" />
+</REFERS_TO>
+<REFERS_TO r_id="258907" >
+<source m_id="46" />
+<target m_id="15" />
+</REFERS_TO>
+<REFERS_TO r_id="258908" >
+<source m_id="2" />
+<target m_id="10" />
+</REFERS_TO>
+<REFERS_TO r_id="258909" >
+<source m_id="1" />
+<target m_id="10" />
+</REFERS_TO>
+<REFERS_TO r_id="258910" >
+<source m_id="7" />
+<target m_id="10" />
+</REFERS_TO>
+<REFERS_TO r_id="258911" >
+<source m_id="6" />
+<target m_id="13" />
+</REFERS_TO>
+<REFERS_TO r_id="258912" >
+<source m_id="49" />
+<target m_id="54" />
+</REFERS_TO>
+<REFERS_TO r_id="258913" >
+<source m_id="8" />
+<target m_id="14" />
+</REFERS_TO>
+<REFERS_TO r_id="258914" >
+<source m_id="9" />
+<target m_id="3" />
+</REFERS_TO>
+<REFERS_TO r_id="262294" >
+<source m_id="48" />
+<target m_id="53" />
+</REFERS_TO>
+<REFERS_TO r_id="262295" >
+<source m_id="52" />
+<target m_id="10" />
+</REFERS_TO>
+<REFERS_TO r_id="262296" >
+<source m_id="47" />
+<target m_id="54" />
+</REFERS_TO>
+<REFERS_TO r_id="262297" >
+<source m_id="50" />
+<target m_id="55" />
+</REFERS_TO>
+<REFERS_TO r_id="262298" >
+<source m_id="51" />
+<target m_id="56" />
+</REFERS_TO>
+<HAS_PARTICIPANT r_id="262668" frame="cause_to_perceive" sem_role_framework="PROPBANK" sem_role="Arg0" comment="" frame_element="actor" >
+<source m_id="46" />
+<target m_id="24" />
+</HAS_PARTICIPANT>
+<REFERS_TO r_id="262796" >
+<source m_id="16" />
+<source m_id="19" />
+<source m_id="20" />
+<source m_id="23" />
+<source m_id="29" />
+<source m_id="33" />
+<source m_id="43" />
+<target m_id="57" />
+</REFERS_TO>
+<REFERS_TO r_id="263541" >
+<source m_id="22" />
+<source m_id="24" />
+<source m_id="58" />
+<target m_id="60" />
+</REFERS_TO>
+<REFERS_TO r_id="263542" >
+<source m_id="21" />
+<source m_id="35" />
+<target m_id="59" />
+</REFERS_TO>
+<REFERS_TO r_id="263543" >
+<source m_id="18" />
+<source m_id="25" />
+<source m_id="28" />
+<source m_id="30" />
+<source m_id="31" />
+<source m_id="32" />
+<source m_id="34" />
+<target m_id="61" />
+</REFERS_TO>
+<REFERS_TO r_id="263557" >
+<source m_id="36" />
+<source m_id="37" />
+<source m_id="63" />
+<target m_id="62" />
+</REFERS_TO>
+<REFERS_TO r_id="263582" >
+<source m_id="64" />
+<target m_id="65" />
+</REFERS_TO>
+<REFERS_TO r_id="263583" >
+<source m_id="44" />
+<target m_id="66" />
+</REFERS_TO>
+<HAS_PARTICIPANT r_id="264149" frame="cause_to_perceive" sem_role_framework="PROPBANK" sem_role="Arg0" comment="" frame_element="agent" >
+<source m_id="1" />
+<target m_id="16" />
+</HAS_PARTICIPANT>
+<CLINK r_id="264241" >
+<source m_id="2" />
+<target m_id="20" />
+</CLINK>
+<HAS_PARTICIPANT r_id="264243" frame="cause_to_perceive" sem_role_framework="PROPBANK" sem_role="Arg1" comment="" frame_element="phenomenon" >
+<source m_id="25" />
+<target m_id="2" />
+</HAS_PARTICIPANT>
+<HAS_PARTICIPANT r_id="264309" frame="cause_change_of_position_on_a_scale" sem_role_framework="PROPBANK" sem_role="Arg1" comment="" frame_element="item" >
+<source m_id="5" />
+<target m_id="34" />
+</HAS_PARTICIPANT>
+<HAS_PARTICIPANT r_id="264315" frame="Cause_to_perceive" sem_role_framework="PROPBANK" sem_role="Arg0" comment="" frame_element="agent" >
+<source m_id="1" />
+<target m_id="16" />
+</HAS_PARTICIPANT>
+<HAS_PARTICIPANT r_id="264321" frame="Cause_change_of_position_on_a_scale" sem_role_framework="PROPBANK" sem_role="Arg0" comment="" frame_element="agent" >
+<source m_id="5" />
+<target m_id="58" />
+</HAS_PARTICIPANT>
+<HAS_PARTICIPANT r_id="264325" frame="publishing" sem_role_framework="PROPBANK" sem_role="Arg1" comment="frame not perfect" frame_element="work" >
+<source m_id="7" />
+<target m_id="28" />
+</HAS_PARTICIPANT>
+<HAS_PARTICIPANT r_id="264338" frame="publishing" sem_role_framework="PROPBANK" sem_role="Arg0" comment="frame not perfct" frame_element="publisher" >
+<source m_id="7" />
+<target m_id="43" />
+</HAS_PARTICIPANT>
+<HAS_PARTICIPANT r_id="264340" frame="speed_description" sem_role_framework="PROPBANK" sem_role="Arg1" comment="" frame_element="entity" >
+<source m_id="47" />
+<target m_id="74" />
+</HAS_PARTICIPANT>
+<HAS_PARTICIPANT r_id="264344" frame="Expensiveness" sem_role_framework="PROPBANK" sem_role="Arg1" comment="" frame_element="goods" >
+<source m_id="48" />
+<target m_id="74" />
+</HAS_PARTICIPANT>
+<HAS_PARTICIPANT r_id="264347" frame="cause_to_perceive" sem_role_framework="PROPBANK" sem_role="Arg1" comment="" frame_element="phenomenon" >
+<source m_id="1" />
+<target m_id="18" />
+</HAS_PARTICIPANT>
+<HAS_PARTICIPANT r_id="264369" frame="speed_description" sem_role_framework="PROPBANK" sem_role="Arg1" comment="" frame_element="entity" >
+<source m_id="49" />
+<target m_id="44" />
+</HAS_PARTICIPANT>
+<HAS_PARTICIPANT r_id="264370" frame="Cause_change_of_position_on_a_scale" sem_role_framework="PROPBANK" sem_role="Arg1" comment="" frame_element="scale" >
+<source m_id="9" />
+<target m_id="31" />
+</HAS_PARTICIPANT>
+<HAS_PARTICIPANT r_id="264371" frame="Cause_change_of_position_on_a_scale" sem_role_framework="PROPBANK" sem_role="Arg4" comment="" frame_element="value2" >
+<source m_id="9" />
+<target m_id="70" />
+</HAS_PARTICIPANT>
+<HAS_PARTICIPANT r_id="264372" frame="" sem_role_framework="PROPBANK" sem_role="Argm-LOC" comment="" frame_element="" >
+<source m_id="9" />
+<target m_id="37" />
+</HAS_PARTICIPANT>
+<HAS_PARTICIPANT r_id="264373" frame="Evaluative_comparison" sem_role_framework="PROPBANK" sem_role="Arg1" comment="" frame_element="Profiled_attribute" >
+<source m_id="50" />
+<target m_id="41" />
+</HAS_PARTICIPANT>
+<HAS_PARTICIPANT r_id="264375" frame="Evaluative_comparison" sem_role_framework="PROPBANK" sem_role="Arg2" comment="" frame_element="Standard_attribute" >
+<source m_id="50" />
+<target m_id="75" />
+</HAS_PARTICIPANT>
+<HAS_PARTICIPANT r_id="264376" frame="Measurable_attributes" sem_role_framework="PROPBANK" sem_role="Arg1" comment="" frame_element="attribute" >
+<source m_id="51" />
+<target m_id="41" />
+</HAS_PARTICIPANT>
+<HAS_PARTICIPANT r_id="264377" frame="Measurable_attributes" sem_role_framework="PROPBANK" sem_role="Arg3" comment="" frame_element="value" >
+<source m_id="51" />
+<target m_id="75" />
+</HAS_PARTICIPANT>
+<TLINK r_id="265906" reltype="INCLUDES" comment="" signalID="" >
+<source m_id="67" />
+<target m_id="2" />
+</TLINK>
+<TLINK r_id="265907" reltype="IS_INCLUDED" comment="" signalID="" >
+<source m_id="2" />
+<target m_id="68" />
+</TLINK>
+<TLINK r_id="265908" reltype="AFTER" comment="" signalID="" >
+<source m_id="2" />
+<target m_id="46" />
+</TLINK>
+<TLINK r_id="265909" reltype="SIMULTANEOUS" comment="" signalID="" >
+<source m_id="46" />
+<target m_id="8" />
+</TLINK>
+<TLINK r_id="265910" reltype="SIMULTANEOUS" comment="" signalID="" >
+<source m_id="8" />
+<target m_id="9" />
+</TLINK>
+<TLINK r_id="265912" reltype="BEFORE" comment="" signalID="" >
+<source m_id="46" />
+<target m_id="52" />
+</TLINK>
+<TLINK r_id="265913" reltype="IS_INCLUDED" comment="" signalID="72" >
+<source m_id="46" />
+<target m_id="4" />
+</TLINK>
+<TLINK r_id="265915" reltype="INCLUDES" comment="" signalID="" >
+<source m_id="4" />
+<target m_id="5" />
+</TLINK>
+<TLINK r_id="265916" reltype="SIMULTANEOUS" comment="" signalID="" >
+<source m_id="5" />
+<target m_id="7" />
+</TLINK>
+<TLINK r_id="265917" reltype="SIMULTANEOUS" comment="" signalID="" >
+<source m_id="8" />
+<target m_id="49" />
+</TLINK>
+<TLINK r_id="265918" reltype="SIMULTANEOUS" comment="" signalID="" >
+<source m_id="8" />
+<target m_id="50" />
+</TLINK>
+<TLINK r_id="265919" reltype="SIMULTANEOUS" comment="" signalID="" >
+<source m_id="8" />
+<target m_id="51" />
+</TLINK>
+<SLINK r_id="266460" >
+<source m_id="46" />
+<target m_id="52" />
+</SLINK>
+<SLINK r_id="266462" >
+<source m_id="8" />
+<target m_id="76" />
+</SLINK>
+<SLINK r_id="266464" >
+<source m_id="6" />
+<target m_id="7" />
+</SLINK>
+<GLINK r_id="266465" >
+<source m_id="76" />
+<target m_id="49" />
+</GLINK>
+<REFERS_TO r_id="266466" >
+<source m_id="76" />
+<source m_id="78" />
+<target m_id="77" />
+</REFERS_TO>
+<GLINK r_id="266468" >
+<source m_id="78" />
+<target m_id="47" />
+</GLINK>
+<REFERS_TO r_id="266469" >
+<source m_id="79" />
+<target m_id="80" />
+</REFERS_TO>
+<GLINK r_id="266470" >
+<source m_id="79" />
+<target m_id="50" />
+</GLINK>
+<GLINK r_id="266471" >
+<source m_id="79" />
+<target m_id="51" />
+</GLINK>
+<TLINK r_id="266693" reltype="INCLUDES" comment="" signalID="" >
+<source m_id="67" />
+<target m_id="46" />
+</TLINK>
+</Relations>
+</Document>
