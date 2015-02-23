@@ -1,7 +1,9 @@
 """
 Usage: python annotation.py <inputdir> 
 
-This module takes all the CAT XML files in a given directoy as input and allows the user to annotate the HAS_PARTICIPANT relations with frames and frame elements from FrameNet.
+This module takes all the CAT XML files in a given directoy as input
+and allows the user to annotate the HAS_PARTICIPANT relations in these
+files with frames and frame elements from FrameNet.
 
 """
 
@@ -83,7 +85,7 @@ def get_full_sentence(sent_id, list_tokens):
     return sentence
 
 
-def get_framenet_data(pm, frames_LUs, lemma):
+def get_framenet_data(lemma):
     '''
     Returns a list of frames associated with a given lemma in the Predicate Matrix and in FrameNet
     '''
@@ -114,7 +116,7 @@ def get_framenet_data(pm, frames_LUs, lemma):
     pm_infile.close()
     return frames
 
-def get_frame_elements(fn_dir, list_frames):
+def get_frame_elements(list_frames):
     '''
     Takes a list of frames, reads the FrameNet Data and returns a dictionary with for each frame:
     - the definition of the frame (first argument)
@@ -128,13 +130,13 @@ def get_frame_elements(fn_dir, list_frames):
                 infile = open(os.path.join(fn_dir, filename), 'r')
                 raw = infile.read()
                 root = etree.XML(raw)
-                definition = (root.find("{http://framenet.icsi.berkeley.edu}definition")).text
-                definition = re.sub("<[^>]*>", "", definition) # Removes tags
+                definition = (root.find("{http://framenet.icsi.berkeley.edu}definition")).text # Requires name space
+                definition = re.sub("<[^>]*>", "", definition) # Removes markup language
                 dir_frames[frame].append(definition)
-                fes = root.findall("{http://framenet.icsi.berkeley.edu}FE")
+                fes = root.findall("{http://framenet.icsi.berkeley.edu}FE") # Requires name space
                 for fe in fes:
                     name_fe = fe.get("name")
-                    def_fe = (fe.find("{http://framenet.icsi.berkeley.edu}definition")).text
+                    def_fe = (fe.find("{http://framenet.icsi.berkeley.edu}definition")).text # Requires name space
                     def_fe = re.sub("<[^>]*>", "", def_fe)
                     dir_frames[frame].append(name_fe)
                 infile.close()
@@ -142,7 +144,10 @@ def get_frame_elements(fn_dir, list_frames):
             dir_frames[frame] = ["No definition available", "None"]
     return dir_frames
 
-def get_definition_fe(fn_dir, frame, fe):
+def get_definition_fe(frame, fe):
+    '''
+    Returns the definition of a frame element (FE) given the name of the frame and the FE itself
+    '''
     for filename in os.listdir(fn_dir):
         if filename.replace(".xml", "") == frame:
             infile = open(os.path.join(fn_dir, filename), 'r')
@@ -150,7 +155,7 @@ def get_definition_fe(fn_dir, frame, fe):
             root = etree.XML(raw)
             for fe_element in root.findall("{http://framenet.icsi.berkeley.edu}FE"):
                 if fe_element.get("name") == fe:
-                    definition = (fe_element.find("{http://framenet.icsi.berkeley.edu}definition")).text
+                    definition = (fe_element.find("{http://framenet.icsi.berkeley.edu}definition")).text # Requires name space
                     definition = definition.split("<fex")[0] # Removes any examples from the definition
                     definition = definition.split("<ex")[0] # Removes any examples from the definition
                     definition = re.sub("<[^>]*>", "", definition) # Removes markup language
@@ -161,17 +166,23 @@ def get_definition_fe(fn_dir, frame, fe):
 ##########################
 
 def print_sentence(sentence, predicate, argument):
+    '''
+    Prints the sentence, predicate and argument
+    '''
     print "SENTENCE: " + sentence 
     print "PREDICATE: " + predicate 
     print "ARGUMENT: " + argument + "\n"
 
 def print_annotation(frame, role):
+    '''
+    Prints the annotated frame and role
+    '''
     print "\n----------------------------- ANNOTATION -----------------------------\n"
     if frame == "None":
         print "NO FRAME IS SELECTED. SAVE THE 'NONE' VALUES AND CONTINUE, OR TRY AGAIN.\n"
     print "FRAME:", frame
     if role != "None":
-        def_role = get_definition_fe(fn_dir, frame, role)
+        def_role = get_definition_fe(frame, role)
         print "ROLE:", role, "--", def_role 
     else:
         print "ROLE:", role
@@ -179,11 +190,19 @@ def print_annotation(frame, role):
 def print_emptylines():
     print "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
 
-############################
-# Functions for user input #
-############################
+######################################################################################################
+# Functions for user input:                                                                          # 
+# These functions present the user with the information (e.g. the sentence, the frames found for a   #
+# lemma, etc.) and asks him/her to enter the lemma, the correct frame and the correct frame element. #                            
+######################################################################################################
 
-def search_first_attempt():
+def search_frames():
+    '''
+    Step 1: Enter a frame or lemma(s).
+    Asks the user to enter a frame or lemma(s) and returns:
+    1. a list of frames associated with the lemma(s)
+    2. a dictionary with the definition and frame elements (FEs) for each frame (i.e. {frame1: [definition, FE1, FE2, etc.], frame2: [definition, FE1, FE2, etc.]} )
+    '''
     lemmas_or_frame = raw_input("PLEASE ENTER THE LEMMA(S) EXPRESSING OR RELATING TO THE PREDICATE TO SEARCH FOR FRAMES, OR ENTER THE FRAME DIRECTLY: ")
            
     # If no frame/lemma(s) given, return empty frames + dictionary
@@ -207,14 +226,20 @@ def search_first_attempt():
         lemmas =  lemmas_or_frame.split(",")            
         all_frames = []
         for lemma in lemmas:
-            frames_lemma = get_framenet_data(pm, frames_LUs, lemma)
+            frames_lemma = get_framenet_data(lemma)
             for frame in frames_lemma:
                 all_frames.append(frame)
                 
-    dict_frames = get_frame_elements(fn_dir, all_frames)
+    dict_frames = get_frame_elements(all_frames)
     return all_frames, dict_frames
 
-def no_data_found():
+def search_frames_again():
+    '''
+    Step 1: Enter a frame or lemma(s).
+    If in the first try no frames were found , this function asks the user again to enter a frame or lemma(s) and returns:
+    1. a list of frames associated with the lemma(s)
+    2. a dictionary with the definition and frame elements (FEs) for each frame (i.e. {frame1: [definition, FE1, FE2, etc.], frame2: [definition, FE1, FE2, etc.]} )
+    '''
     while True:
         lemmas_or_frame = raw_input("NO DATA FOUND. PLEASE TRY AGAIN (OR ENTER 'q' TO QUIT THIS ANNOTATION): ")
         if lemmas_or_frame == "q":
@@ -236,29 +261,33 @@ def no_data_found():
                 lemmas =  lemmas_or_frame.split(",")            
                 all_frames = []
                 for lemma in lemmas:
-                    frames_lemma = get_framenet_data(pm, frames_LUs, lemma)
+                    frames_lemma = get_framenet_data(lemma)
                     for frame in frames_lemma:
                         all_frames.append(frame)
                 
-            dict_frames = get_frame_elements(fn_dir, all_frames)
+            dict_frames = get_frame_elements(all_frames)
             if len(dict_frames) == 0:
                 continue
             else:
                 return all_frames, dict_frames  
 
 def too_many_frames(dict_frames, list_frames):
+    '''
+    Presents the user with the names of all the found frames and asks him/her to make a smaller selection of frames first 
+    '''
+    
     new_frames = {}	
-    print "\nTHERE ARE", len(dict_frames), "FRAMES AVAILABLE. MAKE A SELECTION OF FRAMES FIRST."
+    print "\nTHERE ARE", len(list_frames), "FRAMES AVAILABLE. MAKE A SMALLER SELECTION OF FRAMES FIRST."
     for number, frame in enumerate(list_frames):
         print number, frame
     while True:
-        number_frames = raw_input("\nHOW MUCH FRAMES DO YOU WANT TO SHOW? ")
+        number_frames = raw_input("\nHOW MUCH FRAMES DO YOU WANT TO INVESTIGATE FURTHER? ")
         try:
             n = 0
             while n < int(number_frames):
                 n += 1
                 while True:
-                    entered_number = raw_input("\nPLEASE ENTER THE NUMBER OF THE FRAME YOU WANT TO SHOW: ")
+                    entered_number = raw_input("\nPLEASE ENTER THE NUMBER OF THE FRAME YOU WANT TO INVESTIGATE FURTHER: ")
                     try:
                         for number, frame in enumerate(list_frames):
                             if number == int(entered_number):
@@ -276,6 +305,10 @@ def too_many_frames(dict_frames, list_frames):
     return new_frames
 
 def select_good_frames(dict_frames, sentence, predicate, argument):
+    '''
+    Presents the user with the frames, one by one, and let him/her decide whether it is a good frame or not.
+    Returns a dictionary of frames that were marked as 'good' frames.
+    '''
     chosen_frames = {}
     n = 0
     for frame in dict_frames:
@@ -296,6 +329,9 @@ def select_good_frames(dict_frames, sentence, predicate, argument):
     return chosen_frames
 
 def multiple_frames_chosen(chosen_frames):
+    '''
+    Presents the user with the multiple frames that (s)he has chosen and asks to choose the best-fitting frame
+    '''
     print "-------------------------------------------------------------\n"
     print "YOU HAVE CHOSEN MULTIPLE FRAMES: "
     list_chosen_frames = list(chosen_frames.keys())
@@ -314,6 +350,9 @@ def multiple_frames_chosen(chosen_frames):
             break
 
 def enter_frame_element(best_frame, roles):
+    '''
+    Presents the user with the frame elements (FEs) of the frame and asks to select the correct FE
+    '''
     print "----------------------------------------------------------------"
     print "\nYOU HAVE CHOSEN: " , best_frame , "\n\nTHE POSSIBLE ROLES FOR THIS FRAME ARE:"
     for number, role in enumerate(roles):
@@ -329,14 +368,26 @@ def enter_frame_element(best_frame, roles):
         else:
             break
 
-############################
-# Functions for annotation #
-############################
+###################################################################################
+# Functions for overall annotation process:                                       #
+# The 'annotation' function includes the several steps of the annotation process: #
+# 1. Find information and check requirements:                                     #
+#       - Extract the relations from the CAT XML files                            #
+#       - Get sentence, predicate and argument                                    #
+#       - Check if relation is correct (predicate and argument present,           #
+#         respectively referring to event/entity, etc.)                           #
+#       - Check if relation is already annotated (skip or ask user first)         #
+# 2. Start the actual annotation (call 'user_input' function)                     #
+# 3. Final check: let user check his own annotations and choose to retry,         #
+#    continue with next annotation or quit annotating this file                   #
+# 3. Write the annotations to new file (call 'write_outfile' function)            #
+###################################################################################
 
 
 def annotation(filename, annotation_round):
     '''
-    Presents a user with a sentence, predicate and argument and let him/her annotate the frame and frame element for this predicate-argument relation
+    Takes a CAT XML file as input and presents a user with the sentence, predicate and argument of each HAS_PARTICIPANT relation,
+    asks him/her to anotate the frame and frame element for this relation and writes the annotations to a new outputfile.
     '''
 
     # Open CAT XML file and get relevant information
@@ -394,7 +445,7 @@ def annotation(filename, annotation_round):
                 print_annotation(frame, role)
                 check = raw_input("\nRETRY THIS ANNOTATION (r), SAVE AND CONTINUE WITH THE NEXT (c), OR SAVE AND QUIT ANNOTATING THIS FILE (q)? ")
                 if check == "r":
-                    user_input(sentence, predicate, argument)
+                    frame, role = user_input(sentence, predicate, argument)
                 if check == "c":
                     hprel.set("frame", frame)
                     hprel.set("frame_element", role)
@@ -411,6 +462,9 @@ def annotation(filename, annotation_round):
     print "\n---------------------- ANNOTATION OF FILE COMPLETE ----------------------\n"
 
 def user_input(sentence, predicate, argument):
+    '''
+    Starts the actual annotation of a predicate-argument relation
+    '''
     print_emptylines()
     print "----------------------- NEW RELATION  -----------------------\n" 
     print_sentence(sentence, predicate, argument)   
@@ -418,13 +472,13 @@ def user_input(sentence, predicate, argument):
     ########### STEP 1: ###########
     # enter the frame, or enter lemma(s) and search for matching frames
     print "-------------------------------------------------------------\n"
-    list_frames, dict_frames = search_first_attempt()
+    list_frames, dict_frames = search_frames()
 
     ########### STEP 2(a): ###########
     # if no frames available, try again or quit with 'q' ('None' is filled in for frame and role)
     if len(dict_frames) == 0:
         #print "-------------------------------------------------------------\n"
-        list_frames, dict_frames = no_data_found()
+        list_frames, dict_frames = search_frames_again()
         if len(dict_frames) == 0:
             best_frame = "None"
             chosen_role = "None"
@@ -468,6 +522,9 @@ def user_input(sentence, predicate, argument):
     return best_frame, chosen_role
 
 def write_outfile(filename, root, annotation_round):
+    '''
+    Writes the resulting XML to a new outputfile in a separate directory
+    '''
     inputdir = os.path.split(filename)[0]
     old_filename = os.path.split(filename)[1]
     outputdir = inputdir + "-framenet"
