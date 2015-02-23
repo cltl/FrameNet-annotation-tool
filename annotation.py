@@ -1,16 +1,7 @@
 """
-Usage: python annotation.py <inputdir> <round [1 or 2]>
+Usage: python annotation.py <inputdir> 
 
 This module takes all the CAT XML files in a given directoy as input and allows the user to annotate the HAS_PARTICIPANT relations with frames and frame elements from FrameNet.
-
-There are two annotation rounds:
-1. annotate all HAS_PARTICIPANT relations by using the information in the Predicate Matrix & FrameNet
-2. annotate only the HAS_PARTICIPANT relations where there is no frame and/or role specified yet; the user is asked to manually fill in the frames and roles
-
-To run the script you need:
-- Predicate Matrix (preferably the Dutch version including Dutch lemmas)
-- the Frame files from FrameNet
-- a separate file with the lexical units listed for each Frame (extracted from FrameNet)
 
 """
 
@@ -503,7 +494,7 @@ def main(argv=None):
         if len(argv) < 2:
             print 'Error. Usage: python annotation.py <inputdir>'
         if os.path.isfile(argv[1]):
-            print 'Error. Input is directory, not file.'
+            print 'Error. Input should be directory, not file.'
         else:
             for filename in os.listdir(sys.argv[1]):
                 print "\n", filename

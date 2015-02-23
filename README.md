@@ -1,44 +1,51 @@
-###Description###
+###Summary###
 
+This module allows a user to annotate all CAT XML files in a given directory with frames and frame elements from FrameNet. The user can search for the frames and frame elements in FrameNet and the Predicate Matrix.
 
-This module takes all the CAT XML files in a given directoy as input and allows the user to annotate the HAS_PARTICIPANT relations with frames and frame elements from FrameNet. The CAT XML files already have to be annotated with the HAS_PARTICIPANT roles.
+Usage: 		python annotation.py \<inputdir\> \<round [1 or 2]\>
 
-There are two annotation rounds:
-1. annotate all HAS_PARTICIPANT relations using the Predicate Matrix & FrameNet
-2. annotate only the HAS_PARTICIPANT relations where there is no frame and/or role specified yet (manual entering)
+Example: 	python annotation.py ./Data/Example 1 
 
-In Round 1 the user is asked to enter the frame directly (if the user already knows which frame applies) or to enter the lemma(s) expressing or relating to the predicate for each HAS_PARTICIPANT relation. The user is then presented with the frames, definitions and roles that are associated with the lemma(s) in the Predicate Matrix & FrameNet. In Round 2 the user is asked to manually (re-)enter the frames and roles for the HAS_PARTICIPANT relation that is missing the frame and/or role.
+###Requirements###
+The input files have to be in labeled CAT (acronym for CELCT/Content Annotation Tool) XML format (see [CAT Annotation Tool](https://dh.fbk.eu/resources/cat-content-annotation-tool) and already have been annotated with HAS\_PARTICIPANT relations according to the NewsReader annotation scheme (see [NewsReader's project website](http://www.newsreader-project.eu/)).
 
-To run the script you need the following resources, which are included in this module:
+The script uses the following resources, which are included in this module:
 - Predicate Matrix (English-Dutch version, including English and Dutch lemmas)
-- The Frame files from FrameNet
-- A separate file with the lexical units listed for each Frame (extracted from FrameNet)
+- The Frame files of the XML version of FrameNet (version 1.5)
+- A separate file with the lexical units listed for each Frame (extracted from FrameNet version 1.5)
 
-###Usage from command line###
+###Description###
+There are two annotation rounds:
 
-Usage: 		python annotation.py <inputdir> <round [1 or 2]>
-Example: 	python annotation.py ./Example 1 
+1. **All relations:** annotate all HAS_PARTICIPANT relations; if annotations for a relation already exist, the user is asked whether (s)he wants to change the existing annotation
+2. **Empty relations:** annotate only the HAS_PARTICIPANT relations where there is no frame and/or role specified yet 
+
+######1. Enter a frame or lemma######
+The user is presented with the sentence, predicate and argument. If the user already knows which frame applies, (s)he can enter the frame directly by using capitals and underscores (e.g. **Attack**, **Make\_possible\_to\_do**). If the user does not know which frame applies, (s)he can enter one or multiple Dutch or English lemma(s) expressing or relating to the predicate by using lowercase only (e.g. **praten**). Multiple lemmas can be separated by commas without spaces ***praten,talk**). The user is then presented with the frames, definitions and roles that are associated with the lemma(s) in the Predicate Matrix & FrameNet. 
+
+Some guidelines:
+- You can search for both nouns and verbs, but it is more likely to get results for verbs. So if possible, try to convert nominal predicates into verbal predicates (analysis --- analyse).
+- If the predicate is too specific/vague, try to think of another word that expresses the same or a more general concept (e.g. take steps --- do).
+- If the predicate is a complex expression (multi-word expression, idioms), try to think of another word that expresses the same concept (e.g. for sale --> sell, to be/come under fire --- criticize).
+- English phrasal verbs can be entered by separating the words by an underscore (e.g. go\_on).
 
 
-###Some general guidelines###
-
-- The best way is to first annotate files in Round 1, and then annotate the resulting files (in folder 'X-framenet-1') in Round 2 to annotate the relations for which there was no good frame available in the Predicate Matrix.
-- In the first step of the annotation you can either: (a) enter one frame directly if you already know which frame applies; use capitals and underscores, e.g. 'Attack' / 'Make_possible_to_do', OR (b) enter one or more lemmas that express or are strongly related to the predicate; use lowercase only and separate multiple lemmas by commas without spaces, e.g. 'praten' / 'praten,talk'
+######2. Annotation of frame######
 - Be critical!! Rather keep the 'None' values instead of annotating a Frame in case of doubt. 
 
 
-###Some guidelines for entering the lemma(s) (Round 1)###
+######3. Annotation of frame element######
+Once the user has selected a frame, the frame elements for this frame are listed. The user is asked to select the correct frame element.
 
-- You can enter both Dutch and English lemmas.
-- You can search for both nouns and verbs, but it is more likely to get results for verbs. So if possible, try to convert nominal predicates into verbal predicates (analysis --> analyse).
-- If the predicate is too specific/vague, try to think of another word that expresses the same or a more general concept (e.g. take steps --> do).
-- If the predicate is a complex expression (multi-word expression, idioms), try to think of another word that expresses the same concept (e.g. for sale --> sell, to be/come under fire --> criticize).
-- English phrasal verbs can be entered by separating the words by an underscore (e.g. go_on).
+######3. Final check######
+The user is presented with the sentence, predicate and argument and the chosen frame and frame element. At this point, (s)he can choose to either (a) Retry the annotation of this relation, (b) Save the annotation and continue with the next relation, or (c) Save the annotation and quit annotating the file.
+
+
 
 ###Contact###
 
-Chantal van Son (VU University Amsterdam)
-c.m.van.son@student.vu.nl / c.m.van.son@gmail.com
+- Chantal van Son (VU University Amsterdam)
+- c.m.van.son@student.vu.nl / c.m.van.son@gmail.com
 
 
 
