@@ -7,10 +7,10 @@ Usage: 		python annotation.py \<inputdir\>
 Example: 	python annotation.py ./Data/Example 
 
 ###Requirements
-The input files have to be in labeled CAT<sup>1</sup> (acronym for CELCT/Content Annotation Tool, see also [CAT Annotation Tool](https://dh.fbk.eu/resources/cat-content-annotation-tool)) XML format and already have been annotated with HAS\_PARTICIPANT relations according to the NewsReader annotation scheme<sup>2</sup>  (see also [NewsReader's project website](http://www.newsreader-project.eu/)).
+The input files have to be in labeled CAT<sup>1</sup> (acronym for [CELCT/Content Annotation Tool](https://dh.fbk.eu/resources/cat-content-annotation-tool)) XML format and already have been annotated with HAS\_PARTICIPANT relations according to the [NewsReader](http://www.newsreader-project.eu/) annotation scheme<sup>2</sup>.
 
 The script uses the following resources, which are included in this module:
-- Predicate Matrix<sup>3</sup> (English-Dutch version, including English and Dutch lemmas)
+- [Predicate Matrix](http://adimen.si.ehu.es/web/PredicateMatrix)<sup>3</sup> (English-Dutch version, including English and Dutch lemmas)
 - The Frame files of the XML version of [FrameNet](https://framenet.icsi.berkeley.edu)<sup>4</sup> (version 1.5)
 - A separate file with the lexical units listed for each Frame (extracted from FrameNet version 1.5)
 
@@ -53,7 +53,7 @@ The user is presented with the sentence, predicate and argument as well as the c
 
 <sup>1</sup> Moretti, G. and Sprugnoli, R. (2014). *CAT User Manual for the NewsReader EU Project. NWR-2014-5*. Fondazione Bruno Kessler.
 
-<sup>2</sup>Tonelli, S., Sprugnoli, R. Speranza, M. and Minard, A.L. (2014). *NewsReader Guidelines for Annotation at Document Level. NWR-2014-2-2. Version FINAL (Aug 2014)*. Fondazione Bruno Kessler.
+<sup>2</sup> Tonelli, S., Sprugnoli, R. Speranza, M. and Minard, A.L. (2014). *NewsReader Guidelines for Annotation at Document Level. NWR-2014-2-2. Version FINAL (Aug 2014)*. Fondazione Bruno Kessler.
 
 <sup>2</sup> Lopez de Lacalle, M., Laparra, E., & Rigau, G. (2014). Predicate Matrix: extending SemLink throughWordNet mappings. In *The 9th edition of the Language Resources and Evaluation Conference* (pp. 903-909). Reykjavik, Iceland.
 
