@@ -14,6 +14,7 @@ To run the script you need:
 
 """
 
+
 ################################################################################################################
 # Optionally define directories of the Predicate Matrix, the FrameNet frame files and the Frames-LUs file here #
 ################################################################################################################
@@ -35,7 +36,7 @@ import sys
 # Functions for getting information from input files (CAT XML, Predicate Matrix and Frames) #
 #############################################################################################
 
-def get_text_predicate(pred_id):
+def get_text_predicate(pred_id, list_events, list_tokens):
     '''
     Returns the full text of a predicate given its id 
     '''
@@ -50,7 +51,7 @@ def get_text_predicate(pred_id):
                         predicate = predicate + word
     return predicate
 
-def get_text_argument(arg_id):
+def get_text_argument(arg_id, list_entities, list_tokens):
     '''
     Returns the full text of a argument given its id 
     '''
@@ -65,7 +66,7 @@ def get_text_argument(arg_id):
                         argument = argument + word
     return argument
 
-def get_sent_id(pred_id):
+def get_sent_id(pred_id, list_events, list_tokens):
     '''
     Returns the id of the sentence of a predicate given the predicate id
     '''
@@ -79,7 +80,7 @@ def get_sent_id(pred_id):
     return sent_id
         
         
-def get_full_sentence(sent_id):
+def get_full_sentence(sent_id, list_tokens):
     '''
     Returns the full text of a sentence given its id 
     '''
@@ -89,6 +90,7 @@ def get_full_sentence(sent_id):
             word = token.text + " "
             sentence = sentence + word
     return sentence
+
 
 def get_framenet_data(pm, frames_LUs, lemma):
     '''
@@ -163,47 +165,95 @@ def get_definition_fe(fn_dir, frame, fe):
                     definition = re.sub("<[^>]*>", "", definition) # Removes markup language
     return definition
 
-############################
-# Functions for user input #
-############################
+##########################
+# Functions for printing #
+##########################
 
 def print_sentence(sentence, predicate, argument):
     print "SENTENCE: " + sentence 
     print "PREDICATE: " + predicate 
     print "ARGUMENT: " + argument + "\n"
 
+def print_annotation(frame, role):
+    print "\n----------------------------- ANNOTATION -----------------------------\n"
+    if frame == "None":
+        print "NO FRAME IS SELECTED. SAVE THE 'NONE' VALUES AND CONTINUE, OR TRY AGAIN.\n"
+    print "FRAME:", frame
+    if role != "None":
+        def_role = get_definition_fe(fn_dir, frame, role)
+        print "ROLE:", role, "--", def_role 
+    else:
+        print "ROLE:", role
+
 def print_emptylines():
     print "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
 
-def enter_lemma_or_frame():
-    print "-------------------------------------------------------------\n"
-    lemmas_or_frame = raw_input("PLEASE ENTER THE LEMMA(S) OF THE PREDICATE TO SEARCH FOR FRAMES, OR ENTER THE FRAME DIRECTLY: ")
-    if not lemmas_or_frame.islower(): #If Frame is given (starts with capital), return dictionary of given Frame
-        all_frames = [lemmas_or_frame]
+############################
+# Functions for user input #
+############################
+
+def search_first_attempt():
+    lemmas_or_frame = raw_input("PLEASE ENTER THE LEMMA(S) EXPRESSING OR RELATING TO THE PREDICATE TO SEARCH FOR FRAMES, OR ENTER THE FRAME DIRECTLY: ")
+           
+    # If no frame/lemma(s) given, return empty frames + dictionary
+    if lemmas_or_frame == "":
+        all_frames = []
+        dict_frames = {}
+        return all_frames, dict_frames
+    
+    #If frame is given (starts with capital), create list + dictionary of given frame
+    if not lemmas_or_frame.islower():                   
+        framefilename = lemmas_or_frame + ".xml"
+        if framefilename not in os.listdir(fn_dir):   # If no frames found, return empty list + dictionary of frames
+            all_frames = []
+            dict_frames = {}
+            return all_frames, dict_frames
+        else: 
+            all_frames = [lemmas_or_frame]
+
+    # If lemma(s) is/are given, search for frames and return dictionary
     else:
-        lemmas =  lemmas_or_frame.split(",") #If lemma(s) is/are given, search for Frames
+        lemmas =  lemmas_or_frame.split(",")            
         all_frames = []
         for lemma in lemmas:
             frames_lemma = get_framenet_data(pm, frames_LUs, lemma)
             for frame in frames_lemma:
                 all_frames.append(frame)
+                
     dict_frames = get_frame_elements(fn_dir, all_frames)
     return all_frames, dict_frames
 
-def no_frames_available():
+def no_data_found():
     while True:
-        lemma = raw_input("NO DATA FOUND. PLEASE ENTER ANOTHER SYNONYM, ITS ENGLISH/DUTCH TRANSLATION OR A CLOSELY RELATED CONCEPT (OR 'q' TO QUIT THIS ANNOTATION): ")
-        if lemma == "q":
-            print "YOU HAVE CHOSEN TO QUIT THIS ANNOTATION. PLEASE CONTINUE WITH THE NEXT."            
+        lemmas_or_frame = raw_input("NO DATA FOUND. PLEASE TRY AGAIN (OR ENTER 'q' TO QUIT THIS ANNOTATION): ")
+        if lemmas_or_frame == "q":
+            print "YOU HAVE CHOSEN TO QUIT THIS ANNOTATION. PLEASE CONTINUE WITH THE NEXT."
+            list_frames = []
             dict_frames = {}
-            return dict_frames
+            return list_frames, dict_frames
         else:
-            list_frames = get_framenet_data(pm, lemma)
-            dict_frames = get_frame_elements(fn_dir, list_frames)
-            if len(dict_frames) != 0:
-                return dict_frames
+            #If frame is given (starts with capital), create list + dictionary of given frame
+            if not lemmas_or_frame.islower():                   
+                framefilename = lemmas_or_frame + ".xml"
+                if framefilename not in os.listdir(fn_dir):   # If no frames found, return empty list + dictionary of frames
+                    continue
+                else: 
+                    all_frames = [lemmas_or_frame]
+
+            # If lemma(s) is/are given, search for frames and return dictionary
             else:
-                continue  
+                lemmas =  lemmas_or_frame.split(",")            
+                all_frames = []
+                for lemma in lemmas:
+                    frames_lemma = get_framenet_data(pm, frames_LUs, lemma)
+                    for frame in frames_lemma:
+                        all_frames.append(frame)
+                
+            dict_frames = get_frame_elements(fn_dir, all_frames)
+            if len(dict_frames) == 0:
+                continue
+            else:
+                return all_frames, dict_frames  
 
 def too_many_frames(dict_frames, list_frames):
     new_frames = {}	
@@ -288,235 +338,181 @@ def enter_frame_element(best_frame, roles):
         else:
             break
 
-###################################
-# Functions for annotation rounds #
-###################################
+############################
+# Functions for annotation #
+############################
 
-def annotation_1(sentence, predicate, argument):
+
+def annotation(filename, annotation_round):
     '''
     Presents a user with a sentence, predicate and argument and let him/her annotate the frame and frame element for this predicate-argument relation
-    Round 1: annotate all relations in a file
     '''
-    
-    # Get and print predicate, argument and sentence
-    print_sentence(sentence, predicate, argument)   
-        
-    # Step 1: enter the lemma or frame
-    list_frames, dict_frames = enter_lemma_or_frame()
 
-    # Step 2(a): if no frames available, try again or quit with 'q' ('None' is filled in for frame and role)
+    # Open CAT XML file and get relevant information
+    infile = open(filename, "r")
+    raw = infile.read()
+    root = etree.XML(raw)
+    list_tokens = root.findall("token")
+    list_hprel = (root.find("Relations")).findall("HAS_PARTICIPANT")
+    list_entities = (root.find("Markables")).findall("ENTITY_MENTION")
+    list_events = (root.find("Markables")).findall("EVENT_MENTION")
+
+    for hprel in list_hprel:
+        ########### CHECK IF RELATION IS CORRECT ###########
+        # If something is wrong with the annotation of the relation, give id of the relation to user and continue with next relation
+        try:
+            pred_id = hprel.find("source").get("m_id")                              # GET PREDICATE
+            predicate = get_text_predicate(pred_id, list_events, list_tokens)
+            arg_id = hprel.find("target").get("m_id")                               # GET ARGUMENT
+            argument = get_text_argument(arg_id, list_entities, list_tokens)
+            sent_id = get_sent_id(pred_id, list_events, list_tokens)                # GET SENTENCE
+            sentence = get_full_sentence(sent_id, list_tokens)
+        except:            
+            print_emptylines()
+            print "Error: There seems to be something wrong with the existing annotation. Please check the HAS_PARTICIPANT relation with r_id:", hprel.get("r_id")
+            hprel.set("frame", "WrongAnnotation")
+            hprel.set("frame_element", "WrongAnnotation")
+            continue 
+
+        ########### CHECK IF ANNOTATION ALREADY EXISTS ###########
+        # If the relation is already annotated: check with user first (Round 1) or skip to next relation (Round 2)
+        if hprel.get("frame") == "None" or hprel.get("frame") == "" or hprel.get("frame_element") == "None" or hprel.get("frame_element") == "":
+            to_annotate = "y"
+        else:
+            if annotation_round == "1":
+                print_emptylines()
+                print "----------------------- NEW RELATION  -----------------------\n"   
+                print "THIS RELATION HAS ALREADY BEEN ANNOTATED:"
+                print_sentence(sentence,predicate,argument)
+                print_annotation(hprel.get("frame"), hprel.get("frame_element"))
+                to_annotate = raw_input("\nDO YOU WANT TO ANNOTATE THIS RELATION? (enter 'y' or press Enter to continue) ")
+            if annotation_round == "2":
+                to_annotate = "n"
+        if to_annotate != "y":
+            continue
+
+        ########### IF REQUIREMENTS ARE MET: START ANNOTATION ###########  
+        else:
+            frame, role = user_input(sentence, predicate, argument)
+
+            ########### FINAL CHECK ########### 
+            while True:                      
+                print_emptylines()
+                print "---------------------------- FINAL CHECK -----------------------------\n"
+                print_sentence(sentence, predicate, argument)
+                print_annotation(frame, role)
+                check = raw_input("\nRETRY THIS ANNOTATION (r), SAVE AND CONTINUE WITH THE NEXT (c), OR SAVE AND QUIT ANNOTATING THIS FILE (q)? ")
+                if check == "r":
+                    user_input(sentence, predicate, argument)
+                if check == "c":
+                    hprel.set("frame", frame)
+                    hprel.set("frame_element", role)
+                    break
+                if check == "q":
+                    hprel.set("frame", frame)
+                    hprel.set("frame_element", role)
+                    write_outfile(filename, root, annotation_round)
+                    return             
+
+    ########### END OF ANNOTATION: WRITE RESULT TO OUTPUTFILE ########### 
+    write_outfile(filename, root, annotation_round)
+    infile.close()
+    print "\n---------------------- ANNOTATION OF FILE COMPLETE ----------------------\n"
+
+def user_input(sentence, predicate, argument):
+    print_emptylines()
+    print "----------------------- NEW RELATION  -----------------------\n" 
+    print_sentence(sentence, predicate, argument)   
+            
+    ########### STEP 1: ###########
+    # enter the frame, or enter lemma(s) and search for matching frames
+    print "-------------------------------------------------------------\n"
+    list_frames, dict_frames = search_first_attempt()
+
+    ########### STEP 2(a): ###########
+    # if no frames available, try again or quit with 'q' ('None' is filled in for frame and role)
     if len(dict_frames) == 0:
-        dict_frames = no_frames_available()
+        #print "-------------------------------------------------------------\n"
+        list_frames, dict_frames = no_data_found()
         if len(dict_frames) == 0:
             best_frame = "None"
             chosen_role = "None"
-               
-    # Step 2(b): if too many frames are available (>10), make a first selection of frames   
+                           
+    ########### STEP 2(b): ###########
+    # if too many frames are available (>10), make a first selection of frames   
     if len(dict_frames) > 10:
         dict_frames = too_many_frames(dict_frames, list_frames)
-	        
-    # Step 2(c): if frames available, decide which frame(s) is/are good frames
+                            
+    ########### STEP 2(c): ###########
+    # if frames available, decide which frame(s) is/are good frames
     if len(dict_frames) > 0:
         chosen_frames = select_good_frames(dict_frames, sentence, predicate, argument)
 
-    # Step 3(a): if no frames are chosen, 'None' is filled in for frame and role (user can later choose to try again)
+        ########### STEP 3(a): ###########
+        # if no frames are chosen, 'None' is filled in for frame and role (user can later choose to try again)
         if len(chosen_frames) < 1:
-            #print "NO FRAME IS SELECTED. CONTINUE OR TRY AGAIN."
             best_frame = "None"
             chosen_role = "None"
-            
-    # Step 3(b): if multiple frames are chosen, choose best frame (roles are selected for this frame)
+                        
+        ########### STEP 3(b): ###########
+        # if multiple frames are chosen, choose best frame (roles are selected for this frame)                
         else:            
             if len(chosen_frames) > 1:
                 print_emptylines()
                 print "---------------------- SELECTION OF BEST FRAME ----------------------\n"
                 print_sentence(sentence, predicate, argument)
                 best_frame, roles = multiple_frames_chosen(chosen_frames)
-                
+                            
             if len(chosen_frames) == 1:
                 for best_frame in chosen_frames:
                     roles = chosen_frames[best_frame][1:]      
 
-    # Step 4: enter the frame element
+            ########### STEP 4: ###########
+            # enter the frame element
             print_emptylines()
             print "---------------------- ANNOTATION OF ROLE ----------------------\n"
             print_sentence(sentence, predicate, argument)
             chosen_role = enter_frame_element(best_frame, roles)
-            
-    # End of annotation            
+
     return best_frame, chosen_role
 
-def annotation_2(sentence, predicate, argument):
-    '''
-    Presents a user with a sentence, predicate and argument and let him/her annotate the frame and frame element for this predicate-argument relation
-    Round 2: enter manually for only relations where the frame is 'None' or empty
-    '''
-    print_sentence(sentence, predicate, argument)        
-    frame = raw_input("Please enter the frame (or 'n' if there is no good frame available): ")
-    if frame == "n":
-        frame = "None"
-        role = "None"
-        print_emptylines()
-        return frame, role
-    role = raw_input("Please enter the role (or 'None' if there is no good role available): ")
-    if role == "n":
-        role = "None"
-    print_emptylines()
-    return frame, role
+def write_outfile(filename, root, annotation_round):
+    inputdir = os.path.split(filename)[0]
+    old_filename = os.path.split(filename)[1]
+    outputdir = inputdir + "-framenet"
+    if not os.path.exists(outputdir):
+        os.makedirs(outputdir)
+    if annotation_round == "1":
+        new_filename = old_filename.replace(".txt.xml", "-fn1.txt.xml")
+        full_newfilename = os.path.join(outputdir, new_filename)
+    if annotation_round == "2":
+        new_filename = old_filename.replace(".txt.xml", "-fn2.txt.xml")
+        full_newfilename = os.path.join(outputdir, new_filename)
+    outfile = open(full_newfilename, "w")
+    xmlstr = etree.tostring(root)
+    outfile.write(xmlstr)            
+    outfile.close() 
 
+#################
+# Main function #
+#################
 
-def annotation_hprel(list_hprel):
-    for hprel in list_hprel:
-        # Get sentence, predicate and argument
-        try:
-            pred_id = hprel.find("source").get("m_id")
-            predicate = get_text_predicate(pred_id)
-            arg_id = hprel.find("target").get("m_id")
-            argument = get_text_argument(arg_id)
-            sent_id = get_sent_id(pred_id)
-            sentence = get_full_sentence(sent_id)            
-        except:
-            # If something is wrong with the annotation of the relation, let user check the relation and choose to continue or quit annotating this file
-            print_emptylines()
-            print "Error: There seems to be something wrong with the existing annotation. Please check the HAS_PARTICIPANT relation with r_id:", hprel.get("r_id")
-            check_continue = raw_input("Continue with the next relation (c) or quit annotating this file (q)? ")
-            if check_continue == "c":
-                hprel.set("frame", "WrongAnnotation")
-                hprel.set("frame_element", "WrongAnnotation")
-                continue
-            if check_continue == "q":
-                break 
-
-        # Annotation: round 1
-        if sys.argv[2] == "1":
-            print_emptylines()
-            print "----------------------- NEW RELATION  -----------------------\n"
-            if hprel.get("frame") == "None" or hprel.get("frame") == "" or hprel.get("frame_element") == "None" or hprel.get("frame_element") == "":
-                annotate = "y"
-            else:
-                # If already annotated: check with user first
-                print "\nTHIS RELATION HAS ALREADY BEEN ANNOTATED:"
-                print "SENTENCE:", sentence 
-                print "PREDICATE:", predicate, "--", hprel.get("frame")
-                print "ARGUMENT:", argument, "--", hprel.get("frame_element")                
-                annotate = raw_input("\nDO YOU WANT TO ANNOTATE THIS RELATION? (enter 'y' or press Enter to continue) ")
-                if annotate == "y":
-                    print_emptylines()
-                    print "---------------------- NEW RELATION  ----------------------\n"
-
-            # Annotate file
-            if annotate == "y":
-                frame, role = annotation_1(sentence, predicate, argument)
-
-                # Final check of annotation and decide: retry, continue or quit annotation of file (annotations will be saved)
-                while True:
-                    print_emptylines()
-                    print "---------------------------- FINAL CHECK -----------------------------\n"
-                    print "SENTENCE:", sentence 
-                    print "PREDICATE:", predicate
-                    print "ARGUMENT:", argument
-                    print "\n----------------------------- ANNOTATION -----------------------------\n"
-                    if frame == "None":
-                        print "NO FRAME IS SELECTED. SAVE THE 'NONE' VALUES AND CONTINUE, OR TRY AGAIN.\n"
-                    print "FRAME:", frame
-                    if role != "None":
-                        def_role = get_definition_fe(fn_dir, frame, role)
-                        print "ROLE:", role, "--", def_role 
-                    else:
-                        print "ROLE:", role
-                    check = raw_input("\nRETRY THIS ANNOTATION (r), SAVE AND CONTINUE WITH THE NEXT (c), OR SAVE AND QUIT ANNOTATING THIS FILE (q)? ")
-                    if check == "r":
-                        print_emptylines()
-                        print "------------------------ NEW ATTEMPT ------------------------\n"
-                        frame, role = annotation_1(sentence, predicate, argument)
-                    if check == "c":
-                        break
-                    if check == "q":
-                        hprel.set("frame", frame)
-                        hprel.set("frame_element", role)
-                        return 
-            else:
-                # Keep existing frame and role
-                frame = hprel.get("frame") 
-                role = hprel.get("frame_element")
-                
-             # Add frame and role to XML
-            try:
-                hprel.set("frame", frame)
-                hprel.set("frame_element", role)
-            except:
-                continue
-             
-
-                                                
-        # Round 2: only annotate the relations where the frame or role is empty/None  
-        if sys.argv[2] == "2":
-            if hprel.get("frame") == "None" or hprel.get("frame") == "" or hprel.get("frame_element") == "None" or hprel.get("frame_element") == "":
-                print "---------------------- NEW RELATION  ----------------------\n"
-                frame, role = annotation_2(sentence, predicate, argument)
-                print "\n"
-            else:
-                # Keep existing frame and role
-                frame = hprel.get("frame") 
-                role = hprel.get("frame_element")
-
-            # Add frame and role to XML
-            try:
-                hprel.set("frame", frame)
-                hprel.set("frame_element", role)
-            except:
-                continue
-       
-
-    
-argv = sys.argv
-if len(sys.argv) < 3:
-    print 'Error. Usage: python annotation.py <inputdir> <round [1 or 2]>'
-else:
-    for filename in os.listdir(sys.argv[1]):
-        print "\n", filename
-        to_annotate = raw_input("Do you want to annotate this file? (enter 'y' or press Enter to continue) ")
-        if to_annotate != "y":
-            continue
+def main(argv=None):
+    if argv is None:
+        argv = sys.argv
+        if len(argv) < 2:
+            print 'Error. Usage: python annotation.py <inputdir>'
+        if os.path.isfile(argv[1]):
+            print 'Error. Input is directory, not file.'
         else:
-            print "\n"   
-            # Open CAT XML file and get relevant information
-            full_filename = os.path.join(sys.argv[1], filename)
-            infile = open(full_filename, "r")
-            raw = infile.read()
-            root = etree.XML(raw)                   
-            relations = root.find("Relations")
-            markables = root.find("Markables")
-            list_hprel = relations.findall("HAS_PARTICIPANT")
-            list_entities = markables.findall("ENTITY_MENTION")
-            list_events = markables.findall("EVENT_MENTION")
-            list_tokens = root.findall("token")
+            for filename in os.listdir(sys.argv[1]):
+                print "\n", filename
+                annotation_round = raw_input("Enter 1 (all relations) or 2 (empty relations) if you want to annotate this file, or press Enter to continue) ")
+                if annotation_round == "1" or annotation_round == "2":
+                    full_filename = os.path.join(sys.argv[1], filename)
+                    annotation(full_filename, annotation_round)               
+                else:
+                    continue
 
-            # Find sentence, predicate and argument for each HAS_PARTICIPANT relation and let user annotate them                        
-            annotation_hprel(list_hprel)
-
-            # Write resulting XML to new file in new directory: round 1
-            if sys.argv[2] == "1":
-                outputdir = sys.argv[1] + "-framenet-1"
-                if not os.path.exists(outputdir):
-                    os.makedirs(outputdir)
-                new_filename = filename.replace(".txt.xml", "-fn1.txt.xml")
-                full_newfilename = os.path.join(outputdir, new_filename)
-            # Write resulting XML to new file in new directory: round 1
-            if sys.argv[2] == "2":
-                outputdir = sys.argv[1] + "-framenet-2"
-                if not os.path.exists(outputdir):
-                    os.makedirs(outputdir)
-                new_filename = filename.replace(".txt.xml", "-fn2.txt.xml")
-                full_newfilename = os.path.join(outputdir, new_filename)
-            outfile = open(full_newfilename, "w")
-            xmlstr = etree.tostring(root)
-            outfile.write(xmlstr)
-            
-            outfile.close()   
-            infile.close()
-            print "\n---------------------- ANNOTATION OF FILE COMPLETE ----------------------\n"
-
-
-
-
+if __name__ == '__main__':
+    main()
