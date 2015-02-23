@@ -7,15 +7,15 @@ Usage: 		python annotation.py \<inputdir\>
 Example: 	python annotation.py ./Data/Example 
 
 ###Requirements
-The input files have to be in labeled CAT (acronym for CELCT/Content Annotation Tool) XML format (see [CAT Annotation Tool](https://dh.fbk.eu/resources/cat-content-annotation-tool) and already have been annotated with HAS\_PARTICIPANT relations according to the NewsReader annotation scheme (see [NewsReader's project website](http://www.newsreader-project.eu/)).
+The input files have to be in labeled CAT<sup>1</sup> (acronym for CELCT/Content Annotation Tool, see also [CAT Annotation Tool](https://dh.fbk.eu/resources/cat-content-annotation-tool)) XML format and already have been annotated with HAS\_PARTICIPANT relations according to the NewsReader annotation scheme<sup>2</sup>  (see also [NewsReader's project website](http://www.newsreader-project.eu/)).
 
 The script uses the following resources, which are included in this module:
-- Predicate Matrix (English-Dutch version, including English and Dutch lemmas)
-- The Frame files of the XML version of FrameNet (version 1.5)
+- Predicate Matrix<sup>3</sup> (English-Dutch version, including English and Dutch lemmas)
+- The Frame files of the XML version of [FrameNet](https://framenet.icsi.berkeley.edu)<sup>4</sup> (version 1.5)
 - A separate file with the lexical units listed for each Frame (extracted from FrameNet version 1.5)
 
 ###Description
-For each file in the input directory, the user is asked whether (s)he wants to annotate this file and for which round. There are two annotation rounds:
+For each file in the input directory, the user is asked whether (s)he wants to annotate this file and for which annotation round. There are two rounds:
 
 1. **All relations:** annotate all HAS_PARTICIPANT relations (if annotations for a relation already exist, the user is asked whether (s)he wants to change the existing annotation)
 2. **Empty relations:** annotate only the HAS_PARTICIPANT relations where there is no frame and/or role specified yet 
@@ -33,23 +33,31 @@ Some guidelines:
 
 
 ######2. Annotation of frame
-The frames associated with the lemma(s) (or the entered frame) and their definitions are, one by one, presented to the user. The user has to decide for each frame if this is a frame that fits or not. If multiple frames are chosen, the user is asked to choose the best frame. If no frames are chosen, 'None' is filled in for the frame and the frame element; it is up to the user to decide whether there is indeed no good frame available or whether (s)he wants to try again with other lemmas. 
+The frames associated with the lemma(s) (or the entered frame) and their definitions are, one by one, presented to the user (if there are more than 10 frames found, the user is asked to make a smaller selection of frames first). The user has to decide for each frame if it is a frame that fits or not. If multiple frames are chosen, the user is asked to choose the best frame. If no frames are chosen, 'None' is filled in for the frame and the frame element; it is up to the user to decide in the final check (see below) whether there is indeed no good frame available or whether (s)he wants to try again with other lemmas. 
 
 **NB:** Be critical!! In case of doubt, rather keep the 'None' values instead of annotating an ill-fitting frame.
 
 
 ######3. Annotation of frame element
-Once the user has selected a frame, the frame elements for this frame are listed. The user is asked to select the correct frame element.
+Once the user has selected a frame, its frame elements are listed. The user is asked to select the correct frame element.
 
 ######3. Final check
 The user is presented with the sentence, predicate and argument as well as the chosen frame and frame element. At this point, (s)he can choose to either (a) Retry the annotation of this relation, (b) Save the annotation and continue with the next relation, or (c) Save the annotation and quit annotating the file.
-
-
 
 ###Contact
 
 - Chantal van Son (VU University Amsterdam)
 - c.m.van.son@student.vu.nl / c.m.van.son@gmail.com
+
+###References
+
+<sup>1</sup> Moretti, G. and Sprugnoli, R. (2014). *CAT User Manual for the NewsReader EU Project. NWR-2014-5*. Fondazione Bruno Kessler.
+
+<sup>2</sup>Tonelli, S., Sprugnoli, R. Speranza, M. and Minard, A.L. (2014). *NewsReader Guidelines for Annotation at Document Level. NWR-2014-2-2. Version FINAL (Aug 2014)*. Fondazione Bruno Kessler.
+
+<sup>2</sup> Lopez de Lacalle, M., Laparra, E., & Rigau, G. (2014). Predicate Matrix: extending SemLink throughWordNet mappings. In *The 9th edition of the Language Resources and Evaluation Conference* (pp. 903-909). Reykjavik, Iceland.
+
+<sup>3</sup> Baker, C. F., Fillmore, C. J., & Lowe, J. B. (1998, August). The Berkeley FrameNet Project. In *Proceedings of the 17th international conference on Computational linguistics-Volume 1* (pp. 86-90). Association for Computational Linguistics.
 
 
 
