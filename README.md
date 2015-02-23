@@ -55,7 +55,7 @@ The user is presented with the sentence, predicate and argument as well as the c
 
 <sup>2</sup> Tonelli, S., Sprugnoli, R. Speranza, M. and Minard, A.L. (2014). *NewsReader Guidelines for Annotation at Document Level. NWR-2014-2-2. Version FINAL (Aug 2014)*. Fondazione Bruno Kessler.
 
-<sup>2</sup> Lopez de Lacalle, M., Laparra, E., & Rigau, G. (2014). Predicate Matrix: extending SemLink throughWordNet mappings. In *The 9th edition of the Language Resources and Evaluation Conference* (pp. 903-909). Reykjavik, Iceland.
+<sup>2</sup> Lopez de Lacalle, M., Laparra, E., & Rigau, G. (2014). Predicate Matrix: extending SemLink throughWordNet mappings. In *Proceedings of the 9th edition of the Language Resources and Evaluation Conference* (pp. 903-909). Reykjavik, Iceland.
 
 <sup>3</sup> Baker, C. F., Fillmore, C. J., & Lowe, J. B. (1998, August). The Berkeley FrameNet Project. In *Proceedings of the 17th international conference on Computational linguistics-Volume 1* (pp. 86-90). Association for Computational Linguistics.
 
