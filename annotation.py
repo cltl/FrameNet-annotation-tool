@@ -287,7 +287,7 @@ def too_many_frames(dict_frames, list_frames):
             if str(number) in chosen_frames:
                 new_frames[frame] = dict_frames[frame]
         if len(new_frames) == 0:
-            print "\nSORRY, YOUR INPUT WAS NOT CORRECT."
+            print "\nSORRY, YOUR INPUT WAS NOT CORRECT. PLEASE TYPE THE NUMBERS OF THE FRAMES SEPARATED BY COMMAS."
             continue
         else:
             return new_frames
