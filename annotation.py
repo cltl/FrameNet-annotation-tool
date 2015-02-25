@@ -281,28 +281,16 @@ def too_many_frames(dict_frames, list_frames):
     for number, frame in enumerate(list_frames):
         print number, frame
     while True:
-        number_frames = raw_input("\nHOW MUCH FRAMES DO YOU WANT TO INVESTIGATE FURTHER? ")
-        try:
-            n = 0
-            while n < int(number_frames):
-                n += 1
-                while True:
-                    entered_number = raw_input("\nPLEASE ENTER THE NUMBER OF THE FRAME YOU WANT TO INVESTIGATE FURTHER: ")
-                    try:
-                        for number, frame in enumerate(list_frames):
-                            if number == int(entered_number):
-                                new_frames[frame] = dict_frames[frame]                        
-                    except:
-                        print "\nSORRY, YOUR INPUT WAS NOT CORRECT."
-                        continue
-                    else:
-                        break                   
-        except:
+        chosen_frames = raw_input("\nWHICH FRAMES DO YOU WANT TO INVESTIGATE FURTHER (separate the numbers by commas)? ")
+        chosen_frames = chosen_frames.split(",")
+        for number, frame in enumerate(list_frames):
+            if str(number) in chosen_frames:
+                new_frames[frame] = dict_frames[frame]
+        if len(new_frames) == 0:
             print "\nSORRY, YOUR INPUT WAS NOT CORRECT."
             continue
         else:
-            break
-    return new_frames
+            return new_frames
 
 def select_good_frames(dict_frames, sentence, predicate, argument):
     '''
@@ -555,7 +543,7 @@ def main(argv=None):
         else:
             for filename in os.listdir(sys.argv[1]):
                 print "\n", filename
-                annotation_round = raw_input("Enter 1 (all relations) or 2 (empty relations) if you want to annotate this file, or press Enter to continue) ")
+                annotation_round = raw_input("Enter 1 to annotate all relations in this file, enter 2 to only annotate the empty relations in this file, or press Enter to skip this file: ")
                 if annotation_round == "1" or annotation_round == "2":
                     full_filename = os.path.join(sys.argv[1], filename)
                     annotation(full_filename, annotation_round)               
