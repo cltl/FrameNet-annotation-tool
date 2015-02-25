@@ -281,7 +281,7 @@ def too_many_frames(dict_frames, list_frames):
     for number, frame in enumerate(list_frames):
         print number, frame
     while True:
-        chosen_frames = raw_input("\nWHICH FRAMES DO YOU WANT TO INVESTIGATE FURTHER (separate the numbers by commas)? ")
+        chosen_frames = raw_input("\nWHICH FRAMES DO YOU WANT TO INVESTIGATE FURTHER? ")
         chosen_frames = chosen_frames.split(",")
         for number, frame in enumerate(list_frames):
             if str(number) in chosen_frames:
