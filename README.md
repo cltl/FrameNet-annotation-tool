@@ -27,6 +27,8 @@ After the user has chosen the annotation round, the annotation of the document s
 ######1. Enter a frame or lemma
 The user is presented with the sentence, predicate and argument. If the user already knows which frame applies, (s)he can enter the frame directly by using capitals and underscores (e.g. *Attack*, *Make\_possible\_to\_do*). If the user does not know which frame applies, (s)he can enter one or multiple Dutch or English lemma(s) expressing or relating to the predicate by using lowercase only (e.g. *praten*). Multiple lemmas can be separated by commas without spaces (e.g. *praten,talk*). The user is then presented with the frames, definitions and roles that are associated with the lemma(s) in the Predicate Matrix & FrameNet. 
 
+If there is something wrong with the relation (e.g. argument is missing, there is no relation between argument and predicate), the user can enter 'WrongAnnotation'. This 'WrongAnnotation' value is filled in for the frame and role in the output.
+
 Some guidelines:
 - You can search for both nouns and verbs, but it is more likely to get results for verbs. So if possible, try to convert nominal predicates into verbal predicates (*analysis* --- *analyse*).
 - If the predicate is too specific/vague, try to think of another word that expresses the same or a more general concept (e.g. *take steps* --- *do*).
