@@ -173,6 +173,12 @@ def print_sentence(sentence, predicate, argument):
     print "PREDICATE: " + predicate 
     print "ARGUMENT: " + argument + "\n"
 
+def print_explanation_search():
+    print "There are three options:"
+    print "(1) Enter a frame using capitals and underscores (e.g. Attack or Make_possible_to_do)."
+    print "(2) Enter one or multiple lemmas by using lowercase and commas (without spaces) to separate multiple lemmas (e.g. praten,talk)."
+    print "(3) Enter WrongRelation if there is something wrong with the relation.\n\n"
+
 def print_annotation(frame, role):
     '''
     Prints the annotated frame and role
@@ -181,7 +187,7 @@ def print_annotation(frame, role):
     if frame == "None":
         print "NO FRAME IS SELECTED. SAVE THE 'NONE' VALUES AND CONTINUE, OR TRY AGAIN.\n"
     print "FRAME:", frame
-    if role != "None":
+    if role != "None" and role != "WrongRelation":
         def_role = get_definition_fe(frame, role)
         print "ROLE:", role, "--", def_role 
     else:
@@ -203,7 +209,13 @@ def search_frames():
     1. a list of frames associated with the lemma(s)
     2. a dictionary with the definition and frame elements (FEs) for each frame (i.e. {frame1: [definition, FE1, FE2, etc.], frame2: [definition, FE1, FE2, etc.]} )
     '''
-    lemmas_or_frame = raw_input("PLEASE ENTER THE LEMMA(S) EXPRESSING OR RELATING TO THE PREDICATE TO SEARCH FOR FRAMES, OR ENTER THE FRAME DIRECTLY: ")
+    lemmas_or_frame = raw_input("PLEASE ENTER THE LEMMA(S) OR THE FRAME: ")
+
+    # If there is something wrong with the original annotation of the relation, return WrongRelation
+    if lemmas_or_frame == "WrongRelation":
+        all_frames = "WrongRelation"
+        dict_frames = {}
+        return all_frames, dict_frames
            
     # If no frame/lemma(s) given, return empty frames + dictionary
     if lemmas_or_frame == "":
@@ -387,7 +399,10 @@ def annotation(filename, annotation_round):
     list_entities = (root.find("Markables")).findall("ENTITY_MENTION")
     list_events = (root.find("Markables")).findall("EVENT_MENTION")
 
+    hprel_number = 0
     for hprel in list_hprel:
+        hprel_number += 1
+        
         ########### CHECK IF RELATION IS CORRECT ###########
         # If something is wrong with the annotation of the relation, give id of the relation to user and continue with next relation
         try:
@@ -399,9 +414,9 @@ def annotation(filename, annotation_round):
             sentence = get_full_sentence(sent_id, list_tokens)
         except:            
             print_emptylines()
-            print "Error: There seems to be something wrong with the existing annotation. Please check the HAS_PARTICIPANT relation with r_id:", hprel.get("r_id")
-            hprel.set("frame", "WrongAnnotation")
-            hprel.set("frame_element", "WrongAnnotation")
+            print "Error: There seems to be something wrong with the original annotation of this relation. Please check the HAS_PARTICIPANT relation with r_id:", hprel.get("r_id")
+            hprel.set("frame", "WrongRelation")
+            hprel.set("frame_element", "WrongRelation")
             continue 
 
         ########### CHECK IF ANNOTATION ALREADY EXISTS ###########
@@ -411,7 +426,7 @@ def annotation(filename, annotation_round):
         else:
             if annotation_round == "1":
                 print_emptylines()
-                print "----------------------- NEW RELATION  -----------------------\n"   
+                print "----------------------- RELATION", hprel_number, "OF", len(list_hprel), "-----------------------\n"   
                 print "THIS RELATION HAS ALREADY BEEN ANNOTATED:"
                 print_sentence(sentence,predicate,argument)
                 print_annotation(hprel.get("frame"), hprel.get("frame_element"))
@@ -423,6 +438,12 @@ def annotation(filename, annotation_round):
 
         ########### IF REQUIREMENTS ARE MET: START ANNOTATION ###########  
         else:
+            print_emptylines()
+            print "-------------------------- EXPLANATION --------------------------\n"
+            print_explanation_search()
+            #print "If you already know which frame applies, you can enter the frame directly by using capitals and underscores (e.g. Attack or Make_possible_to_do). If you don't know which frame applies, you can search for frames by entering one or multiple Dutch or English lemma(s) expressing or relating to the predicate, using lowercase only (e.g. praten). Multiple lemmas should be separated by commas without spaces (e.g. praten,talk). Is there something wrong with this relation? Enter 'WrongRelation'.\n"
+            print "----------------------- RELATION", hprel_number, "OF", len(list_hprel), "-----------------------\n" 
+            print_sentence(sentence, predicate, argument) 
             frame, role = user_input(sentence, predicate, argument)
 
             ########### FINAL CHECK ########### 
@@ -453,30 +474,34 @@ def user_input(sentence, predicate, argument):
     '''
     Starts the actual annotation of a predicate-argument relation
     '''
-    print_emptylines()
-    print "----------------------- NEW RELATION  -----------------------\n" 
-    print_sentence(sentence, predicate, argument)   
             
-    ########### STEP 1: ###########
+    ########### STEP 1(a): ###########
     # enter the frame, or enter lemma(s) and search for matching frames
-    print "-------------------------------------------------------------\n"
+    print "----------------------------------------------------------------\n"
     list_frames, dict_frames = search_frames()
 
-    ########### STEP 2(a): ###########
-    # if no frames available, try again or quit with 'q' ('None' is filled in for frame and role)
+    ########### STEP 1(b): ###########
+    # if the user thinks there is something wrong with the original annotation of the relation, 'WrongRelation' is returned for frame and role
+    if list_frames == "WrongRelation":
+        frame = "WrongRelation"
+        role = "WrongRelation"
+        return frame, role
+        
+    ########### STEP 1(c): ###########
+    # if no frames available, try again or quit with 'q' ('None' is returned for frame and role)
     if len(dict_frames) == 0:
-        #print "-------------------------------------------------------------\n"
         list_frames, dict_frames = search_frames_again()
         if len(dict_frames) == 0:
-            best_frame = "None"
-            chosen_role = "None"
-                           
-    ########### STEP 2(b): ###########
+            frame = "None"
+            role = "None"
+            return frame, role
+                          
+    ########### STEP 2(a): ###########
     # if too many frames are available (>10), make a first selection of frames   
     if len(dict_frames) > 10:
         dict_frames = too_many_frames(dict_frames, list_frames)
                             
-    ########### STEP 2(c): ###########
+    ########### STEP 2(b): ###########
     # if frames available, decide which frame(s) is/are good frames
     if len(dict_frames) > 0:
         chosen_frames = select_good_frames(dict_frames, sentence, predicate, argument)
@@ -507,7 +532,7 @@ def user_input(sentence, predicate, argument):
             print_sentence(sentence, predicate, argument)
             chosen_role = enter_frame_element(best_frame, roles)
 
-    return best_frame, chosen_role
+        return best_frame, chosen_role
 
 def write_outfile(filename, root, annotation_round):
     '''
