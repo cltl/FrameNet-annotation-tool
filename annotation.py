@@ -169,9 +169,9 @@ def print_sentence(sentence, predicate, argument):
     '''
     Prints the sentence, predicate and argument
     '''
-    print "SENTENCE: " + sentence 
-    print "PREDICATE: " + predicate 
-    print "ARGUMENT: " + argument + "\n"
+    print "SENTENCE: " + sentence.encode(encoding="UTF-8", errors="strict")
+    print "PREDICATE: " + predicate(encoding="UTF-8", errors="strict")
+    print "ARGUMENT: " + argument(encoding="UTF-8", errors="strict") + "\n"
 
 def print_explanation_search():
     print "There are three options:"
