@@ -45,7 +45,7 @@ The frames associated with the lemma(s) (or the entered frame) and their definit
 ######3. Annotation of frame element
 Once the user has selected a frame, its frame elements are listed. The user is asked to select the correct frame element.
 
-######3. Final check
+######4. Final check
 The user is presented with the sentence, predicate and argument as well as the chosen frame and frame element. At this point, (s)he can choose to either (a) Retry the annotation of this relation, (b) Save the annotation and continue with the next relation, or (c) Save the annotation and quit annotating the file.
 
 ###Contact
