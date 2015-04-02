@@ -159,6 +159,7 @@ def get_definition_fe(frame, fe):
                     definition = definition.split("<fex")[0] # Removes any examples from the definition
                     definition = definition.split("<ex")[0] # Removes any examples from the definition
                     definition = re.sub("<[^>]*>", "", definition) # Removes markup language
+                    definition = definition.rstrip("\n") # Removes lines at the end
     return definition
 
 ##########################
@@ -169,15 +170,16 @@ def print_sentence(sentence, predicate, argument):
     '''
     Prints the sentence, predicate and argument
     '''
-    print "SENTENCE: " + sentence.encode(encoding="UTF-8", errors="strict")
-    print "PREDICATE: " + predicate(encoding="UTF-8", errors="strict")
-    print "ARGUMENT: " + argument(encoding="UTF-8", errors="strict") + "\n"
+    print "SENTENCE: " + sentence.encode(encoding='UTF-8',errors='strict') 
+    print "PREDICATE: " + predicate.encode(encoding='UTF-8',errors='strict')
+    print "ARGUMENT: " + argument.encode(encoding='UTF-8',errors='strict') + "\n"
 
 def print_explanation_search():
     print "There are three options:"
     print "(1) Enter a frame using capitals and underscores (e.g. Attack or Make_possible_to_do)."
     print "(2) Enter one or multiple lemmas by using lowercase and commas (without spaces) to separate multiple lemmas (e.g. praten,talk)."
-    print "(3) Enter WrongRelation if there is something wrong with the relation.\n\n"
+    print "(3) Enter Metaphor if the predicate is a productive metaphor."
+    print "(4) Enter WrongRelation if there is something wrong with the relation.\n\n"
 
 def print_annotation(frame, role):
     '''
@@ -187,7 +189,7 @@ def print_annotation(frame, role):
     if frame == "None":
         print "NO FRAME IS SELECTED. SAVE THE 'NONE' VALUES AND CONTINUE, OR TRY AGAIN.\n"
     print "FRAME:", frame
-    if role != "None" and role != "WrongRelation":
+    if role != "None" and role != "WrongRelation" and role != "Metaphor":
         def_role = get_definition_fe(frame, role)
         print "ROLE:", role, "--", def_role 
     else:
@@ -216,7 +218,13 @@ def search_frames():
         all_frames = "WrongRelation"
         dict_frames = {}
         return all_frames, dict_frames
-           
+
+    # If the predicate is a productive metaphor, return Metaphor
+    if lemmas_or_frame == "Metaphor":
+        all_frames = "Metaphor"
+        dict_frames = {}
+        return all_frames, dict_frames
+         
     # If no frame/lemma(s) given, return empty frames + dictionary
     if lemmas_or_frame == "":
         all_frames = []
@@ -288,14 +296,15 @@ def too_many_frames(dict_frames, list_frames):
     Presents the user with the names of all the found frames and asks him/her to make a smaller selection of frames first 
     '''
     
-    new_frames = {}	
-    print "\nTHERE ARE", len(list_frames), "FRAMES AVAILABLE. MAKE A SMALLER SELECTION OF FRAMES FIRST."
-    for number, frame in enumerate(list_frames):
+    new_frames = {}
+    set_frames = set(list_frames)
+    print "\nTHERE ARE", len(set_frames), "FRAMES AVAILABLE. MAKE A SMALLER SELECTION OF FRAMES FIRST."
+    for number, frame in enumerate(set_frames):
         print number, frame
     while True:
         chosen_frames = raw_input("\nWHICH FRAMES DO YOU WANT TO INVESTIGATE FURTHER? ")
         chosen_frames = chosen_frames.split(",")
-        for number, frame in enumerate(list_frames):
+        for number, frame in enumerate(set_frames):
             if str(number) in chosen_frames:
                 new_frames[frame] = dict_frames[frame]
         if len(new_frames) == 0:
@@ -353,20 +362,49 @@ def enter_frame_element(best_frame, roles):
     '''
     Presents the user with the frame elements (FEs) of the frame and asks to select the correct FE
     '''
+    chosen_roles = []
     print "----------------------------------------------------------------"
     print "\nYOU HAVE CHOSEN: " , best_frame , "\n\nTHE POSSIBLE ROLES FOR THIS FRAME ARE:"
     for number, role in enumerate(roles):
         print number, role
+    print "\n(enter multiple roles if you want to compare some definitions first)"
     while True:
-        chosen_number = raw_input("\nPLEASE ENTER THE NUMBER OF THE ROLE OF THE ARGUMENT: ")
+        chosen_numbers = raw_input("PLEASE ENTER THE NUMBER OF THE ROLE OF THE ARGUMENT: ")
+        chosen_numbers = chosen_numbers.split(",")
         try:
-            chosen_role = roles[int(chosen_number)]
-            return chosen_role
+            for chosen_number in chosen_numbers:
+                chosen_role = roles[int(chosen_number)]
+                chosen_roles.append(chosen_role)
+            return chosen_roles
         except:
             print "SORRY, YOUR INPUT WAS NOT CORRECT."
             continue
         else:
             break
+
+
+def multiple_fes_chosen(frame,fes):
+    '''
+    Presents the user with the definitions of the multiple roles that (s)he has chosen and asks to choose the correct one
+    '''
+    print "-------------------------------------------------------------\n"
+    print "YOU HAVE CHOSEN MULTIPLE ROLES. THESE ARE THE DEFINITIONS: \n"
+    for number, fe in enumerate(fes):
+        definition = get_definition_fe(frame, fe)
+        print number, fe, "\n", definition, "\n"
+    while True:
+        number_fe = raw_input("\nPLEASE ENTER THE NUMBER OF THE CORRECT ROLE: ")
+        try:
+            for number, fe in enumerate(fes):
+                print number, fe, number_fe
+                if str(number) == number_fe:
+                    return fe
+        except:
+            print "SORRY, YOUR INPUT WAS NOT CORRECT."
+            continue
+        else:
+            break
+
 
 ###################################################################################
 # Functions for overall annotation process:                                       #
@@ -486,8 +524,15 @@ def user_input(sentence, predicate, argument):
         frame = "WrongRelation"
         role = "WrongRelation"
         return frame, role
-        
+
     ########### STEP 1(c): ###########
+    # if the user labelled the predicate as a productive metaphor, 'Metaphor' is returned for frame and role
+    if list_frames == "Metaphor":
+        frame = "Metaphor"
+        role = "Metaphor"
+        return frame, role
+        
+    ########### STEP 1(d): ###########
     # if no frames available, try again or quit with 'q' ('None' is returned for frame and role)
     if len(dict_frames) == 0:
         list_frames, dict_frames = search_frames_again()
@@ -509,11 +554,12 @@ def user_input(sentence, predicate, argument):
         ########### STEP 3(a): ###########
         # if no frames are chosen, 'None' is filled in for frame and role (user can later choose to try again)
         if len(chosen_frames) < 1:
-            best_frame = "None"
-            chosen_role = "None"
+            frame = "None"
+            role = "None"
+            return frame, role
                         
         ########### STEP 3(b): ###########
-        # if multiple frames are chosen, choose best frame (roles are selected for this frame)                
+        # if multiple frames are chosen, choose best frame               
         else:            
             if len(chosen_frames) > 1:
                 print_emptylines()
@@ -526,13 +572,22 @@ def user_input(sentence, predicate, argument):
                     roles = chosen_frames[best_frame][1:]      
 
             ########### STEP 4: ###########
-            # enter the frame element
+            # enter the frame element (if multiple frame elements are entered, show definitions and choose correct frames)
             print_emptylines()
             print "---------------------- ANNOTATION OF ROLE ----------------------\n"
             print_sentence(sentence, predicate, argument)
-            chosen_role = enter_frame_element(best_frame, roles)
+            chosen_roles = enter_frame_element(best_frame, roles)
 
-        return best_frame, chosen_role
+            if len(chosen_roles) == 1:
+                return best_frame, chosen_roles[0]            
+            
+            if len(chosen_roles) > 1:
+                print_emptylines()
+                print "---------------------- ANNOTATION OF ROLE ----------------------\n"
+                print_sentence(sentence, predicate, argument)
+                best_role = multiple_fes_chosen(best_frame, chosen_roles)
+                return best_frame, best_role
+            
 
 def write_outfile(filename, root, annotation_round):
     '''
@@ -540,13 +595,19 @@ def write_outfile(filename, root, annotation_round):
     '''
     inputdir = os.path.split(filename)[0]
     old_filename = os.path.split(filename)[1]
-    outputdir = inputdir + "-framenet"
-    if not os.path.exists(outputdir):
-        os.makedirs(outputdir)
     if annotation_round == "1":
+	outputdir = inputdir + "-framenet"
+	if not os.path.exists(outputdir):
+	    os.makedirs(outputdir)
         new_filename = old_filename.replace(".txt.xml", "-fn1.txt.xml")
         full_newfilename = os.path.join(outputdir, new_filename)
     if annotation_round == "2":
+        if inputdir.endswith("-framenet"):
+	    outputdir = inputdir + "2"
+	else:
+	    outputdir = inputdir + "-framenet2"
+	if not os.path.exists(outputdir):
+	    os.makedirs(outputdir)
         new_filename = old_filename.replace(".txt.xml", "-fn2.txt.xml")
         full_newfilename = os.path.join(outputdir, new_filename)
     outfile = open(full_newfilename, "w")
