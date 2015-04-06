@@ -496,6 +496,8 @@ def annotation(filename, annotation_round):
                 if check == "c":
                     hprel.set("frame", frame)
                     hprel.set("frame_element", role)
+                    write_outfile(filename, root, annotation_round)
+
                     break
                 if check == "q":
                     hprel.set("frame", frame)
