@@ -428,6 +428,11 @@ def annotation(filename, annotation_round):
     asks him/her to anotate the frame and frame element for this relation and writes the annotations to a new outputfile.
     '''
 
+    # Create output directory and check if the file has already been annotated in this round
+    outfilename, continue_overwrite = create_outfile(filename, annotation_round)
+    if continue_overwrite == "n":
+        return
+    
     # Open CAT XML file and get relevant information
     infile = open(filename, "r")
     raw = infile.read()
@@ -496,13 +501,13 @@ def annotation(filename, annotation_round):
                 if check == "c":
                     hprel.set("frame", frame)
                     hprel.set("frame_element", role)
-                    write_outfile(filename, root, annotation_round)
+                    write_outfile(outfilename, root)
 
                     break
                 if check == "q":
                     hprel.set("frame", frame)
                     hprel.set("frame_element", role)
-                    write_outfile(filename, root, annotation_round)
+                    write_outfile(outfilename, root)
                     return             
 
     ########### END OF ANNOTATION: WRITE RESULT TO OUTPUTFILE ########### 
@@ -591,9 +596,19 @@ def user_input(sentence, predicate, argument):
                 return best_frame, best_role
             
 
-def write_outfile(filename, root, annotation_round):
+def write_outfile(outfilename, root):
     '''
-    Writes the resulting XML to a new outputfile in a separate directory
+    Writes the resulting XML to the output-file
+    '''
+    outfile = open(outfilename, "w")
+    xmlstr = etree.tostring(root)
+    outfile.write(xmlstr)            
+    outfile.close()
+
+
+def create_outfile(filename, annotation_round):
+    '''
+    Creates new directory for output file (if it doesn't exist yet) and asks user whether (s)he wants to continue or not when the output file already exists
     '''
     inputdir = os.path.split(filename)[0]
     old_filename = os.path.split(filename)[1]
@@ -612,10 +627,10 @@ def write_outfile(filename, root, annotation_round):
 	    os.makedirs(outputdir)
         new_filename = old_filename.replace(".txt.xml", "-fn2.txt.xml")
         full_newfilename = os.path.join(outputdir, new_filename)
-    outfile = open(full_newfilename, "w")
-    xmlstr = etree.tostring(root)
-    outfile.write(xmlstr)            
-    outfile.close() 
+    if os.path.exists(full_newfilename):
+        print "\nWARNING: This file has already been annotated in this annotation round. If you continue, previous annotations will be overwritten."
+        continue_overwrite = raw_input("Do you want to continue? (y/n) ")
+        return full_newfilename, continue_overwrite
 
 #################
 # Main function #
