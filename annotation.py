@@ -428,9 +428,9 @@ def annotation(filename, annotation_round):
     asks him/her to anotate the frame and frame element for this relation and writes the annotations to a new outputfile.
     '''
 
-    # Create output directory and check if the file has already been annotated in this round
-    outfilename, continue_overwrite = create_outfile(filename, annotation_round)
-    if continue_overwrite == "n":
+    # Create output directory and check if the file has already been annotated (if so, the user is warned)
+    outfilename, continue_overwrite = create_dir_and_outfile(filename)
+    if continue_overwrite != "y":
         return
     
     # Open CAT XML file and get relevant information
@@ -464,16 +464,16 @@ def annotation(filename, annotation_round):
 
         ########### CHECK IF ANNOTATION ALREADY EXISTS ###########
         # If the relation is already annotated: check with user first (Round 1) or skip to next relation (Round 2)
-        if hprel.get("frame") == "None" or hprel.get("frame") == "" or hprel.get("frame_element") == "None" or hprel.get("frame_element") == "":
+        if hprel.get("frame") == "None" or hprel.get("frame") == "" or hprel.get("frame") == "WrongRelation":
             to_annotate = "y"
         else:
             if annotation_round == "1":
                 print_emptylines()
                 print "----------------------- RELATION", hprel_number, "OF", len(list_hprel), "-----------------------\n"   
-                print "THIS RELATION HAS ALREADY BEEN ANNOTATED:"
                 print_sentence(sentence,predicate,argument)
                 print_annotation(hprel.get("frame"), hprel.get("frame_element"))
-                to_annotate = raw_input("\nDO YOU WANT TO ANNOTATE THIS RELATION? (enter 'y' or press Enter to continue) ")
+                print "\nTHIS RELATION HAS ALREADY BEEN ANNOTATED."
+                to_annotate = raw_input("\nDO YOU WANT TO CORRECT THESE ANNOTATIONS? (enter 'y' or press Enter to continue) ")
             if annotation_round == "2":
                 to_annotate = "n"
         if to_annotate != "y":
@@ -486,7 +486,11 @@ def annotation(filename, annotation_round):
             print_explanation_search()
             #print "If you already know which frame applies, you can enter the frame directly by using capitals and underscores (e.g. Attack or Make_possible_to_do). If you don't know which frame applies, you can search for frames by entering one or multiple Dutch or English lemma(s) expressing or relating to the predicate, using lowercase only (e.g. praten). Multiple lemmas should be separated by commas without spaces (e.g. praten,talk). Is there something wrong with this relation? Enter 'WrongRelation'.\n"
             print "----------------------- RELATION", hprel_number, "OF", len(list_hprel), "-----------------------\n" 
-            print_sentence(sentence, predicate, argument) 
+            print_sentence(sentence, predicate, argument)
+            if annotation_round == "2":
+                if hprel.get("frame") != "":
+                    print "----------------------------------------------------------------"
+                    print "THIS WAS ANNOTATED AS: ", hprel.get("frame")
             frame, role = user_input(sentence, predicate, argument)
 
             ########### FINAL CHECK ########### 
@@ -496,22 +500,26 @@ def annotation(filename, annotation_round):
                 print_sentence(sentence, predicate, argument)
                 print_annotation(frame, role)
                 check = raw_input("\nRETRY THIS ANNOTATION (r), SAVE AND CONTINUE WITH THE NEXT (c), OR SAVE AND QUIT ANNOTATING THIS FILE (q)? ")
+                
+                # Retry annotation of current relation
                 if check == "r":
                     frame, role = user_input(sentence, predicate, argument)
+
+                # Save to output file and continue with next relation
                 if check == "c":
                     hprel.set("frame", frame)
                     hprel.set("frame_element", role)
                     write_outfile(outfilename, root)
-
                     break
+
+                # Save to output file and quit annotating this file
                 if check == "q":
                     hprel.set("frame", frame)
                     hprel.set("frame_element", role)
                     write_outfile(outfilename, root)
                     return             
 
-    ########### END OF ANNOTATION: WRITE RESULT TO OUTPUTFILE ########### 
-    write_outfile(filename, root, annotation_round)
+    ########### END OF ANNOTATION ########### 
     infile.close()
     print "\n---------------------- ANNOTATION OF FILE COMPLETE ----------------------\n"
 
@@ -606,31 +614,33 @@ def write_outfile(outfilename, root):
     outfile.close()
 
 
-def create_outfile(filename, annotation_round):
+def create_dir_and_outfile(filename):
     '''
-    Creates new directory for output file (if it doesn't exist yet) and asks user whether (s)he wants to continue or not when the output file already exists
+    Creates output directory and file; if output file already exists (and non-annotated file is taken as input), the user is asked whether (s)he wants to overwrite the previous annotations
     '''
     inputdir = os.path.split(filename)[0]
     old_filename = os.path.split(filename)[1]
-    if annotation_round == "1":
-	outputdir = inputdir + "-framenet"
-	if not os.path.exists(outputdir):
-	    os.makedirs(outputdir)
-        new_filename = old_filename.replace(".txt.xml", "-fn1.txt.xml")
+    old_filename = old_filename.split("-fn")[0]
+    if "-framenet" not in inputdir:
+        outputdir = inputdir + "-framenet"
+        if not os.path.exists(outputdir):
+            os.makedirs(outputdir)
+        old_filename = os.path.split(filename)[1]
+        new_filename = old_filename.replace(".txt.xml", "-fn.txt.xml")
         full_newfilename = os.path.join(outputdir, new_filename)
-    if annotation_round == "2":
-        if inputdir.endswith("-framenet"):
-	    outputdir = inputdir + "2"
-	else:
-	    outputdir = inputdir + "-framenet2"
-	if not os.path.exists(outputdir):
-	    os.makedirs(outputdir)
-        new_filename = old_filename.replace(".txt.xml", "-fn2.txt.xml")
-        full_newfilename = os.path.join(outputdir, new_filename)
-    if os.path.exists(full_newfilename):
-        print "\nWARNING: This file has already been annotated in this annotation round. If you continue, previous annotations will be overwritten."
-        continue_overwrite = raw_input("Do you want to continue? (y/n) ")
-        return full_newfilename, continue_overwrite
+    else:
+        outputdir = inputdir
+        full_newfilename = filename
+    if "-fn" not in filename:
+        if os.path.exists(full_newfilename):
+            print "\nWARNING: This file has already been annotated. If you continue, previous annotations will be overwritten. Please take the annotated file as input if you want to continue where you left off last time."
+            continue_overwrite = raw_input("\nDo you want to continue now? (y/n) ")
+        else:
+            continue_overwrite = "y"
+    else:
+        continue_overwrite = "y"
+    return full_newfilename, continue_overwrite
+
 
 #################
 # Main function #
