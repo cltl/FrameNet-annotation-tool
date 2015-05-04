@@ -35,11 +35,11 @@ def get_text_predicate(pred_id, list_events, list_tokens):
     '''
     predicate = ""
     for event in list_events:
-        if event.get("m_id") == pred_id:
+        if (event.get("id") or event.get("m_id")) == pred_id:
             event_tokens = event.findall("token_anchor")
             for event_token in event_tokens:
                 for token in list_tokens:
-                    if token.get("t_id") == event_token.get("t_id"):
+                    if (token.get("id") or token.get("t_id")) == (event_token.get("id") or event_token.get("t_id")):
                         word = token.text + " "
                         predicate = predicate + word
     return predicate
@@ -50,11 +50,11 @@ def get_text_argument(arg_id, list_entities, list_tokens):
     '''
     argument = ""
     for entity in list_entities:
-        if entity.get("m_id") == arg_id:
+        if (entity.get("id") or entity.get("m_id")) == arg_id:
             entity_tokens = entity.findall("token_anchor")
             for entity_token in entity_tokens:
                 for token in list_tokens:
-                    if token.get("t_id") == entity_token.get("t_id"):
+                    if (token.get("id") or token.get("t_id")) == (entity_token.get("id") or entity_token.get("t_id")):
                         word = token.text + " "
                         argument = argument + word
     return argument
@@ -64,10 +64,10 @@ def get_sent_id(pred_id, list_events, list_tokens):
     Returns the id of the sentence of a predicate given the predicate id
     '''
     for event in list_events:
-        if event.get("m_id") == pred_id:
+        if (event.get("id") or event.get("m_id")) == pred_id:
             first_word = event.findall("token_anchor")[0]
     for token in list_tokens:
-        if token.get("t_id") == first_word.get("t_id"):
+        if (token.get("id") or token.get("t_id")) == (first_word.get("id") or first_word.get("t_id")):
             sent_id = token.get("sentence")
             break
     return sent_id
@@ -449,9 +449,15 @@ def annotation(filename, annotation_round):
         ########### CHECK IF RELATION IS CORRECT ###########
         # If something is wrong with the annotation of the relation, give id of the relation to user and continue with next relation
         try:
-            pred_id = hprel.find("source").get("m_id")                              # GET PREDICATE
+            if "m_id" not in hprel.find("source").attrib:                           # GET PREDICATE (accounted for different attribute names for ids)
+                pred_id = hprel.find("source").get("id")                            
+            else:
+                pred_id = hprel.find("source").get("m_id") 
             predicate = get_text_predicate(pred_id, list_events, list_tokens)
-            arg_id = hprel.find("target").get("m_id")                               # GET ARGUMENT
+            if "m_id" not in hprel.find("source").attrib:                           # GET ARGUMENT
+                arg_id = hprel.find("target").get("id")
+            else:
+                arg_id = hprel.find("target").get("m_id")
             argument = get_text_argument(arg_id, list_entities, list_tokens)
             sent_id = get_sent_id(pred_id, list_events, list_tokens)                # GET SENTENCE
             sentence = get_full_sentence(sent_id, list_tokens)
@@ -464,7 +470,7 @@ def annotation(filename, annotation_round):
 
         ########### CHECK IF ANNOTATION ALREADY EXISTS ###########
         # If the relation is already annotated: check with user first (Round 1) or skip to next relation (Round 2)
-        if hprel.get("frame") == "None" or hprel.get("frame") == "" or hprel.get("frame") == "WrongRelation":
+        if hprel.get("frame") == "None" or hprel.get("frame") == "" or hprel.get("frame") == "WrongRelation" or "frame" not in hprel.attrib:
             to_annotate = "y"
         else:
             if annotation_round == "1":
