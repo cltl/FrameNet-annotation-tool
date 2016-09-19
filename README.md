@@ -49,7 +49,7 @@ The user is presented with the sentence, predicate and argument as well as the c
 ###Contact
 
 - Chantal van Son (VU University Amsterdam)
-- c.m.van.son@student.vu.nl / c.m.van.son@gmail.com
+- c.m.van.son@vu.nl / c.m.van.son@gmail.com
 
 ###References
 
