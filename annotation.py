@@ -128,7 +128,7 @@ def get_frame_elements(list_frames):
         for filename in os.listdir(fn_dir):
             if filename.replace(".xml", "") == frame:
                 infile = open(os.path.join(fn_dir, filename), 'r')
-                raw = infile.read()
+                raw = infile.read().encode("utf8")
                 root = etree.XML(raw)
                 definition = (root.find("{http://framenet.icsi.berkeley.edu}definition")).text # Requires name space
                 definition = re.sub("<[^>]*>", "", definition) # Removes markup language
@@ -151,7 +151,7 @@ def get_definition_fe(frame, fe):
     for filename in os.listdir(fn_dir):
         if filename.replace(".xml", "") == frame:
             infile = open(os.path.join(fn_dir, filename), 'r')
-            raw = infile.read()
+            raw = infile.read().encode("utf8")
             root = etree.XML(raw)
             for fe_element in root.findall("{http://framenet.icsi.berkeley.edu}FE"):
                 if fe_element.get("name") == fe:
@@ -170,33 +170,33 @@ def print_sentence(sentence, predicate, argument):
     '''
     Prints the sentence, predicate and argument
     '''
-    print "SENTENCE: " + sentence.encode(encoding='UTF-8',errors='strict') 
-    print "PREDICATE: " + predicate.encode(encoding='UTF-8',errors='strict')
-    print "ARGUMENT: " + argument.encode(encoding='UTF-8',errors='strict') + "\n"
+    print("SENTENCE: " + sentence)
+    print("PREDICATE: " + predicate)
+    print("ARGUMENT: " + argument + "\n")
 
 def print_explanation_search():
-    print "There are three options:"
-    print "(1) Enter a frame using capitals and underscores (e.g. Attack or Make_possible_to_do)."
-    print "(2) Enter one or multiple lemmas by using lowercase and commas (without spaces) to separate multiple lemmas (e.g. praten,talk)."
-    print "(3) Enter Metaphor if the predicate is a productive metaphor."
-    print "(4) Enter WrongRelation if there is something wrong with the relation.\n\n"
+    print("There are three options: \n"
+          "(1) Enter a frame using capitals and underscores (e.g. Attack or Make_possible_to_do)."
+          "(2) Enter one or multiple lemmas by using lowercase and commas (without spaces) to separate multiple lemmas (e.g. praten,talk)."
+          "(3) Enter Metaphor if the predicate is a productive metaphor."
+          "(4) Enter WrongRelation if there is something wrong with the relation.\n\n")
 
 def print_annotation(frame, role):
     '''
     Prints the annotated frame and role
     '''
-    print "\n----------------------------- ANNOTATION -----------------------------\n"
+    print("\n----------------------------- ANNOTATION -----------------------------\n")
     if frame == "None":
-        print "NO FRAME IS SELECTED. SAVE THE 'NONE' VALUES AND CONTINUE, OR TRY AGAIN.\n"
-    print "FRAME:", frame
+        print("NO FRAME IS SELECTED. SAVE THE 'NONE' VALUES AND CONTINUE, OR TRY AGAIN.\n")
+    print("FRAME:", frame)
     if role != "None" and role != "WrongRelation" and role != "Metaphor":
         def_role = get_definition_fe(frame, role)
-        print "ROLE:", role, "--", def_role 
+        print("ROLE:", role, "--", def_role )
     else:
-        print "ROLE:", role
+        print("ROLE:", role)
 
 def print_emptylines():
-    print "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
+    print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
 
 ######################################################################################################
 # Functions for user input:                                                                          # 
@@ -211,7 +211,7 @@ def search_frames():
     1. a list of frames associated with the lemma(s)
     2. a dictionary with the definition and frame elements (FEs) for each frame (i.e. {frame1: [definition, FE1, FE2, etc.], frame2: [definition, FE1, FE2, etc.]} )
     '''
-    lemmas_or_frame = raw_input("PLEASE ENTER THE LEMMA(S) OR THE FRAME: ")
+    lemmas_or_frame = input("PLEASE ENTER THE LEMMA(S) OR THE FRAME: ")
 
     # If there is something wrong with the original annotation of the relation, return WrongRelation
     if lemmas_or_frame == "WrongRelation":
@@ -261,9 +261,9 @@ def search_frames_again():
     2. a dictionary with the definition and frame elements (FEs) for each frame (i.e. {frame1: [definition, FE1, FE2, etc.], frame2: [definition, FE1, FE2, etc.]} )
     '''
     while True:
-        lemmas_or_frame = raw_input("NO DATA FOUND. PLEASE TRY AGAIN (OR ENTER 'q' TO QUIT THIS ANNOTATION): ")
+        lemmas_or_frame = input("NO DATA FOUND. PLEASE TRY AGAIN (OR ENTER 'q' TO QUIT THIS ANNOTATION): ")
         if lemmas_or_frame == "q":
-            print "YOU HAVE CHOSEN TO QUIT THIS ANNOTATION. PLEASE CONTINUE WITH THE NEXT."
+            print("YOU HAVE CHOSEN TO QUIT THIS ANNOTATION. PLEASE CONTINUE WITH THE NEXT.")
             list_frames = []
             dict_frames = {}
             return list_frames, dict_frames
@@ -298,17 +298,17 @@ def too_many_frames(dict_frames, list_frames):
     
     new_frames = {}
     set_frames = set(list_frames)
-    print "\nTHERE ARE", len(set_frames), "FRAMES AVAILABLE. MAKE A SMALLER SELECTION OF FRAMES FIRST."
+    print("\nTHERE ARE", len(set_frames), "FRAMES AVAILABLE. MAKE A SMALLER SELECTION OF FRAMES FIRST.")
     for number, frame in enumerate(set_frames):
-        print number, frame
+        print(number, frame)
     while True:
-        chosen_frames = raw_input("\nWHICH FRAMES DO YOU WANT TO INVESTIGATE FURTHER? ")
+        chosen_frames = input("\nWHICH FRAMES DO YOU WANT TO INVESTIGATE FURTHER? ")
         chosen_frames = chosen_frames.split(",")
         for number, frame in enumerate(set_frames):
             if str(number) in chosen_frames:
                 new_frames[frame] = dict_frames[frame]
         if len(new_frames) == 0:
-            print "\nSORRY, YOUR INPUT WAS NOT CORRECT. PLEASE TYPE THE NUMBERS OF THE FRAMES SEPARATED BY COMMAS."
+            print("\nSORRY, YOUR INPUT WAS NOT CORRECT. PLEASE TYPE THE NUMBERS OF THE FRAMES SEPARATED BY COMMAS.")
             continue
         else:
             return new_frames
@@ -325,14 +325,14 @@ def select_good_frames(dict_frames, sentence, predicate, argument):
         def_frame = dict_frames[frame][0]
         fes = dict_frames[frame][1:-1]
         print_emptylines()
-        print "---------------------- ANNOTATION OF FRAME(S) ----------------------\n"
+        print("---------------------- ANNOTATION OF FRAME(S) ----------------------\n")
         print_sentence(sentence, predicate, argument)
-        print "\n----------------------------- NEW FRAME ----------------------------\n"
-        print "FRAME", str(n), "OF", str(len(dict_frames)) + ":", frame, "\n"
-        print "DEFINITION:", def_frame, "\n"
+        print("\n----------------------------- NEW FRAME ----------------------------\n")
+        print("FRAME", str(n), "OF", str(len(dict_frames)) + ":", frame, "\n")
+        print("DEFINITION:", def_frame, "\n")
             
-        yes_or_no = raw_input("IS THIS A GOOD FRAME? (enter 'y', or press Enter to discard): ")
-        print "\n"
+        yes_or_no = input("IS THIS A GOOD FRAME? (enter 'y', or press Enter to discard): ")
+        print("\n")
         if yes_or_no == "y":
             chosen_frames[frame] = dict_frames[frame]
     return chosen_frames
@@ -341,19 +341,19 @@ def multiple_frames_chosen(chosen_frames):
     '''
     Presents the user with the multiple frames that (s)he has chosen and asks to choose the best-fitting frame
     '''
-    print "-------------------------------------------------------------\n"
-    print "YOU HAVE CHOSEN MULTIPLE FRAMES: "
+    print("-------------------------------------------------------------\n")
+    print("YOU HAVE CHOSEN MULTIPLE FRAMES: ")
     list_chosen_frames = list(chosen_frames.keys())
     for number, frame in enumerate(list_chosen_frames):
-        print number, frame
+        print(number, frame)
     while True:
-        number_best_frame = raw_input("\nPLEASE ENTER THE NUMBER OF THE BEST FRAME: ")
+        number_best_frame = input("\nPLEASE ENTER THE NUMBER OF THE BEST FRAME: ")
         try:
             best_frame = list_chosen_frames[int(number_best_frame)]
             roles = chosen_frames[best_frame][1:]
             return best_frame, roles
         except:
-            print "SORRY, YOUR INPUT WAS NOT CORRECT."
+            print("SORRY, YOUR INPUT WAS NOT CORRECT.")
             continue
         else:
             break
@@ -363,13 +363,13 @@ def enter_frame_element(best_frame, roles):
     Presents the user with the frame elements (FEs) of the frame and asks to select the correct FE
     '''
     chosen_roles = []
-    print "----------------------------------------------------------------"
-    print "\nYOU HAVE CHOSEN: " , best_frame , "\n\nTHE POSSIBLE ROLES FOR THIS FRAME ARE:"
+    print("----------------------------------------------------------------")
+    print("\nYOU HAVE CHOSEN: " , best_frame , "\n\nTHE POSSIBLE ROLES FOR THIS FRAME ARE:")
     for number, role in enumerate(roles):
-        print number, role
-    print "\n(enter multiple roles if you want to compare some definitions first)"
+        print(number, role)
+    print("\n(enter multiple roles if you want to compare some definitions first)")
     while True:
-        chosen_numbers = raw_input("PLEASE ENTER THE NUMBER OF THE ROLE OF THE ARGUMENT: ")
+        chosen_numbers = input("PLEASE ENTER THE NUMBER OF THE ROLE OF THE ARGUMENT: ")
         chosen_numbers = chosen_numbers.split(",")
         try:
             for chosen_number in chosen_numbers:
@@ -377,7 +377,7 @@ def enter_frame_element(best_frame, roles):
                 chosen_roles.append(chosen_role)
             return chosen_roles
         except:
-            print "SORRY, YOUR INPUT WAS NOT CORRECT."
+            print("SORRY, YOUR INPUT WAS NOT CORRECT.")
             continue
         else:
             break
@@ -387,20 +387,20 @@ def multiple_fes_chosen(frame,fes):
     '''
     Presents the user with the definitions of the multiple roles that (s)he has chosen and asks to choose the correct one
     '''
-    print "-------------------------------------------------------------\n"
-    print "YOU HAVE CHOSEN MULTIPLE ROLES. THESE ARE THE DEFINITIONS: \n"
+    print("-------------------------------------------------------------\n")
+    print("YOU HAVE CHOSEN MULTIPLE ROLES. THESE ARE THE DEFINITIONS: \n")
     for number, fe in enumerate(fes):
         definition = get_definition_fe(frame, fe)
-        print number, fe, "\n", definition, "\n"
+        print(number, fe, "\n", definition, "\n")
     while True:
-        number_fe = raw_input("\nPLEASE ENTER THE NUMBER OF THE CORRECT ROLE: ")
+        number_fe = input("\nPLEASE ENTER THE NUMBER OF THE CORRECT ROLE: ")
         try:
             for number, fe in enumerate(fes):
-                print number, fe, number_fe
+                print(number, fe, number_fe)
                 if str(number) == number_fe:
                     return fe
         except:
-            print "SORRY, YOUR INPUT WAS NOT CORRECT."
+            print("SORRY, YOUR INPUT WAS NOT CORRECT.")
             continue
         else:
             break
@@ -435,24 +435,24 @@ def annotation(filename, annotation_round):
     
     # Open CAT XML file and get relevant information
     infile = open(filename, "r")
-    raw = infile.read()
+    raw = infile.read().encode("utf8")
     root = etree.XML(raw)
     list_tokens = root.findall("token")
-    list_hprel = (root.find("Relations")).findall("HAS_PARTICIPANT")
-    list_entities = (root.find("Markables")).findall("ENTITY_MENTION")
-    list_events = (root.find("Markables")).findall("EVENT_MENTION")
+    list_hprel = root.find("Relations").findall("HAS_PARTICIPANT")
+    list_entities = root.find("Markables").findall("ENTITY_MENTION")
+    list_events = root.find("Markables").findall("EVENT_MENTION")
 
     hprel_number = 0
     for hprel in list_hprel:
         hprel_number += 1
-        
+
         ########### CHECK IF RELATION IS CORRECT ###########
         # If something is wrong with the annotation of the relation, give id of the relation to user and continue with next relation
         try:
             if "m_id" not in hprel.find("source").attrib:                           # GET PREDICATE (accounted for different attribute names for ids)
-                pred_id = hprel.find("source").get("id")                            
+                pred_id = hprel.find("source").get("id")
             else:
-                pred_id = hprel.find("source").get("m_id") 
+                pred_id = hprel.find("source").get("m_id")
             predicate = get_text_predicate(pred_id, list_events, list_tokens)
             if "m_id" not in hprel.find("source").attrib:                           # GET ARGUMENT
                 arg_id = hprel.find("target").get("id")
@@ -461,12 +461,12 @@ def annotation(filename, annotation_round):
             argument = get_text_argument(arg_id, list_entities, list_tokens)
             sent_id = get_sent_id(pred_id, list_events, list_tokens)                # GET SENTENCE
             sentence = get_full_sentence(sent_id, list_tokens)
-        except:            
+        except:
             print_emptylines()
-            print "Error: There seems to be something wrong with the original annotation of this relation. Please check the HAS_PARTICIPANT relation with r_id:", hprel.get("r_id")
+            print("Error: There seems to be something wrong with the original annotation of this relation. Please check the HAS_PARTICIPANT relation with r_id:", hprel.get("r_id"))
             hprel.set("frame", "WrongRelation")
             hprel.set("frame_element", "WrongRelation")
-            continue 
+            continue
 
         ########### CHECK IF ANNOTATION ALREADY EXISTS ###########
         # If the relation is already annotated: check with user first (Round 1) or skip to next relation (Round 2)
@@ -475,38 +475,38 @@ def annotation(filename, annotation_round):
         else:
             if annotation_round == "1":
                 print_emptylines()
-                print "----------------------- RELATION", hprel_number, "OF", len(list_hprel), "-----------------------\n"   
+                print("----------------------- RELATION", hprel_number, "OF", len(list_hprel), "-----------------------\n")
                 print_sentence(sentence,predicate,argument)
                 print_annotation(hprel.get("frame"), hprel.get("frame_element"))
-                print "\nTHIS RELATION HAS ALREADY BEEN ANNOTATED."
-                to_annotate = raw_input("\nDO YOU WANT TO CORRECT THESE ANNOTATIONS? (enter 'y' or press Enter to continue) ")
+                print("\nTHIS RELATION HAS ALREADY BEEN ANNOTATED.")
+                to_annotate = input("\nDO YOU WANT TO CORRECT THESE ANNOTATIONS? (enter 'y' or press Enter to continue) ")
             if annotation_round == "2":
                 to_annotate = "n"
         if to_annotate != "y":
             continue
 
-        ########### IF REQUIREMENTS ARE MET: START ANNOTATION ###########  
+        ########### IF REQUIREMENTS ARE MET: START ANNOTATION ###########
         else:
             print_emptylines()
-            print "-------------------------- EXPLANATION --------------------------\n"
+            print("-------------------------- EXPLANATION --------------------------\n")
             print_explanation_search()
             #print "If you already know which frame applies, you can enter the frame directly by using capitals and underscores (e.g. Attack or Make_possible_to_do). If you don't know which frame applies, you can search for frames by entering one or multiple Dutch or English lemma(s) expressing or relating to the predicate, using lowercase only (e.g. praten). Multiple lemmas should be separated by commas without spaces (e.g. praten,talk). Is there something wrong with this relation? Enter 'WrongRelation'.\n"
-            print "----------------------- RELATION", hprel_number, "OF", len(list_hprel), "-----------------------\n" 
+            print("----------------------- RELATION", hprel_number, "OF", len(list_hprel), "-----------------------\n")
             print_sentence(sentence, predicate, argument)
             if annotation_round == "2":
                 if hprel.get("frame") != "":
-                    print "----------------------------------------------------------------"
-                    print "THIS WAS ANNOTATED AS: ", hprel.get("frame")
+                    print("----------------------------------------------------------------")
+                    print("THIS WAS ANNOTATED AS: ", hprel.get("frame"))
             frame, role = user_input(sentence, predicate, argument)
 
-            ########### FINAL CHECK ########### 
-            while True:                      
+            ########### FINAL CHECK ###########
+            while True:
                 print_emptylines()
-                print "---------------------------- FINAL CHECK -----------------------------\n"
+                print("---------------------------- FINAL CHECK -----------------------------\n")
                 print_sentence(sentence, predicate, argument)
                 print_annotation(frame, role)
-                check = raw_input("\nRETRY THIS ANNOTATION (r), SAVE AND CONTINUE WITH THE NEXT (c), OR SAVE AND QUIT ANNOTATING THIS FILE (q)? ")
-                
+                check = input("\nRETRY THIS ANNOTATION (r), SAVE AND CONTINUE WITH THE NEXT (c), OR SAVE AND QUIT ANNOTATING THIS FILE (q)? ")
+
                 # Retry annotation of current relation
                 if check == "r":
                     frame, role = user_input(sentence, predicate, argument)
@@ -523,11 +523,11 @@ def annotation(filename, annotation_round):
                     hprel.set("frame", frame)
                     hprel.set("frame_element", role)
                     write_outfile(outfilename, root)
-                    return             
+                    return
 
     ########### END OF ANNOTATION ########### 
     infile.close()
-    print "\n---------------------- ANNOTATION OF FILE COMPLETE ----------------------\n"
+    print("\n---------------------- ANNOTATION OF FILE COMPLETE ----------------------\n")
 
 def user_input(sentence, predicate, argument):
     '''
@@ -536,7 +536,7 @@ def user_input(sentence, predicate, argument):
             
     ########### STEP 1(a): ###########
     # enter the frame, or enter lemma(s) and search for matching frames
-    print "----------------------------------------------------------------\n"
+    print("----------------------------------------------------------------\n")
     list_frames, dict_frames = search_frames()
 
     ########### STEP 1(b): ###########
@@ -570,7 +570,7 @@ def user_input(sentence, predicate, argument):
     ########### STEP 2(b): ###########
     # if frames available, decide which frame(s) is/are good frames
     if len(dict_frames) > 0:
-        chosen_frames = select_good_frames(dict_frames, sentence, predicate, argument)
+        chosen_frames = select_good_frames(dict_frames, sentence, predicate, argument) # returns dictionary
 
         ########### STEP 3(a): ###########
         # if no frames are chosen, 'None' is filled in for frame and role (user can later choose to try again)
@@ -584,7 +584,7 @@ def user_input(sentence, predicate, argument):
         else:            
             if len(chosen_frames) > 1:
                 print_emptylines()
-                print "---------------------- SELECTION OF BEST FRAME ----------------------\n"
+                print("---------------------- SELECTION OF BEST FRAME ----------------------\n")
                 print_sentence(sentence, predicate, argument)
                 best_frame, roles = multiple_frames_chosen(chosen_frames)
                             
@@ -595,7 +595,7 @@ def user_input(sentence, predicate, argument):
             ########### STEP 4: ###########
             # enter the frame element (if multiple frame elements are entered, show definitions and choose correct frames)
             print_emptylines()
-            print "---------------------- ANNOTATION OF ROLE ----------------------\n"
+            print("---------------------- ANNOTATION OF ROLE ----------------------\n")
             print_sentence(sentence, predicate, argument)
             chosen_roles = enter_frame_element(best_frame, roles)
 
@@ -604,7 +604,7 @@ def user_input(sentence, predicate, argument):
             
             if len(chosen_roles) > 1:
                 print_emptylines()
-                print "---------------------- ANNOTATION OF ROLE ----------------------\n"
+                print("---------------------- ANNOTATION OF ROLE ----------------------\n")
                 print_sentence(sentence, predicate, argument)
                 best_role = multiple_fes_chosen(best_frame, chosen_roles)
                 return best_frame, best_role
@@ -614,8 +614,8 @@ def write_outfile(outfilename, root):
     '''
     Writes the resulting XML to the output-file
     '''
-    outfile = open(outfilename, "w")
-    xmlstr = etree.tostring(root)
+    outfile = open(outfilename, "wb")
+    xmlstr = etree.tostring(root, pretty_print=True)
     outfile.write(xmlstr)            
     outfile.close()
 
@@ -639,8 +639,8 @@ def create_dir_and_outfile(filename):
         full_newfilename = filename
     if "-fn" not in filename:
         if os.path.exists(full_newfilename):
-            print "\nWARNING: This file has already been annotated. If you continue, previous annotations will be overwritten. Please take the annotated file as input if you want to continue where you left off last time."
-            continue_overwrite = raw_input("\nDo you want to continue now? (y/n) ")
+            print("\nWARNING: This file has already been annotated. If you continue, previous annotations will be overwritten. Please take the annotated file as input if you want to continue where you left off last time.")
+            continue_overwrite = input("\nDo you want to continue now? (y/n) ")
         else:
             continue_overwrite = "y"
     else:
@@ -656,13 +656,13 @@ def main(argv=None):
     if argv is None:
         argv = sys.argv
         if len(argv) < 2:
-            print 'Error. Usage: python annotation.py <inputdir>'
+            print('Error. Usage: python annotation.py <inputdir>')
         if os.path.isfile(argv[1]):
-            print 'Error. Input should be directory, not file.'
+            print('Error. Input should be directory, not file.')
         else:
             for filename in os.listdir(sys.argv[1]):
-                print "\n", filename
-                annotation_round = raw_input("Enter 1 to annotate all relations in this file, enter 2 to only annotate the empty relations in this file, or press Enter to skip this file: ")
+                print("\n", filename)
+                annotation_round = input("Enter 1 to annotate all relations in this file, enter 2 to only annotate the empty relations in this file, or press Enter to skip this file: ")
                 if annotation_round == "1" or annotation_round == "2":
                     full_filename = os.path.join(sys.argv[1], filename)
                     annotation(full_filename, annotation_round)               
