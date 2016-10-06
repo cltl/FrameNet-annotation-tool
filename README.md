@@ -14,7 +14,7 @@ The script uses the following resources, which are included in this module:
 - The Frame files of the XML version of [FrameNet](https://framenet.icsi.berkeley.edu)<sup>4</sup> (version 1.5)
 - A separate file with the lexical units listed for each Frame (extracted from FrameNet version 1.5)
 
-Furthermore, [Python 2.x](https://www.python.org/downloads/) and the [lxml package](http://lxml.de/installation.html) need to be installed.
+Furthermore, [Python 3.x](https://www.python.org/downloads/) and the [lxml package](http://lxml.de/installation.html) need to be installed.
 
 ###Description
 For each file in the input directory, the user is asked whether (s)he wants to annotate this file and for which annotation round. There are two rounds:
