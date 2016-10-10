@@ -24,6 +24,7 @@ from lxml import etree
 import os
 import re
 import sys
+import csv
 
 #############################################################################################
 # Functions for getting information from input files (CAT XML, Predicate Matrix and Frames) #
@@ -176,9 +177,10 @@ def print_sentence(sentence, predicate, argument):
 
 def print_explanation_search():
     print("There are three options: \n"
-          "(1) Enter a frame using capitals and underscores (e.g. Attack or Make_possible_to_do)."
-          "(2) Enter one or multiple lemmas by using lowercase and commas (without spaces) to separate multiple lemmas (e.g. praten,talk)."
-          "(3) Enter Metaphor if the predicate is a productive metaphor."
+          "(1) Enter a frame using capitals and underscores (e.g. Attack or Make_possible_to_do).\n"
+          "(2) Enter one or multiple lemmas by using lowercase and commas (without spaces) to separate multiple lemmas "
+          "(e.g. praten,talk).\n"
+          "(3) Enter Metaphor if the predicate is a productive metaphor.\n"
           "(4) Enter WrongRelation if there is something wrong with the relation.\n\n")
 
 def print_annotation(frame, role):
@@ -406,6 +408,27 @@ def multiple_fes_chosen(frame,fes):
             break
 
 
+def get_confidence_scores(frame):
+    '''
+    Asks the user to indicate how confident he/she is about the annotation.
+    '''
+    if not frame in ["None", "Metaphor", "WrongRelation"]:
+        print("\nHOW CONFIDENT ARE YOU ABOUT THE ANNOTATION OF THIS FRAME?\n"
+              "3 - This frame fits the context very well.\n"
+              "2 - This frame seemed the best fit, but other frames could also apply.\n"
+              "1 - This frame does not fit completely, but there was no better frame available.\n")
+        confidence_frame = input("ENTER YOUR FRAME CONFIDENCE SCORE: ")
+        print("\nHOW CONFIDENT ARE YOU ABOUT THE ANNOTATION OF THIS ROLE? ENTER YOUR CONFIDENCE SCORE.\n"
+              "3 - This role fits the context very well.\n"
+              "2 - This role seemed the best fit, but other roles could also apply.\n"
+              "1 - This role does not fit completely, but there was no better role available.\n")
+        confidence_role = input("ENTER YOUR ROLE CONFIDENCE SCORE: ")
+    else:
+        confidence_frame = "0"
+        confidence_role = "0"
+    return confidence_frame, confidence_role
+
+
 ###################################################################################
 # Functions for overall annotation process:                                       #
 # The 'annotation' function includes the several steps of the annotation process: #
@@ -429,7 +452,7 @@ def annotation(filename, annotation_round):
     '''
 
     # Create output directory and check if the file has already been annotated (if so, the user is warned)
-    outfilename, continue_overwrite = create_dir_and_outfile(filename)
+    outfilename, logfile, continue_overwrite = create_dir_and_outfile(filename)
     if continue_overwrite != "y":
         return
     
@@ -458,6 +481,10 @@ def annotation(filename, annotation_round):
                 arg_id = hprel.find("target").get("id")
             else:
                 arg_id = hprel.find("target").get("m_id")
+            if "r_id" not in hprel.attrib:
+                r_id = hprel.get("id")
+            else:
+                r_id = hprel.get("r_id")
             argument = get_text_argument(arg_id, list_entities, list_tokens)
             sent_id = get_sent_id(pred_id, list_events, list_tokens)                # GET SENTENCE
             sentence = get_full_sentence(sent_id, list_tokens)
@@ -467,6 +494,8 @@ def annotation(filename, annotation_round):
             hprel.set("frame", "WrongRelation")
             hprel.set("frame_element", "WrongRelation")
             continue
+
+        hprel_id = "_".join([os.path.basename(filename), sent_id, r_id])
 
         ########### CHECK IF ANNOTATION ALREADY EXISTS ###########
         # If the relation is already annotated: check with user first (Round 1) or skip to next relation (Round 2)
@@ -497,24 +526,33 @@ def annotation(filename, annotation_round):
                 if hprel.get("frame") != "":
                     print("----------------------------------------------------------------")
                     print("THIS WAS ANNOTATED AS: ", hprel.get("frame"))
-            frame, role = user_input(sentence, predicate, argument)
+            frame, role = user_input(sentence, predicate, argument, logfile, hprel_id)
 
-            ########### FINAL CHECK ###########
+            ########### CONFIDENCE SCORE ##########
+            print_emptylines()
+            print("---------------------------- CONFIDENCE SCORE -----------------------------\n")
+            print_sentence(sentence, predicate, argument)
+            print_annotation(frame, role)
+
+            ########### FINAL CHECK ##########
             while True:
                 print_emptylines()
                 print("---------------------------- FINAL CHECK -----------------------------\n")
                 print_sentence(sentence, predicate, argument)
                 print_annotation(frame, role)
+                confidence_frame, confidence_role = get_confidence_scores(frame)
                 check = input("\nRETRY THIS ANNOTATION (r), SAVE AND CONTINUE WITH THE NEXT (c), OR SAVE AND QUIT ANNOTATING THIS FILE (q)? ")
 
                 # Retry annotation of current relation
                 if check == "r":
-                    frame, role = user_input(sentence, predicate, argument)
+                    frame, role = user_input(sentence, predicate, argument, logfile, hprel_id)
 
                 # Save to output file and continue with next relation
                 if check == "c":
                     hprel.set("frame", frame)
                     hprel.set("frame_element", role)
+                    hprel.set("confidence_frame", confidence_frame)
+                    hprel.set("confidence_role", confidence_role)
                     write_outfile(outfilename, root)
                     break
 
@@ -529,7 +567,7 @@ def annotation(filename, annotation_round):
     infile.close()
     print("\n---------------------- ANNOTATION OF FILE COMPLETE ----------------------\n")
 
-def user_input(sentence, predicate, argument):
+def user_input(sentence, predicate, argument, logfile, hprel_id):
     '''
     Starts the actual annotation of a predicate-argument relation
     '''
@@ -571,6 +609,9 @@ def user_input(sentence, predicate, argument):
     # if frames available, decide which frame(s) is/are good frames
     if len(dict_frames) > 0:
         chosen_frames = select_good_frames(dict_frames, sentence, predicate, argument) # returns dictionary
+        with open(logfile, "a", newline="") as csvfile:
+            csvwriter = csv.writer(csvfile, delimiter=",")
+            csvwriter.writerow([hprel_id] + list(chosen_frames.keys()))
 
         ########### STEP 3(a): ###########
         # if no frames are chosen, 'None' is filled in for frame and role (user can later choose to try again)
@@ -634,18 +675,21 @@ def create_dir_and_outfile(filename):
         old_filename = os.path.split(filename)[1]
         new_filename = old_filename.replace(".txt.xml", "-fn.txt.xml")
         full_newfilename = os.path.join(outputdir, new_filename)
+        logfile = os.path.join(outputdir, "log.csv")
     else:
         outputdir = inputdir
         full_newfilename = filename
     if "-fn" not in filename:
         if os.path.exists(full_newfilename):
-            print("\nWARNING: This file has already been annotated. If you continue, previous annotations will be overwritten. Please take the annotated file as input if you want to continue where you left off last time.")
+            print("\nWARNING: This file has already been annotated. If you continue, previous annotations will be "
+                  "overwritten. Please take the annotated file as input if you want to continue where you left off "
+                  "last time.")
             continue_overwrite = input("\nDo you want to continue now? (y/n) ")
         else:
             continue_overwrite = "y"
     else:
         continue_overwrite = "y"
-    return full_newfilename, continue_overwrite
+    return full_newfilename, logfile, continue_overwrite
 
 
 #################
