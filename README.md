@@ -44,7 +44,7 @@ The frames associated with the lemma(s) (or the entered frame) and their definit
 Once the user has selected a frame, its frame elements are listed. The user is asked to select the correct frame element. If the user wants to compare some of the definitions first, (s)he can enter multiple frame elements (separated by a comma).
 
 ######4. Final check
-The user is presented with the sentence, predicate and argument as well as the chosen frame and frame element. At this point, (s)he can choose to either (a) Retry the annotation of this relation, (b) Save the annotation and continue with the next relation, or (c) Save the annotation and quit annotating the file.
+The user is presented with the sentence, predicate and argument as well as the chosen frame and frame element. At this point, the user will be asked to indicate how confident (s)he is about the annotations of the frame and frame element. Then, the user can choose to either (a) Retry the annotation of this relation, (b) Save the annotation and continue with the next relation, or (c) Save the annotation and quit annotating the file.
 
 ###Contact
 
