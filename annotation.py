@@ -25,6 +25,8 @@ import os
 import re
 import sys
 import csv
+from shutil import copyfile
+from datetime import datetime
 
 #############################################################################################
 # Functions for getting information from input files (CAT XML, Predicate Matrix and Frames) #
@@ -663,11 +665,11 @@ def write_outfile(outfilename, root):
 
 def create_dir_and_outfile(filename):
     '''
-    Creates output directory and file; if output file already exists (and non-annotated file is taken as input), the user is asked whether (s)he wants to overwrite the previous annotations
+    Creates output directory and file; if output file already exists (and non-annotated file is taken as input),
+    the user is asked whether (s)he wants to overwrite the previous annotations
     '''
     inputdir = os.path.split(filename)[0]
-    old_filename = os.path.split(filename)[1]
-    old_filename = old_filename.split("-fn")[0]
+    old_filename = os.path.split(filename)[1].split("-fn")[0]
     if "-framenet" not in inputdir:
         outputdir = inputdir + "-framenet"
         if not os.path.exists(outputdir):
@@ -682,9 +684,16 @@ def create_dir_and_outfile(filename):
     if "-fn" not in filename:
         if os.path.exists(full_newfilename):
             print("\nWARNING: This file has already been annotated. If you continue, previous annotations will be "
-                  "overwritten. Please take the annotated file as input if you want to continue where you left off "
-                  "last time.")
+                  "overwritten (but a backup will be created). Please take the annotated file as input if you want to "
+                  "continue where you left off last time.")
             continue_overwrite = input("\nDo you want to continue now? (y/n) ")
+            if continue_overwrite == "y":
+                outputdir_backups = os.path.join(outputdir, "backups")
+                if not os.path.exists(outputdir_backups):
+                    os.makedirs(outputdir_backups)
+                backupfile =  os.path.basename(filename).split(".txt.xml")[0] + "_" + \
+                              datetime.strftime(datetime.now(), '%Y-%m-%d_%H-%M') + "-fn.txt.xml"
+                copyfile(full_newfilename, os.path.join(outputdir_backups, backupfile))
         else:
             continue_overwrite = "y"
     else:
@@ -706,7 +715,8 @@ def main(argv=None):
         else:
             for filename in os.listdir(sys.argv[1]):
                 print("\n", filename)
-                annotation_round = input("Enter 1 to annotate all relations in this file, enter 2 to only annotate the empty relations in this file, or press Enter to skip this file: ")
+                annotation_round = input("Enter 1 to annotate all relations in this file, enter 2 to only annotate "
+                                         "the empty relations in this file, or press Enter to skip this file: ")
                 if annotation_round == "1" or annotation_round == "2":
                     full_filename = os.path.join(sys.argv[1], filename)
                     annotation(full_filename, annotation_round)               
