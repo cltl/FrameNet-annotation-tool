@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <?xml-stylesheet type="text/xsl" href="frame.xsl"?>
-<frame cBy="605" cDate="09/22/2004 02:30:34 PDT Wed" name="Remembering_information" ID="1220" xsi:schemaLocation="../schema/frame.xsd" xmlns="http://framenet.icsi.berkeley.edu" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<frame cBy="JKR" cDate="09/22/2004 02:30:34 PDT Wed" name="Remembering_information" ID="1220" xsi:schemaLocation="../schema/frame.xsd" xmlns="http://framenet.icsi.berkeley.edu" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <definition>&lt;def-root&gt;A &lt;fen&gt;Cognizer&lt;/fen&gt; retains facts in memory and is able to retrieve them.  The &lt;fen&gt;Mental_content&lt;/fen&gt; may be presented in clearly propositional form as a finite clause. It may also take the form of an embedded question or be a concealed question in the form of a simple NP. 
 
 
@@ -40,35 +40,36 @@ The concealed question uses with personal names that occur in this frame are not
 
 &lt;ex&gt;&lt;/ex&gt;
 This frame differs from Remembering_to_do in that this frame is strictly talking about a fact, whereas the Remembering_to_do frame is strictly about tasks which the &lt;fen&gt;Cognizer&lt;/fen&gt; would be expected to do.  Remembering_to_do uses normally occur with infinitival complements.&lt;/def-root&gt;</definition>
-    <FE bgColor="FF0000" fgColor="FFFFFF" coreType="Core" cBy="605" cDate="09/22/2004 02:35:52 PDT Wed" abbrev="cog" name="Cognizer" ID="7100">
+    <FE bgColor="0000FF" fgColor="FFFFFF" coreType="Core" cBy="JKR" cDate="09/22/2004 02:35:52 PDT Wed" abbrev="cog" name="Cognizer" ID="7100">
         <definition>&lt;def-root&gt;The person who retains and retrieves information.
 
 &lt;ex&gt;I bet &lt;fex name="cog"&gt;Johno&lt;/fex&gt; can &lt;t&gt;remember&lt;/t&gt; the name of the Ramones' drummer.&lt;/ex&gt;&lt;/def-root&gt;</definition>
         <semType name="Sentient" ID="5"/>
     </FE>
-    <FE bgColor="0000FF" fgColor="FFFFFF" coreType="Core" cBy="605" cDate="09/22/2004 02:42:01 PDT Wed" abbrev="men" name="Mental_content" ID="7101">
+    <FE bgColor="FF0000" fgColor="FFFFFF" coreType="Core" cBy="JKR" cDate="09/22/2004 02:42:01 PDT Wed" abbrev="men" name="Mental_content" ID="7101">
         <definition>&lt;def-root&gt;&lt;fen&gt;Mental_content&lt;/fen&gt; stored by and accessible to the &lt;fen&gt;Cognizer&lt;/fen&gt;. It may derive from experience or activity or simply from being informed of it.
 
 &lt;ex&gt;Do you &lt;t&gt;remember&lt;/t&gt; &lt;fex name="men"&gt;how to spell cupboard ?&lt;/fex&gt;&lt;/ex&gt;&lt;/def-root&gt;</definition>
+        <semType name="Content" ID="55"/>
     </FE>
-    <FE bgColor="008000" fgColor="FFFFFF" coreType="Peripheral" cBy="605" cDate="09/22/2004 02:51:50 PDT Wed" abbrev="acc" name="Accuracy" ID="7102">
+    <FE bgColor="008000" fgColor="FFFFFF" coreType="Peripheral" cBy="JKR" cDate="09/22/2004 02:51:50 PDT Wed" abbrev="acc" name="Accuracy" ID="7102">
         <definition>&lt;def-root&gt;The extent to which the remembered &lt;fen&gt;Mental_content&lt;/fen&gt; matches the information or experience that it is based on.
 
 &lt;ex&gt;If I &lt;t&gt;remember&lt;/t&gt; &lt;fex name="acc"&gt;correctly&lt;/fex&gt; the pre-War price for hanging a wall up, a roll of wallpaper was about sixpence a roll , and that included preparing as well.&lt;/ex&gt;&lt;/def-root&gt;</definition>
     </FE>
-    <FE bgColor="FFA500" fgColor="FFFFFF" coreType="Peripheral" cBy="605" cDate="09/22/2004 02:56:03 PDT Wed" abbrev="tim" name="Time" ID="7103">
+    <FE bgColor="FFA500" fgColor="FFFFFF" coreType="Peripheral" cBy="JKR" cDate="09/22/2004 02:56:03 PDT Wed" abbrev="tim" name="Time" ID="7103">
         <definition>&lt;def-root&gt;The time when the &lt;fen&gt;Cognizer&lt;/fen&gt; retrieves &lt;fen&gt;Mental_content&lt;/fen&gt; or forgets it.
 
 &lt;ex&gt; &lt;fex name="tim"&gt;Afterwards&lt;/fex&gt;, I &lt;t&gt;forgot&lt;/t&gt; what I was pissed off about, but I was. &lt;/ex&gt;&lt;/def-root&gt;</definition>
         <semType name="Time" ID="141"/>
     </FE>
-    <FE bgColor="800080" fgColor="FFFFFF" coreType="Peripheral" cBy="605" cDate="09/28/2004 04:13:24 PDT Tue" abbrev="top" name="Topic" ID="7154">
+    <FE bgColor="800080" fgColor="FFFFFF" coreType="Peripheral" cBy="JKR" cDate="09/28/2004 04:13:24 PDT Tue" abbrev="top" name="Topic" ID="7154">
         <definition>&lt;def-root&gt;An entity, concrete or abstract, or an event that the remembered &lt;fen&gt;Mental_content&lt;/fen&gt; is about.
 
 
 &lt;ex&gt;The boy who suffered brain damage when he was hit by a vehicle while walking into school testified Friday he &lt;t&gt;remembers&lt;/t&gt; nothing &lt;fex name="top"&gt;about being hit&lt;/fex&gt;. &lt;/ex&gt;&lt;/def-root&gt;</definition>
     </FE>
-    <FE bgColor="FF00FF" fgColor="FFFFFF" coreType="Peripheral" cBy="605" cDate="09/28/2004 05:08:39 PDT Tue" abbrev="con" name="Context" ID="7155">
+    <FE bgColor="FF00FF" fgColor="FFFFFF" coreType="Peripheral" cBy="JKR" cDate="09/28/2004 05:08:39 PDT Tue" abbrev="con" name="Context" ID="7155">
         <definition>&lt;def-root&gt;A situation or a text from which the &lt;fen&gt;Mental_content&lt;/fen&gt; was acquired.
 
 &lt;ex&gt;You will &lt;t&gt;remember&lt;/t&gt; &lt;fex name="con"&gt;from grade school&lt;/fex&gt; that you do not want to make the nuns impatient.&lt;/ex&gt;&lt;/def-root&gt;</definition>
@@ -78,10 +79,10 @@ This frame differs from Remembering_to_do in that this frame is strictly talking
     <frameRelation type="Perspective on"/>
     <frameRelation type="Is Perspectivized in"/>
     <frameRelation type="Uses">
-        <relatedFrame>Awareness</relatedFrame>
+        <relatedFrame ID="19">Awareness</relatedFrame>
     </frameRelation>
     <frameRelation type="Is Used by">
-        <relatedFrame>Remembering_to_do</relatedFrame>
+        <relatedFrame ID="1221">Remembering_to_do</relatedFrame>
     </frameRelation>
     <frameRelation type="Subframe of"/>
     <frameRelation type="Has Subframe(s)"/>
@@ -89,21 +90,24 @@ This frame differs from Remembering_to_do in that this frame is strictly talking
     <frameRelation type="Is Preceded by"/>
     <frameRelation type="Is Inchoative of"/>
     <frameRelation type="Is Causative of"/>
-    <frameRelation type="See also"/>
-    <lexUnit status="Created" POS="V" name="remember.v" ID="11022" lemmaID="32564" cBy="605" cDate="09/22/2004 07:49:38 PDT Wed">
+    <frameRelation type="See also">
+        <relatedFrame ID="1222">Remembering_experience</relatedFrame>
+        <relatedFrame ID="1221">Remembering_to_do</relatedFrame>
+    </frameRelation>
+    <lexUnit status="Created" POS="V" name="remember.v" ID="11022" lemmaID="32564" cBy="JKR" cDate="09/22/2004 07:49:38 PDT Wed">
         <definition>FN: to recall a fact to the mind</definition>
         <sentenceCount annotated="0" total="0"/>
         <lexeme order="1" headword="false" breakBefore="false" POS="V" name="remember"/>
     </lexUnit>
-    <lexUnit status="Finished_Initial" POS="V" name="forget.v" ID="11024" lemmaID="15109" cBy="605" cDate="09/22/2004 07:53:23 PDT Wed">
+    <lexUnit status="Finished_Initial" POS="V" name="forget.v" ID="11024" lemmaID="15109" cBy="JKR" cDate="09/22/2004 07:53:23 PDT Wed">
         <definition>FN: be unable to remember a fact</definition>
-        <sentenceCount annotated="74" total="76"/>
+        <sentenceCount annotated="86" total="88"/>
         <lexeme order="1" headword="false" breakBefore="false" POS="V" name="forget"/>
     </lexUnit>
-    <lexUnit status="Created" POS="V" name="draw blank.v" ID="11072" lemmaID="49650" cBy="605" cDate="10/13/2004 03:53:48 PDT Wed">
+    <lexUnit status="Created" POS="V" name="draw blank.v" ID="11072" lemmaID="49650" cBy="JKR" cDate="10/13/2004 03:53:48 PDT Wed">
         <definition>FN: fail to remember</definition>
         <sentenceCount annotated="0" total="0"/>
-        <lexeme order="1" headword="false" breakBefore="false" POS="V" name="draw"/>
-        <lexeme order="2" headword="false" breakBefore="false" POS="N" name="blank"/>
+        <lexeme order="1" headword="true" breakBefore="false" POS="V" name="draw"/>
+        <lexeme order="2" headword="false" breakBefore="true" POS="N" name="blank"/>
     </lexUnit>
 </frame>

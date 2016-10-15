@@ -819,7 +819,7 @@ xmlns:fn="http://framenet.icsi.berkeley.edu">
             <!-- display navigation link at top right, unless on desktop -->
             <xsl:if test="$internalMode!='desktop'">
                 <div style="float:right;">
-                    <a href="../luIndex.xml" target='_top'>Lexical Unit Index</a>
+                    <a href="../luIndex.xml" target='_parent'>Lexical Unit Index</a>
                 </div>
             </xsl:if>
             <!-- basic frame info: name, definition, semantic type -->
@@ -884,11 +884,61 @@ xmlns:fn="http://framenet.icsi.berkeley.edu">
                         </tr>
                     </xsl:if>
                 </xsl:for-each>
+                <xsl:for-each select='fn:FE[@coreType="Core-Unexpressed"]'>
+                    <xsl:if test="position()=1">
+                        <tr><td><h4>Core Unexpressed:</h4></td></tr>
+                    </xsl:if>
+                </xsl:for-each>
+                <xsl:for-each select='fn:FE'>
+                    <xsl:sort select='@name' order='ascending' />
+                    <xsl:variable name='feNum' select='position()' />
+                    <xsl:if test='@coreType="Core-Unexpressed"'>                        
+                        <tr>
+                            <td valign='top' width='210' cellpadding='4'>
+                                <xsl:variable name='fgColor' select='@fgColor' />
+                                <xsl:variable name='bgColor' select='@bgColor' />
+
+                                <font style='color:#{$fgColor}; background-color:#{$bgColor}'>
+                                    <xsl:value-of select='@name' /> [<xsl:value-of select='@abbrev' />]
+                                </font>
+
+                                <xsl:if test="fn:semType/@name!=''">
+                                    <br /><b style='font-size:14px'>Semantic Type: </b>
+                                    <xsl:for-each select='fn:semType'>
+                                        <xsl:value-of select="@name" />
+                                        <xsl:if test='position()!=last()'>, </xsl:if>
+                                    </xsl:for-each>
+                                </xsl:if>
+
+                               <xsl:if test="fn:requiresFE/@name!=''">
+                                    <br /><b style='font-size:14px'>Requires: </b>
+                                    <xsl:for-each select='fn:requiresFE'>
+                                        <xsl:sort select='@name' order='ascending' />
+                                        <xsl:value-of select='@name' />
+                                        <xsl:if test='position()!=last()'>, </xsl:if>
+                                    </xsl:for-each>
+                                </xsl:if>
+                                <xsl:if test="fn:excludesFE/@name!=''">
+                                    <br /><b style='font-size:14px'>Excludes: </b>
+                                    <xsl:for-each select='fn:excludesFE'>
+                                        <xsl:sort select='@name' order='ascending' />
+                                        <xsl:value-of select='@name' />
+                                        <xsl:if test='position()!=last()'>, </xsl:if>
+                                    </xsl:for-each>
+                                </xsl:if>
+                            </td>
+
+                            <td align='left' valign='top' id='fe{$feNum}'>
+                                <xsl:value-of select='fn:definition' />
+                            </td>
+                        </tr>
+                    </xsl:if>
+                </xsl:for-each>
                 <tr><td><h4>Non-Core:</h4></td></tr>
                 <xsl:for-each select='fn:FE'>
                     <xsl:sort select='@name' order='ascending' />
                     <xsl:variable name='feNum' select='position()' />
-                    <xsl:if test='@coreType!="Core"' >
+                    <xsl:if test='@coreType!="Core" and @coreType!="Core-Unexpressed"' >
                         <tr>
                             <td valign='top' width='210' cellpadding='4'>
                                 <xsl:variable name='fgColor' select='@fgColor' />
@@ -965,10 +1015,10 @@ xmlns:fn="http://framenet.icsi.berkeley.edu">
                         <td><b><xsl:value-of select='@status' /></b></td>
                         <xsl:variable name='luID' select='@ID' />
                         <td><xsl:if test='@status!="Problem"'>
-                            <a href='../lu/lu{$luID}.xml?mode=lexentry' target='_top'>Lexical entry</a>
+                            <a href='../lu/lu{$luID}.xml?mode=lexentry' target='_parent'>Lexical entry</a>
                         </xsl:if></td>
                         <td><xsl:if test='fn:sentenceCount/@annotated>0 and @status!="Problem"'>
-                            <a href='../lu/lu{$luID}.xml?mode=annotation' target='_top'>Annotation</a>
+                            <a href='../lu/lu{$luID}.xml?mode=annotation' target='_parent'>Annotation</a>
                         </xsl:if></td>
                         <td><xsl:value-of select='@cBy' /></td>
                         <td><xsl:value-of select='@cDate' /></td>
