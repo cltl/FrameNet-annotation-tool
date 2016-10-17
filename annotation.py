@@ -454,7 +454,7 @@ def annotation(filename, annotation_round):
     '''
 
     # Create output directory and check if the file has already been annotated (if so, the user is warned)
-    outfilename, logfile, continue_overwrite = create_dir_and_outfile(filename)
+    outfilename, logfile, continue_overwrite = create_dir_and_outfile(filename, annotation_round)
     if continue_overwrite != "y":
         return
     
@@ -663,7 +663,7 @@ def write_outfile(outfilename, root):
     outfile.close()
 
 
-def create_dir_and_outfile(filename):
+def create_dir_and_outfile(filename, annotation_round):
     '''
     Creates output directory and file; if output file already exists (and non-annotated file is taken as input),
     the user is asked whether (s)he wants to overwrite the previous annotations
@@ -688,19 +688,28 @@ def create_dir_and_outfile(filename):
                   "overwritten (but a backup will be created). Please take the annotated file as input if you want to "
                   "continue where you left off last time.")
             continue_overwrite = input("\nDo you want to continue now? (y/n) ")
-            if continue_overwrite == "y":
-                outputdir_backups = os.path.join(outputdir, "backups")
-                if not os.path.exists(outputdir_backups):
-                    os.makedirs(outputdir_backups)
-                backupfile =  os.path.basename(filename).split(".txt.xml")[0] + "_" + \
-                              datetime.strftime(datetime.now(), '%Y-%m-%d_%H-%M') + "-fn.txt.xml"
-                copyfile(full_newfilename, os.path.join(outputdir_backups, backupfile))
         else:
             continue_overwrite = "y"
+
     else:
         continue_overwrite = "y"
+
+    # create backup
+    if continue_overwrite == "y" and annotation_round == "1":
+        create_backup(outputdir, filename, full_newfilename)
+
     return full_newfilename, logfile, continue_overwrite
 
+def create_backup(outputdir, filename, full_newfilename):
+    """
+    Creates a folder called "backups" and copies the original annotated file as backup
+    """
+    outputdir_backups = os.path.join(outputdir, "backups")
+    if not os.path.exists(outputdir_backups):
+        os.makedirs(outputdir_backups)
+    backupfile = os.path.basename(filename).split(".txt.xml")[0] + "_" + \
+                 datetime.strftime(datetime.now(), '%Y-%m-%d_%H-%M') + "-fn.txt.xml"
+    copyfile(full_newfilename, os.path.join(outputdir_backups, backupfile))
 
 #################
 # Main function #
