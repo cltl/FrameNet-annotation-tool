@@ -681,6 +681,7 @@ def create_dir_and_outfile(filename):
     else:
         outputdir = inputdir
         full_newfilename = filename
+        logfile = os.path.join(outputdir, "log.csv")
     if "-fn" not in filename:
         if os.path.exists(full_newfilename):
             print("\nWARNING: This file has already been annotated. If you continue, previous annotations will be "
@@ -714,14 +715,15 @@ def main(argv=None):
             print('Error. Input should be directory, not file.')
         else:
             for filename in os.listdir(sys.argv[1]):
-                print("\n", filename)
-                annotation_round = input("Enter 1 to annotate all relations in this file, enter 2 to only annotate "
-                                         "the empty relations in this file, or press Enter to skip this file: ")
-                if annotation_round == "1" or annotation_round == "2":
-                    full_filename = os.path.join(sys.argv[1], filename)
-                    annotation(full_filename, annotation_round)               
-                else:
-                    continue
+                if filename.endswith(".xml"):
+                    print("\n", filename)
+                    annotation_round = input("Enter 1 to annotate all relations in this file, enter 2 to only annotate "
+                                             "the empty relations in this file, or press Enter to skip this file: ")
+                    if annotation_round == "1" or annotation_round == "2":
+                        full_filename = os.path.join(sys.argv[1], filename)
+                        annotation(full_filename, annotation_round)
+                    else:
+                        continue
 
 if __name__ == '__main__':
     main()
