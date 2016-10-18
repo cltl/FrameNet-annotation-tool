@@ -695,7 +695,7 @@ def create_dir_and_outfile(filename, annotation_round):
         continue_overwrite = "y"
 
     # create backup
-    if continue_overwrite == "y" and annotation_round == "1":
+    if continue_overwrite == "y" and annotation_round == "1" and "-framenet" in inputdir:
         create_backup(outputdir, filename, full_newfilename)
 
     return full_newfilename, logfile, continue_overwrite
