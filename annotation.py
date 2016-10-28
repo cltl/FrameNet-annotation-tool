@@ -185,19 +185,26 @@ def print_explanation_search():
           "(3) Enter Metaphor if the predicate is a productive metaphor.\n"
           "(4) Enter WrongRelation if there is something wrong with the relation.\n\n")
 
-def print_annotation(frame, role):
+def print_annotation(frame, role, conf_frame=None, conf_role=None):
     '''
     Prints the annotated frame and role
     '''
     print("\n----------------------------- ANNOTATION -----------------------------\n")
+    # Print frame
     if frame == "None":
         print("NO FRAME IS SELECTED. SAVE THE 'NONE' VALUES AND CONTINUE, OR TRY AGAIN.\n")
     print("FRAME:", frame)
+    # Print role
     if role != "None" and role != "WrongRelation" and role != "Metaphor":
         def_role = get_definition_fe(frame, role)
         print("ROLE:", role, "--", def_role )
     else:
         print("ROLE:", role)
+    # Print confidence scores
+    if not conf_frame == None:
+        print("CONFIDENCE FRAME:", conf_frame)
+        print("CONFIDENCE ROLE:", conf_role)
+
 
 def print_emptylines():
     print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
@@ -373,9 +380,12 @@ def enter_frame_element(best_frame, roles):
         print(number, role)
     print("\n(enter multiple roles if you want to compare some definitions first)")
     while True:
-        chosen_numbers = input("PLEASE ENTER THE NUMBER OF THE ROLE OF THE ARGUMENT: ")
+        chosen_numbers = input("PLEASE ENTER THE NUMBER OF THE ROLE OF THE ARGUMENT "
+                               "(OR TYPE 'None' IF NONE OF THE ROLES IS CORRECT): ")
         chosen_numbers = chosen_numbers.split(",")
         try:
+            if chosen_numbers == ["None"]:
+                return chosen_numbers
             for chosen_number in chosen_numbers:
                 chosen_role = roles[int(chosen_number)]
                 chosen_roles.append(chosen_role)
@@ -397,7 +407,10 @@ def multiple_fes_chosen(frame,fes):
         definition = get_definition_fe(frame, fe)
         print(number, fe, "\n", definition, "\n")
     while True:
-        number_fe = input("\nPLEASE ENTER THE NUMBER OF THE CORRECT ROLE: ")
+        number_fe = input("\nPLEASE ENTER THE NUMBER OF THE CORRECT ROLE "
+                          "(OR TYPE 'None' IF NONE OF THE ROLES IS CORRECT): ")
+        if number_fe == "None":
+            return number_fe
         try:
             for number, fe in enumerate(fes):
                 print(number, fe, number_fe)
@@ -410,7 +423,7 @@ def multiple_fes_chosen(frame,fes):
             break
 
 
-def get_confidence_scores(frame):
+def get_confidence_scores(frame, role):
     '''
     Asks the user to indicate how confident he/she is about the annotation.
     '''
@@ -420,11 +433,14 @@ def get_confidence_scores(frame):
               "2 - This frame seemed the best fit, but other frames could also apply.\n"
               "1 - This frame does not fit completely, but there was no better frame available.\n")
         confidence_frame = input("ENTER YOUR FRAME CONFIDENCE SCORE: ")
-        print("\nHOW CONFIDENT ARE YOU ABOUT THE ANNOTATION OF THIS ROLE? ENTER YOUR CONFIDENCE SCORE.\n"
-              "3 - This role fits the context very well.\n"
-              "2 - This role seemed the best fit, but other roles could also apply.\n"
-              "1 - This role does not fit completely, but there was no better role available.\n")
-        confidence_role = input("ENTER YOUR ROLE CONFIDENCE SCORE: ")
+        if not role == "None":
+            print("\nHOW CONFIDENT ARE YOU ABOUT THE ANNOTATION OF THIS ROLE? ENTER YOUR CONFIDENCE SCORE.\n"
+                  "3 - This role fits the context very well.\n"
+                  "2 - This role seemed the best fit, but other roles could also apply.\n"
+                  "1 - This role does not fit completely, but there was no better role available.\n")
+            confidence_role = input("ENTER YOUR ROLE CONFIDENCE SCORE: ")
+        else:
+            confidence_role = "0"
     else:
         confidence_frame = "0"
         confidence_role = "0"
@@ -501,18 +517,29 @@ def annotation(filename, annotation_round):
 
         ########### CHECK IF ANNOTATION ALREADY EXISTS ###########
         # If the relation is already annotated: check with user first (Round 1) or skip to next relation (Round 2)
-        if hprel.get("frame") == "None" or hprel.get("frame") == "" or hprel.get("frame") == "WrongRelation" or "frame" not in hprel.attrib:
+        if "frame" not in hprel.attrib:
             to_annotate = "y"
         else:
             if annotation_round == "1":
                 print_emptylines()
                 print("----------------------- RELATION", hprel_number, "OF", len(list_hprel), "-----------------------\n")
                 print_sentence(sentence,predicate,argument)
-                print_annotation(hprel.get("frame"), hprel.get("frame_element"))
+                print_annotation(hprel.get("frame"), hprel.get("frame_element"),
+                                 conf_frame=hprel.get("confidence_frame"), conf_role=hprel.get("confidence_role"))
                 print("\nTHIS RELATION HAS ALREADY BEEN ANNOTATED.")
                 to_annotate = input("\nDO YOU WANT TO CORRECT THESE ANNOTATIONS? (enter 'y' or press Enter to continue) ")
             if annotation_round == "2":
-                to_annotate = "n"
+                if hprel.get("frame") == "None" or hprel.get("frame") == "" or hprel.get("frame") == "WrongRelation":
+                    print_emptylines()
+                    print("----------------------- RELATION", hprel_number, "OF", len(list_hprel),
+                          "-----------------------\n")
+                    print_sentence(sentence, predicate, argument)
+                    print_annotation(hprel.get("frame"), hprel.get("frame_element"))
+                    print("\nTHIS RELATION HAS ALREADY BEEN ANNOTATED.")
+                    to_annotate = input(
+                        "\nDO YOU WANT TO CORRECT THESE ANNOTATIONS? (enter 'y' or press Enter to continue) ")
+                else:
+                    to_annotate = "n"
         if to_annotate != "y":
             continue
 
@@ -527,7 +554,7 @@ def annotation(filename, annotation_round):
             if annotation_round == "2":
                 if hprel.get("frame") != "":
                     print("----------------------------------------------------------------")
-                    print("THIS WAS ANNOTATED AS: ", hprel.get("frame"))
+                    print("THIS WAS ANNOTATED AS: ", ßhprel.get("frame"))
             frame, role = user_input(sentence, predicate, argument, logfile, hprel_id)
 
             ########### CONFIDENCE SCORE ##########
@@ -542,7 +569,7 @@ def annotation(filename, annotation_round):
                 print("---------------------------- FINAL CHECK -----------------------------\n")
                 print_sentence(sentence, predicate, argument)
                 print_annotation(frame, role)
-                confidence_frame, confidence_role = get_confidence_scores(frame)
+                confidence_frame, confidence_role = get_confidence_scores(frame, role)
                 check = input("\nRETRY THIS ANNOTATION (r), SAVE AND CONTINUE WITH THE NEXT (c), OR SAVE AND QUIT ANNOTATING THIS FILE (q)? ")
 
                 # Retry annotation of current relation
@@ -562,6 +589,8 @@ def annotation(filename, annotation_round):
                 if check == "q":
                     hprel.set("frame", frame)
                     hprel.set("frame_element", role)
+                    hprel.set("confidence_frame", confidence_frame)
+                    hprel.set("confidence_role", confidence_role)
                     write_outfile(outfilename, root)
                     return
 
@@ -663,6 +692,7 @@ def write_outfile(outfilename, root):
     outfile.close()
 
 
+
 def create_dir_and_outfile(filename, annotation_round):
     '''
     Creates output directory and file; if output file already exists (and non-annotated file is taken as input),
@@ -721,7 +751,12 @@ def main(argv=None):
         if len(argv) < 2:
             print('Error. Usage: python annotation.py <inputdir>')
         if os.path.isfile(argv[1]):
-            print('Error. Input should be directory, not file.')
+            print("\n", filename)
+            annotation_round = input("Enter 1 to annotate all relations in this file, enter 2 to only annotate "
+                                     "the empty relations in this file, or press Enter to skip this file: ")
+            if annotation_round == "1" or annotation_round == "2":
+                full_filename = os.path.join(sys.argv[1], filename)
+                annotation(argv[1], annotation_round)
         else:
             for filename in os.listdir(sys.argv[1]):
                 if filename.endswith(".xml"):
