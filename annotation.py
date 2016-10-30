@@ -554,7 +554,7 @@ def annotation(filename, annotation_round):
             if annotation_round == "2":
                 if hprel.get("frame") != "":
                     print("----------------------------------------------------------------")
-                    print("THIS WAS ANNOTATED AS: ", ßhprel.get("frame"))
+                    print("THIS WAS ANNOTATED AS: ", hprel.get("frame"))
             frame, role = user_input(sentence, predicate, argument, logfile, hprel_id)
 
             ########### CONFIDENCE SCORE ##########
