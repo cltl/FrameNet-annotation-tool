@@ -1,5 +1,5 @@
 """
-Usage: python annotation.py <inputdir> 
+Usage: python annotation.py <inputdir>
 
 This module takes all the CAT XML files in a given directoy as input
 and allows the user to annotate the HAS_PARTICIPANT relations in these
@@ -34,7 +34,7 @@ from datetime import datetime
 
 def get_text_predicate(pred_id, list_events, list_tokens):
     '''
-    Returns the full text of a predicate given its id 
+    Returns the full text of a predicate given its id
     '''
     predicate = ""
     for event in list_events:
@@ -49,7 +49,7 @@ def get_text_predicate(pred_id, list_events, list_tokens):
 
 def get_text_argument(arg_id, list_entities, list_tokens):
     '''
-    Returns the full text of a argument given its id 
+    Returns the full text of a argument given its id
     '''
     argument = ""
     for entity in list_entities:
@@ -74,11 +74,11 @@ def get_sent_id(pred_id, list_events, list_tokens):
             sent_id = token.get("sentence")
             break
     return sent_id
-        
-        
+
+
 def get_full_sentence(sent_id, list_tokens):
     '''
-    Returns the full text of a sentence given its id 
+    Returns the full text of a sentence given its id
     '''
     sentence = ""
     for token in list_tokens:
@@ -163,6 +163,8 @@ def get_definition_fe(frame, fe):
                     definition = definition.split("<ex")[0] # Removes any examples from the definition
                     definition = re.sub("<[^>]*>", "", definition) # Removes markup language
                     definition = definition.rstrip("\n") # Removes lines at the end
+    if not 'definition' in locals():
+        definition = "None"
     return definition
 
 ##########################
@@ -183,7 +185,8 @@ def print_explanation_search():
           "(2) Enter one or multiple lemmas by using lowercase and commas (without spaces) to separate multiple lemmas "
           "(e.g. praten,talk).\n"
           "(3) Enter Metaphor if the predicate is a productive metaphor.\n"
-          "(4) Enter WrongRelation if there is something wrong with the relation.\n\n")
+          "(4) Enter MWE if the predicate is part of a multi-word expression.\n"
+          "(5) Enter WrongRelation if there is something wrong with the relation.\n\n")
 
 def print_annotation(frame, role, conf_frame=None, conf_role=None):
     '''
@@ -195,7 +198,7 @@ def print_annotation(frame, role, conf_frame=None, conf_role=None):
         print("NO FRAME IS SELECTED. SAVE THE 'NONE' VALUES AND CONTINUE, OR TRY AGAIN.\n")
     print("FRAME:", frame)
     # Print role
-    if role != "None" and role != "WrongRelation" and role != "Metaphor":
+    if role != "None" and role != "WrongRelation" and role != "Metaphor" and role != "MWE":
         def_role = get_definition_fe(frame, role)
         print("ROLE:", role, "--", def_role )
     else:
@@ -210,9 +213,9 @@ def print_emptylines():
     print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
 
 ######################################################################################################
-# Functions for user input:                                                                          # 
+# Functions for user input:                                                                          #
 # These functions present the user with the information (e.g. the sentence, the frames found for a   #
-# lemma, etc.) and asks him/her to enter the lemma, the correct frame and the correct frame element. #                            
+# lemma, etc.) and asks him/her to enter the lemma, the correct frame and the correct frame element. #
 ######################################################################################################
 
 def search_frames():
@@ -235,32 +238,38 @@ def search_frames():
         all_frames = "Metaphor"
         dict_frames = {}
         return all_frames, dict_frames
-         
+
+    # If the predicate is a MWE, return MWE
+    if lemmas_or_frame == "MWE":
+        all_frames = "MWE"
+        dict_frames = {}
+        return all_frames, dict_frames
+
     # If no frame/lemma(s) given, return empty frames + dictionary
     if lemmas_or_frame == "":
         all_frames = []
         dict_frames = {}
         return all_frames, dict_frames
-    
+
     #If frame is given (starts with capital), create list + dictionary of given frame
-    if not lemmas_or_frame.islower():                   
+    if not lemmas_or_frame.islower():
         framefilename = lemmas_or_frame + ".xml"
         if framefilename not in os.listdir(fn_dir):   # If no frames found, return empty list + dictionary of frames
             all_frames = []
             dict_frames = {}
             return all_frames, dict_frames
-        else: 
+        else:
             all_frames = [lemmas_or_frame]
 
     # If lemma(s) is/are given, search for frames and return dictionary
     else:
-        lemmas =  lemmas_or_frame.split(",")            
+        lemmas =  lemmas_or_frame.split(",")
         all_frames = []
         for lemma in lemmas:
             frames_lemma = get_framenet_data(lemma)
             for frame in frames_lemma:
                 all_frames.append(frame)
-                
+
     dict_frames = get_frame_elements(all_frames)
     return all_frames, dict_frames
 
@@ -280,33 +289,33 @@ def search_frames_again():
             return list_frames, dict_frames
         else:
             #If frame is given (starts with capital), create list + dictionary of given frame
-            if not lemmas_or_frame.islower():                   
+            if not lemmas_or_frame.islower():
                 framefilename = lemmas_or_frame + ".xml"
                 if framefilename not in os.listdir(fn_dir):   # If no frames found, return empty list + dictionary of frames
                     continue
-                else: 
+                else:
                     all_frames = [lemmas_or_frame]
 
             # If lemma(s) is/are given, search for frames and return dictionary
             else:
-                lemmas =  lemmas_or_frame.split(",")            
+                lemmas =  lemmas_or_frame.split(",")
                 all_frames = []
                 for lemma in lemmas:
                     frames_lemma = get_framenet_data(lemma)
                     for frame in frames_lemma:
                         all_frames.append(frame)
-                
+
             dict_frames = get_frame_elements(all_frames)
             if len(dict_frames) == 0:
                 continue
             else:
-                return all_frames, dict_frames  
+                return all_frames, dict_frames
 
 def too_many_frames(dict_frames, list_frames):
     '''
-    Presents the user with the names of all the found frames and asks him/her to make a smaller selection of frames first 
+    Presents the user with the names of all the found frames and asks him/her to make a smaller selection of frames first
     '''
-    
+
     new_frames = {}
     set_frames = set(list_frames)
     print("\nTHERE ARE", len(set_frames), "FRAMES AVAILABLE. MAKE A SMALLER SELECTION OF FRAMES FIRST.")
@@ -341,7 +350,7 @@ def select_good_frames(dict_frames, sentence, predicate, argument):
         print("\n----------------------------- NEW FRAME ----------------------------\n")
         print("FRAME", str(n), "OF", str(len(dict_frames)) + ":", frame, "\n")
         print("DEFINITION:", def_frame, "\n")
-            
+
         yes_or_no = input("IS THIS A GOOD FRAME? (enter 'y', or press Enter to discard): ")
         print("\n")
         if yes_or_no == "y":
@@ -427,7 +436,7 @@ def get_confidence_scores(frame, role):
     '''
     Asks the user to indicate how confident he/she is about the annotation.
     '''
-    if not frame in ["None", "Metaphor", "WrongRelation"]:
+    if not frame in ["None", "Metaphor", "WrongRelation", "MWE"]:
         print("\nHOW CONFIDENT ARE YOU ABOUT THE ANNOTATION OF THIS FRAME?\n"
               "3 - This frame fits the context very well.\n"
               "2 - This frame seemed the best fit, but other frames could also apply.\n"
@@ -470,18 +479,20 @@ def annotation(filename, annotation_round):
     '''
 
     # Create output directory and check if the file has already been annotated (if so, the user is warned)
-    outfilename, logfile, continue_overwrite = create_dir_and_outfile(filename, annotation_round)
-    if continue_overwrite != "y":
-        return
-    
+    #outfilename, logfile, continue_overwrite = create_dir_and_outfile(filename, annotation_round)
+    #if continue_overwrite != "y":
+    #    return
+    print(filename, annotation_round)
+    infilename, outfilename, logfile = create_dir_and_outfile(filename, annotation_round)
+
     # Open CAT XML file and get relevant information
-    infile = open(filename, "r")
-    raw = infile.read().encode("utf8")
-    root = etree.XML(raw)
-    list_tokens = root.findall("token")
-    list_hprel = root.find("Relations").findall("HAS_PARTICIPANT")
-    list_entities = root.find("Markables").findall("ENTITY_MENTION")
-    list_events = root.find("Markables").findall("EVENT_MENTION")
+    with open(infilename, "r") as infile:
+        raw = infile.read().encode("utf8")
+        root = etree.XML(raw)
+        list_tokens = root.findall("token")
+        list_hprel = root.find("Relations").findall("HAS_PARTICIPANT")
+        list_entities = root.find("Markables").findall("ENTITY_MENTION")
+        list_events = root.find("Markables").findall("EVENT_MENTION")
 
     hprel_number = 0
     for hprel in list_hprel:
@@ -517,7 +528,7 @@ def annotation(filename, annotation_round):
 
         ########### CHECK IF ANNOTATION ALREADY EXISTS ###########
         # If the relation is already annotated: check with user first (Round 1) or skip to next relation (Round 2)
-        if "frame" not in hprel.attrib:
+        if "frame" not in hprel.attrib or hprel.get("frame") == "":
             to_annotate = "y"
         else:
             if annotation_round == "1":
@@ -539,7 +550,7 @@ def annotation(filename, annotation_round):
                     to_annotate = input(
                         "\nDO YOU WANT TO CORRECT THESE ANNOTATIONS? (enter 'y' or press Enter to continue) ")
                 else:
-                    to_annotate = "n"
+                        to_annotate = "n"
         if to_annotate != "y":
             continue
 
@@ -594,15 +605,14 @@ def annotation(filename, annotation_round):
                     write_outfile(outfilename, root)
                     return
 
-    ########### END OF ANNOTATION ########### 
-    infile.close()
+    ########### END OF ANNOTATION ###########
     print("\n---------------------- ANNOTATION OF FILE COMPLETE ----------------------\n")
 
 def user_input(sentence, predicate, argument, logfile, hprel_id):
     '''
     Starts the actual annotation of a predicate-argument relation
     '''
-            
+
     ########### STEP 1(a): ###########
     # enter the frame, or enter lemma(s) and search for matching frames
     print("----------------------------------------------------------------\n")
@@ -621,7 +631,13 @@ def user_input(sentence, predicate, argument, logfile, hprel_id):
         frame = "Metaphor"
         role = "Metaphor"
         return frame, role
-        
+
+    # if the user labelled the predicate as a MWE, 'MWE' is returned for frame and role
+    if list_frames == "MWE":
+        frame = "MWE"
+        role = "MWE"
+        return frame, role
+
     ########### STEP 1(d): ###########
     # if no frames available, try again or quit with 'q' ('None' is returned for frame and role)
     if len(dict_frames) == 0:
@@ -630,12 +646,12 @@ def user_input(sentence, predicate, argument, logfile, hprel_id):
             frame = "None"
             role = "None"
             return frame, role
-                          
+
     ########### STEP 2(a): ###########
-    # if too many frames are available (>10), make a first selection of frames   
+    # if too many frames are available (>10), make a first selection of frames
     if len(dict_frames) > 10:
         dict_frames = too_many_frames(dict_frames, list_frames)
-                            
+
     ########### STEP 2(b): ###########
     # if frames available, decide which frame(s) is/are good frames
     if len(dict_frames) > 0:
@@ -650,19 +666,19 @@ def user_input(sentence, predicate, argument, logfile, hprel_id):
             frame = "None"
             role = "None"
             return frame, role
-                        
+
         ########### STEP 3(b): ###########
-        # if multiple frames are chosen, choose best frame               
-        else:            
+        # if multiple frames are chosen, choose best frame
+        else:
             if len(chosen_frames) > 1:
                 print_emptylines()
                 print("---------------------- SELECTION OF BEST FRAME ----------------------\n")
                 print_sentence(sentence, predicate, argument)
                 best_frame, roles = multiple_frames_chosen(chosen_frames)
-                            
+
             if len(chosen_frames) == 1:
                 for best_frame in chosen_frames:
-                    roles = chosen_frames[best_frame][1:]      
+                    roles = chosen_frames[best_frame][1:]
 
             ########### STEP 4: ###########
             # enter the frame element (if multiple frame elements are entered, show definitions and choose correct frames)
@@ -672,15 +688,15 @@ def user_input(sentence, predicate, argument, logfile, hprel_id):
             chosen_roles = enter_frame_element(best_frame, roles)
 
             if len(chosen_roles) == 1:
-                return best_frame, chosen_roles[0]            
-            
+                return best_frame, chosen_roles[0]
+
             if len(chosen_roles) > 1:
                 print_emptylines()
                 print("---------------------- ANNOTATION OF ROLE ----------------------\n")
                 print_sentence(sentence, predicate, argument)
                 best_role = multiple_fes_chosen(best_frame, chosen_roles)
                 return best_frame, best_role
-            
+
 
 def write_outfile(outfilename, root):
     '''
@@ -688,47 +704,50 @@ def write_outfile(outfilename, root):
     '''
     outfile = open(outfilename, "wb")
     xmlstr = etree.tostring(root, pretty_print=True)
-    outfile.write(xmlstr)            
+    outfile.write(xmlstr)
     outfile.close()
-
 
 
 def create_dir_and_outfile(filename, annotation_round):
     '''
-    Creates output directory and file; if output file already exists (and non-annotated file is taken as input),
-    the user is asked whether (s)he wants to overwrite the previous annotations
+    Creates output directory and file; if output file already exists, the user is asked whether (s)he wants to
+    correct the existing annotations or start over
     '''
-    inputdir = os.path.split(filename)[0]
-    old_filename = os.path.split(filename)[1].split("-fn")[0]
-    if "-framenet" not in inputdir:
-        outputdir = inputdir + "-framenet"
-        if not os.path.exists(outputdir):
-            os.makedirs(outputdir)
-        old_filename = os.path.split(filename)[1]
-        new_filename = old_filename.replace(".txt.xml", "-fn.txt.xml")
-        full_newfilename = os.path.join(outputdir, new_filename)
-        logfile = os.path.join(outputdir, "log.csv")
-    else:
-        outputdir = inputdir
-        full_newfilename = filename
-        logfile = os.path.join(outputdir, "log.csv")
-    if "-fn" not in filename:
-        if os.path.exists(full_newfilename):
-            print("\nWARNING: This file has already been annotated. If you continue, previous annotations will be "
-                  "overwritten (but a backup will be created). Please take the annotated file as input if you want to "
-                  "continue where you left off last time.")
-            continue_overwrite = input("\nDo you want to continue now? (y/n) ")
+    inputdir = os.path.dirname(filename)
+    outputdir = inputdir + "-framenet"
+    outfilename = os.path.join(outputdir, os.path.basename(filename).replace(".txt.xml", "-fn.txt.xml"))
+    logfile = os.path.join(outputdir, "log.csv")
+
+    # If output directory does not exist yet; start annotation
+    if not os.path.exists(outputdir):
+        os.makedirs(outputdir)
+        return filename, outfilename, logfile # infile is file without any annotations
+
+    # If annotation round is 2 (start where left of): start annotation
+    if annotation_round == "2":
+        if not os.path.exists(outfilename):
+            return filename, outfilename, logfile
         else:
-            continue_overwrite = "y"
+            return outfilename, outfilename, logfile  # inputfile is the same as outfile
 
-    else:
-        continue_overwrite = "y"
+    # If outputdir exists, but filename not: start annotation
+    if not os.path.exists(outfilename):
+        return filename, outfilename, logfile # infile is file without any annotations
 
-    # create backup
-    if continue_overwrite == "y" and annotation_round == "1" and "-framenet" in inputdir:
-        create_backup(outputdir, filename, full_newfilename)
+    # If file already exists (previously annotated); ask user to (1) correct or (2) start over
+    if os.path.exists(outfilename) and annotation_round == "1":
+        print("\nWARNING: This file has already been annotated.")
+        while True:
+            correct = input("\nDo you want to correct your annotations (c) or do you want to start over (s)? (c/s) ")
+            if correct == "c":
+                return outfilename, outfilename, logfile # infile is file without any annotations
+            elif correct == "s":
+                create_backup(outputdir, filename, outfilename)
+                return filename, outfilename, logfile #inputfile is the same as outfile
+            else:
+                print("\nYour input was not correct.")
+                continue
 
-    return full_newfilename, logfile, continue_overwrite
 
 def create_backup(outputdir, filename, full_newfilename):
     """
