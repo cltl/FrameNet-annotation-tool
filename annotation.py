@@ -495,6 +495,7 @@ def annotation(filename, annotation_round):
         list_events = root.find("Markables").findall("EVENT_MENTION")
 
     hprel_number = 0
+    prev_pred_id = ""
     for hprel in list_hprel:
         hprel_number += 1
 
@@ -549,9 +550,11 @@ def annotation(filename, annotation_round):
                     print("\nTHIS RELATION HAS ALREADY BEEN ANNOTATED.")
                     to_annotate = input(
                         "\nDO YOU WANT TO CORRECT THESE ANNOTATIONS? (enter 'y' or press Enter to continue) ")
+                    if to_annotate == "y":
+                        to_annotate == "c" # need separate label to make sure they start over whole annotation (frame + role)
                 else:
-                        to_annotate = "n"
-        if to_annotate != "y":
+                    to_annotate = "n"
+        if not to_annotate in ["y", "c"]:
             continue
 
         ########### IF REQUIREMENTS ARE MET: START ANNOTATION ###########
@@ -566,7 +569,20 @@ def annotation(filename, annotation_round):
                 if hprel.get("frame") != "":
                     print("----------------------------------------------------------------")
                     print("THIS WAS ANNOTATED AS: ", hprel.get("frame"))
-            frame, role = user_input(sentence, predicate, argument, logfile, hprel_id)
+
+            # Check if predicate was already annotated with frame
+            if to_annotate == "c":
+                frame, role = user_input(sentence, predicate, argument, logfile, hprel_id, None)
+            else:
+                if pred_id == prev_pred_id:
+                    frame, role = user_input(sentence, predicate, argument, logfile, hprel_id, prev_frame)
+                    prev_pred_id = pred_id
+                else:
+                    frame, role = user_input(sentence, predicate, argument, logfile, hprel_id, None)
+                    prev_frame = frame
+                    prev_pred_id = pred_id
+
+
 
             ########### CONFIDENCE SCORE ##########
             print_emptylines()
@@ -585,7 +601,14 @@ def annotation(filename, annotation_round):
 
                 # Retry annotation of current relation
                 if check == "r":
-                    frame, role = user_input(sentence, predicate, argument, logfile, hprel_id)
+                    print_emptylines()
+                    print("-------------------------- EXPLANATION --------------------------\n")
+                    print_explanation_search()
+                    # print "If you already know which frame applies, you can enter the frame directly by using capitals and underscores (e.g. Attack or Make_possible_to_do). If you don't know which frame applies, you can search for frames by entering one or multiple Dutch or English lemma(s) expressing or relating to the predicate, using lowercase only (e.g. praten). Multiple lemmas should be separated by commas without spaces (e.g. praten,talk). Is there something wrong with this relation? Enter 'WrongRelation'.\n"
+                    print("----------------------- RELATION", hprel_number, "OF", len(list_hprel),
+                          "-----------------------\n")
+                    print_sentence(sentence, predicate, argument)
+                    frame, role = user_input(sentence, predicate, argument, logfile, hprel_id, None) # frame has to be re-annotated as well
 
                 # Save to output file and continue with next relation
                 if check == "c":
@@ -608,7 +631,7 @@ def annotation(filename, annotation_round):
     ########### END OF ANNOTATION ###########
     print("\n---------------------- ANNOTATION OF FILE COMPLETE ----------------------\n")
 
-def user_input(sentence, predicate, argument, logfile, hprel_id):
+def user_input(sentence, predicate, argument, logfile, hprel_id, prev_frame):
     '''
     Starts the actual annotation of a predicate-argument relation
     '''
@@ -616,7 +639,11 @@ def user_input(sentence, predicate, argument, logfile, hprel_id):
     ########### STEP 1(a): ###########
     # enter the frame, or enter lemma(s) and search for matching frames
     print("----------------------------------------------------------------\n")
-    list_frames, dict_frames = search_frames()
+    if prev_frame == None:
+        list_frames, dict_frames = search_frames()
+    else:
+        list_frames = [prev_frame]
+        dict_frames = get_frame_elements(list_frames)
 
     ########### STEP 1(b): ###########
     # if the user thinks there is something wrong with the original annotation of the relation, 'WrongRelation' is returned for frame and role
@@ -649,16 +676,19 @@ def user_input(sentence, predicate, argument, logfile, hprel_id):
 
     ########### STEP 2(a): ###########
     # if too many frames are available (>10), make a first selection of frames
-    if len(dict_frames) > 10:
+    elif len(dict_frames) > 10:
         dict_frames = too_many_frames(dict_frames, list_frames)
 
     ########### STEP 2(b): ###########
     # if frames available, decide which frame(s) is/are good frames
-    if len(dict_frames) > 0:
-        chosen_frames = select_good_frames(dict_frames, sentence, predicate, argument) # returns dictionary
-        with open(logfile, "a", newline="") as csvfile:
-            csvwriter = csv.writer(csvfile, delimiter=",")
-            csvwriter.writerow([hprel_id] + list(chosen_frames.keys()))
+    elif len(dict_frames) > 0:
+        if prev_frame == None:  # skip this skep if the predicate has already been annotated with a frame
+            chosen_frames = select_good_frames(dict_frames, sentence, predicate, argument) # returns dictionary
+            with open(logfile, "a", newline="") as csvfile:
+                csvwriter = csv.writer(csvfile, delimiter=",")
+                csvwriter.writerow([hprel_id] + list(chosen_frames.keys()))
+        else:
+            chosen_frames = {prev_frame: dict_frames[prev_frame]}
 
         ########### STEP 3(a): ###########
         # if no frames are chosen, 'None' is filled in for frame and role (user can later choose to try again)
