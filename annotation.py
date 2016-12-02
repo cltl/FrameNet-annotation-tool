@@ -185,8 +185,8 @@ def print_explanation_search():
           "(2) Enter one or multiple lemmas by using lowercase and commas (without spaces) to separate multiple lemmas "
           "(e.g. praten,talk).\n"
           "(3) Enter Metaphor if the predicate is a productive metaphor.\n"
-          "(4) Enter MWE if the predicate is part of a multi-word expression.\n"
-          "(5) Enter WrongRelation if there is something wrong with the relation.\n\n")
+          "(4) Enter MWE if the predicate is part of a multi-word expression.\n")
+          #"(5) Enter WrongRelation if there is something wrong with the relation.\n\n")
 
 def print_annotation(frame, role, conf_frame=None, conf_role=None):
     '''
@@ -228,10 +228,10 @@ def search_frames():
     lemmas_or_frame = input("PLEASE ENTER THE LEMMA(S) OR THE FRAME: ")
 
     # If there is something wrong with the original annotation of the relation, return WrongRelation
-    if lemmas_or_frame == "WrongRelation":
-        all_frames = "WrongRelation"
-        dict_frames = {}
-        return all_frames, dict_frames
+    #if lemmas_or_frame == "WrongRelation":
+    #    all_frames = "WrongRelation"
+    #    dict_frames = {}
+    #    return all_frames, dict_frames
 
     # If the predicate is a productive metaphor, return Metaphor
     if lemmas_or_frame == "Metaphor":
@@ -647,10 +647,10 @@ def user_input(sentence, predicate, argument, logfile, hprel_id, prev_frame):
 
     ########### STEP 1(b): ###########
     # if the user thinks there is something wrong with the original annotation of the relation, 'WrongRelation' is returned for frame and role
-    if list_frames == "WrongRelation":
-        frame = "WrongRelation"
-        role = "WrongRelation"
-        return frame, role
+    #if list_frames == "WrongRelation":
+    #    frame = "WrongRelation"
+    #    role = "WrongRelation"
+    #    return frame, role
 
     ########### STEP 1(c): ###########
     # if the user labelled the predicate as a productive metaphor, 'Metaphor' is returned for frame and role
