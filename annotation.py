@@ -180,7 +180,7 @@ def print_sentence(sentence, predicate, argument):
     print("ARGUMENT: " + argument + "\n")
 
 def print_explanation_search():
-    print("There are three options: \n"
+    print("There are several options: \n"
           "(1) Enter a frame using capitals and underscores (e.g. Attack or Make_possible_to_do).\n"
           "(2) Enter one or multiple lemmas by using lowercase and commas (without spaces) to separate multiple lemmas "
           "(e.g. praten,talk).\n"
@@ -189,7 +189,7 @@ def print_explanation_search():
           #"(5) Enter WrongRelation if there is something wrong with the relation.\n\n")
 
 def print_explanation_fes():
-    print("There are three options: \n"
+    print("There are several options: \n"
           "(1) Enter the number of the correct frame element.\n"
           "(2) Enter multiple numbers separated by commas if you want to compare some definitions first.\n"
           "(3) Enter None if none of the roles is the correct one.\n"
