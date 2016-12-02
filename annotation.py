@@ -188,6 +188,15 @@ def print_explanation_search():
           "(4) Enter MWE if the predicate is part of a multi-word expression.\n")
           #"(5) Enter WrongRelation if there is something wrong with the relation.\n\n")
 
+def print_explanation_fes():
+    print("There are three options: \n"
+          "(1) Enter the number of the correct frame element.\n"
+          "(2) Enter multiple numbers separated by commas if you want to compare some definitions first.\n"
+          "(3) Enter None if none of the roles is the correct one.\n"
+          "(4) Enter WrongRelation if there is something wrong with this particular relation (e.g. this is "
+          "not an argument of this predicate).\n\n")
+          #"(5) Enter WrongRelation if there is something wrong with the relation.\n\n")
+
 def print_annotation(frame, role, conf_frame=None, conf_role=None):
     '''
     Prints the annotated frame and role
@@ -387,13 +396,13 @@ def enter_frame_element(best_frame, roles):
     print("\nYOU HAVE CHOSEN: " , best_frame , "\n\nTHE POSSIBLE ROLES FOR THIS FRAME ARE:")
     for number, role in enumerate(roles):
         print(number, role)
-    print("\n(enter multiple roles if you want to compare some definitions first)")
+    #print_explanation_fes()
+    #print("\n(enter multiple roles if you want to compare some definitions first)")
     while True:
-        chosen_numbers = input("PLEASE ENTER THE NUMBER OF THE ROLE OF THE ARGUMENT "
-                               "(OR TYPE 'None' IF NONE OF THE ROLES IS CORRECT): ")
+        chosen_numbers = input("\nPLEASE ENTER THE NUMBER(S) OF THE ROLE OF THE ARGUMENT: ")
         chosen_numbers = chosen_numbers.split(",")
         try:
-            if chosen_numbers == ["None"]:
+            if chosen_numbers == ["None"] or chosen_numbers == ["WrongRelation"]:
                 return chosen_numbers
             for chosen_number in chosen_numbers:
                 chosen_role = roles[int(chosen_number)]
@@ -713,6 +722,8 @@ def user_input(sentence, predicate, argument, logfile, hprel_id, prev_frame):
             ########### STEP 4: ###########
             # enter the frame element (if multiple frame elements are entered, show definitions and choose correct frames)
             print_emptylines()
+            print("-------------------------- EXPLANATION --------------------------\n")
+            print_explanation_fes()
             print("---------------------- ANNOTATION OF ROLE ----------------------\n")
             print_sentence(sentence, predicate, argument)
             chosen_roles = enter_frame_element(best_frame, roles)
