@@ -685,12 +685,12 @@ def user_input(sentence, predicate, argument, logfile, hprel_id, prev_frame):
 
     ########### STEP 2(a): ###########
     # if too many frames are available (>10), make a first selection of frames
-    elif len(dict_frames) > 10:
+    if len(dict_frames) > 10:
         dict_frames = too_many_frames(dict_frames, list_frames)
 
     ########### STEP 2(b): ###########
     # if frames available, decide which frame(s) is/are good frames
-    elif len(dict_frames) > 0:
+    if len(dict_frames) > 0:
         if prev_frame == None:  # skip this skep if the predicate has already been annotated with a frame
             chosen_frames = select_good_frames(dict_frames, sentence, predicate, argument) # returns dictionary
             with open(logfile, "a", newline="") as csvfile:
