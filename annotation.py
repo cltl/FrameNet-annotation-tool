@@ -696,6 +696,10 @@ def user_input(sentence, predicate, argument, logfile, hprel_id, prev_frame):
             with open(logfile, "a", newline="") as csvfile:
                 csvwriter = csv.writer(csvfile, delimiter=",")
                 csvwriter.writerow([hprel_id] + list(chosen_frames.keys()))
+        elif prev_frame == "None":
+            frame = "None"
+            role = "None"
+            return frame, role
         else:
             chosen_frames = {prev_frame: dict_frames[prev_frame]}
 
