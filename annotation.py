@@ -441,17 +441,20 @@ def multiple_fes_chosen(frame,fes):
             break
 
 
-def get_confidence_scores(frame, role):
+def get_confidence_scores(frame, role, prev_conf_frame="0"):
     '''
     Asks the user to indicate how confident he/she is about the annotation.
     '''
     if not frame in ["None", "Metaphor", "WrongRelation", "MWE"]:
-        print("\nHOW CONFIDENT ARE YOU ABOUT THE ANNOTATION OF THIS FRAME?\n"
-              "3 - This frame fits the context very well.\n"
-              "2 - This frame seemed the best fit, but other frames could also apply.\n"
-              "1 - This frame does not fit completely, but there was no better frame available.\n")
-        confidence_frame = input("ENTER YOUR FRAME CONFIDENCE SCORE: ")
-        if not role == "None":
+        if not frame == None:
+            print("\nHOW CONFIDENT ARE YOU ABOUT THE ANNOTATION OF THIS FRAME?\n"
+                  "3 - This frame fits the context very well.\n"
+                  "2 - This frame seemed the best fit, but other frames could also apply.\n"
+                  "1 - This frame does not fit completely, but there was no better frame available.\n")
+            confidence_frame = input("ENTER YOUR FRAME CONFIDENCE SCORE: ")
+        else:
+            confidence_frame = prev_conf_frame
+        if not role in ["None", "WrongRelation"]:
             print("\nHOW CONFIDENT ARE YOU ABOUT THE ANNOTATION OF THIS ROLE? ENTER YOUR CONFIDENCE SCORE.\n"
                   "3 - This role fits the context very well.\n"
                   "2 - This role seemed the best fit, but other roles could also apply.\n"
@@ -588,10 +591,6 @@ def annotation(filename, annotation_round):
                     prev_pred_id = pred_id
                 else:
                     frame, role = user_input(sentence, predicate, argument, logfile, hprel_id, None)
-                    prev_frame = frame
-                    prev_pred_id = pred_id
-
-
 
             ########### CONFIDENCE SCORE ##########
             print_emptylines()
@@ -605,7 +604,10 @@ def annotation(filename, annotation_round):
                 print("---------------------------- FINAL CHECK -----------------------------\n")
                 print_sentence(sentence, predicate, argument)
                 print_annotation(frame, role)
-                confidence_frame, confidence_role = get_confidence_scores(frame, role)
+                if pred_id == prev_pred_id:
+                    confidence_frame, confidence_role = get_confidence_scores(None, role, prev_conf_frame=prev_conf_frame)
+                else:
+                    confidence_frame, confidence_role = get_confidence_scores(frame, role)
                 check = input("\nRETRY THIS ANNOTATION (r), SAVE AND CONTINUE WITH THE NEXT (c), OR SAVE AND QUIT ANNOTATING THIS FILE (q)? ")
 
                 # Retry annotation of current relation
@@ -626,6 +628,9 @@ def annotation(filename, annotation_round):
                     hprel.set("confidence_frame", confidence_frame)
                     hprel.set("confidence_role", confidence_role)
                     write_outfile(outfilename, root)
+                    prev_frame = frame
+                    prev_pred_id = pred_id
+                    prev_conf_frame = confidence_frame
                     break
 
                 # Save to output file and quit annotating this file
