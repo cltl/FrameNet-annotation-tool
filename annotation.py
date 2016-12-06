@@ -575,7 +575,7 @@ def annotation(filename, annotation_round):
             print("----------------------- RELATION", hprel_number, "OF", len(list_hprel), "-----------------------\n")
             print_sentence(sentence, predicate, argument)
             if annotation_round == "2":
-                if hprel.get("frame") != "":
+                if hprel.get("frame") not in ["", None]:
                     print("----------------------------------------------------------------")
                     print("THIS WAS ANNOTATED AS: ", hprel.get("frame"))
 
