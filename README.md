@@ -1,4 +1,4 @@
-###Summary
+### Summary
 
 This module allows a user to annotate all CAT XML files in a given directory with frames and frame elements from FrameNet. The user can search for the frames and frame elements in FrameNet and the Predicate Matrix.
 
@@ -6,7 +6,7 @@ Usage: 		python annotation.py \<inputdir\>
 
 Example: 	python annotation.py ./Data/Example 
 
-###Requirements
+### Requirements
 The input files have to be in labeled CAT<sup>1</sup> (acronym for [CELCT/Content Annotation Tool](https://dh.fbk.eu/resources/cat-content-annotation-tool)) XML format and already have been annotated with HAS\_PARTICIPANT relations according to the [NewsReader](http://www.newsreader-project.eu/) annotation scheme<sup>2</sup>.
 
 The script uses the following resources, which are included in this module:
@@ -16,7 +16,7 @@ The script uses the following resources, which are included in this module:
 
 Furthermore, [Python 3.x](https://www.python.org/downloads/) and the [lxml package](http://lxml.de/installation.html) need to be installed.
 
-###Description
+### Description
 For each file in the input directory, the user is asked whether (s)he wants to annotate this file and for which annotation round. There are two rounds:
 
 1. **All relations:** annotate all HAS_PARTICIPANT relations (if annotations for a relation already exist, the user is asked whether (s)he wants to change the existing annotation)
@@ -24,7 +24,7 @@ For each file in the input directory, the user is asked whether (s)he wants to a
 
 After the user has chosen the annotation round, the annotation of the document starts. The following steps are carried out for each HAS\_PARTICIPANT relation:
 
-######1. Enter a frame or lemma
+###### 1. Enter a frame or lemma
 The user is presented with the sentence, predicate and argument. If the user already knows which frame applies, (s)he can enter the frame directly by using capitals and underscores (e.g. *Attack*, *Make\_possible\_to\_do*). If the user does not know which frame applies, (s)he can enter one or multiple Dutch or English lemma(s) expressing or relating to the predicate by using lowercase only (e.g. *praten*). Multiple lemmas can be separated by commas without spaces (e.g. *praten,talk*). The user is then presented with the frames, definitions and roles that are associated with the lemma(s) in the Predicate Matrix & FrameNet. 
 
 There are two alternative labels: WrongRelation and Metaphor. The label WrongRelation should be used when there is something wrong with the relation (e.g. argument is missing, there is no relation between argument and predicate). The label Metaphor should be used when the predicate is a non-conventional metaphors (for conventional metaphors the user should annotate the target domain). These labels are stored for the frame and role in the output.
@@ -36,22 +36,22 @@ Some guidelines for searching frames:
 - English phrasal verbs can be entered by separating the words by an underscore (e.g. *go\_on*).
 
 
-######2. Annotation of frame
+###### 2. Annotation of frame
 The frames associated with the lemma(s) (or the entered frame) and their definitions are, one by one, presented to the user (if there are more than 10 frames found, the user is asked to make a smaller selection of frames first). The user has to decide for each frame if it is a frame that fits or not. If multiple frames are chosen, the user is asked to choose the best frame. If no frames are chosen, 'None' is filled in for the frame and the frame element; it is up to the user to decide in the final check (see below) whether there is indeed no good frame available or whether (s)he wants to try again with other lemmas. 
 
 
-######3. Annotation of frame element
+###### 3. Annotation of frame element
 Once the user has selected a frame, its frame elements are listed. The user is asked to select the correct frame element. If the user wants to compare some of the definitions first, (s)he can enter multiple frame elements (separated by a comma).
 
-######4. Final check
+###### 4. Final check
 The user is presented with the sentence, predicate and argument as well as the chosen frame and frame element. At this point, the user will be asked to indicate how confident (s)he is about the annotations of the frame and frame element. Then, the user can choose to either (a) Retry the annotation of this relation, (b) Save the annotation and continue with the next relation, or (c) Save the annotation and quit annotating the file.
 
-###Contact
+### Contact
 
 - Chantal van Son (VU University Amsterdam)
 - c.m.van.son@vu.nl / c.m.van.son@gmail.com
 
-###References
+### References
 
 <sup>1</sup> Moretti, G. and Sprugnoli, R. (2014). *CAT User Manual for the NewsReader EU Project. NWR-2014-5*. Fondazione Bruno Kessler.
 
